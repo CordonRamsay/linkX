@@ -1,0 +1,156 @@
+linkx_db 테이블 DDL
+
+1. dept_tbl
+CREATE TABLE `dept_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `deptName` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+2. user_tbl
+CREATE TABLE `user_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `userId` varchar(20) NOT NULL,
+  `userPassword` varchar(20) NOT NULL,
+  `userName` varchar(15) NOT NULL,
+  `userPhone` varchar(13) NOT NULL,
+  `userUniv` varchar(30) NOT NULL,
+  `deptId` bigint DEFAULT NULL,
+  `userNum` varchar(10) NOT NULL,
+  `userEmail` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `deptId` (`deptId`),
+  CONSTRAINT `user_tbl_ibfk_1` FOREIGN KEY (`deptId`) REFERENCES `dept_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+3. board_dept_tbl
+CREATE TABLE `board_dept_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `content` varchar(3000) NOT NULL,
+  `createId` bigint NOT NULL,
+  `createDt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `viewQty` int NOT NULL DEFAULT '0',
+  `likeQty` int NOT NULL DEFAULT '0',
+  `updateDt` varchar(20) DEFAULT NULL,
+  `deleteYn` tinyint NOT NULL DEFAULT '0',
+  `deptId` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `createId` (`createId`),
+  KEY `deptId` (`deptId`),
+  CONSTRAINT `board_dept_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`),
+  CONSTRAINT `board_dept_tbl_ibfk_2` FOREIGN KEY (`deptId`) REFERENCES `dept_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+4. board_free_tbl
+CREATE TABLE `board_free_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `content` varchar(3000) NOT NULL,
+  `createId` bigint NOT NULL,
+  `createDt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `viewQty` int NOT NULL DEFAULT '0',
+  `likeQty` int NOT NULL DEFAULT '0',
+  `updateDt` varchar(20) DEFAULT NULL,
+  `deleteYn` tinyint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `createId` (`createId`),
+  CONSTRAINT `board_free_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+5. board_like_tbl
+CREATE TABLE `board_like_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `boardType` varchar(20) NOT NULL,
+  `boardId` bigint NOT NULL,
+  `createId` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `createId` (`createId`),
+  CONSTRAINT `board_like_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+6. comment_tbl
+CREATE TABLE `comment_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `boardType` varchar(20) NOT NULL,
+  `boardId` bigint NOT NULL,
+  `createId` bigint NOT NULL,
+  `comment` varchar(1000) NOT NULL,
+  `createDt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `likeQty` int NOT NULL DEFAULT '0',
+  `deleteYn` tinyint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `createId` (`createId`),
+  CONSTRAINT `comment_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+7. comment_like_tbl
+CREATE TABLE `comment_like_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `commentId` bigint NOT NULL,
+  `createId` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `createId` (`createId`),
+  KEY `commentId` (`commentId`),
+  CONSTRAINT `comment_like_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`),
+  CONSTRAINT `comment_like_tbl_ibfk_2` FOREIGN KEY (`commentId`) REFERENCES `comment_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+8. petition_tbl
+CREATE TABLE `petition_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `petiTitle` varchar(100) NOT NULL,
+  `petiField` varchar(100) NOT NULL,
+  `petiEffect` varchar(500) DEFAULT NULL,
+  `petiContent` varchar(3000) NOT NULL,
+  `userId` bigint NOT NULL,
+  `createDt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `endDt` datetime NOT NULL,
+  `agreeQty` int NOT NULL DEFAULT '0',
+  `answer` tinyint NOT NULL DEFAULT '0',
+  `answerContent` varchar(2000) NOT NULL,
+  `petiState` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `petition_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+9. restaurant_tbl
+CREATE TABLE `restaurant_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `restName` varchar(100) NOT NULL,
+  `restTel` varchar(3000) NOT NULL,
+  `restLocation` varchar(30) NOT NULL,
+  `restStar` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+10. review_tbl
+CREATE TABLE `review_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `reviewTitle` varchar(50) NOT NULL,
+  `reviewContent` varchar(300) NOT NULL,
+  `restId` bigint NOT NULL,
+  `userId` bigint NOT NULL,
+  `reviewDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `reviewStar` float DEFAULT NULL,
+  `reviewLike` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  KEY `restId` (`restId`),
+  CONSTRAINT `review_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`),
+  CONSTRAINT `review_tbl_ibfk_2` FOREIGN KEY (`restId`) REFERENCES `restaurant_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+11. signatures_tbl
+CREATE TABLE `signatures_tbl` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `userId` bigint NOT NULL,
+  `petiId` bigint NOT NULL,
+  `sigDt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  KEY `petiId` (`petiId`),
+  CONSTRAINT `signatures_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`),
+  CONSTRAINT `signatures_tbl_ibfk_2` FOREIGN KEY (`petiId`) REFERENCES `petition_tbl` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
