@@ -1,0 +1,65 @@
+[자유게시판] 
+컨트롤러 : url과 쿼리스트링을 받아와서 그 url에 맵핑되는 메소드를 실행함,
+ 쿼리스트링에 있는 데이터를 객체로 받아와서 로직 처리 후 view에 다시 전달
+
+
+궁극적으로는,
+1.사용자가 View(화면)에서 특정 버튼을 클릭(요청)하고 데이터를 입력하면
+2.Service에서 로직을 처리하고
+3.최종목적지 Mapper에서 쿼리문을 호출하여 DB에 접근하여 처리(CRUD)하고
+4.필요한 데이터를 다시 View(화면)에 출력하는 것이다.
+
+[참고]
+1. Mapper에서 select문을 실행하면 resultType에 정의한 객체에 각 필드값이 바인딩된다.
+ex) <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="BoardFreeDto">
+select 	id,
+	name,
+	content,
+	viewqty,
+	likeqty,
+	createDt,
+	createId,
+	ut.nickname AS createName,
+	deleteYn
+from	board_free_tbl
+where  ~~~~
+</select>
+이런식으로하면 resultType에 정의된 BoardFreeDto의 각 필드에 select문으로 출력한 값이 매핑됨.
+
+BoardFreeController 
+@RequestMapping("/boardFree")
+
+1. 게시글 목록 화면(board_list.html)
+요청("/boardFree/board_list?page=1&searchName=")
+- 게시글 리스트 출력(+댓글개수)
+- 전체 게시글 개수 출력
+- 페이징 
+- 검색 기능 (글제목,작성자)
+- 본인 작성글은 강조 효과 ( ajax에서 처리)
+요청("/boardFree/board_view?id={{id}}")
+- 게시글 상세보기 화면 이동
+요청("/boardFree/board_add")
+- 게시글 작성 화면 이동
+
+2. 게시글 상세보기 화면(board_view.html)
+
+3. 게시글 작성 화면(board_insert.html)
+
+4. 게시글 수정 화면(board_update.html)
+
+
+
+
+
+id
+title
+content
+view
+like
+countComment
+createId
+createName
+createDt
+updateDt
+deleteYn
+tbl
