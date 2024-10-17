@@ -1,6 +1,6 @@
 package com.mjc.linkx.boardfree;
 
-import com.mjc.linkx.common.IBoardBase;
+import com.mjc.linkx.boardcommon.IBoardBase;
 
 public interface IBoardFree extends IBoardBase {
 

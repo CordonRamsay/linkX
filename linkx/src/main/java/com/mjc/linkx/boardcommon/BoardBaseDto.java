@@ -1,4 +1,4 @@
-package com.mjc.linkx.common;
+package com.mjc.linkx.boardcommon;
 
 
 import lombok.AllArgsConstructor;

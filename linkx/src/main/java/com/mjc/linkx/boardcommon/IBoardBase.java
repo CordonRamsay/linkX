@@ -1,4 +1,4 @@
-package com.mjc.linkx.common;
+package com.mjc.linkx.boardcommon;
 
 
 import java.text.SimpleDateFormat;
@@ -37,7 +37,7 @@ public interface IBoardBase {
     }
 
     //수정일에 현재날짜 출력
-    default void setUpdateInfo(Long memberId) {
+    default void setUpdateInfo() {
         this.setUpdateDt(this.getSystemDt());
     }
 }

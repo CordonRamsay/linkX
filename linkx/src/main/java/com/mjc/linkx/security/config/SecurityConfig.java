@@ -1,24 +1,20 @@
-package com.mjc.linkx.security;
+package com.mjc.linkx.security.config;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
-    public static final String LOGINUSER = "link"; // 이 값을 변경하면 화면 템플릿의 {{#loginUser}} 도 변경해야 함
+
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(
@@ -28,20 +24,15 @@ public class SecurityConfig {
                                                 HeadersConfigurer.FrameOptionsConfig::sameOrigin
                                         )
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable) // spring security 기본 로그인 페이지 비활성화
                 .authorizeHttpRequests(auth ->
                         auth
-                                .anyRequest().permitAll()
+                                .requestMatchers("/board/board_view/**").authenticated() // 로그인한 유저만 접근 가능
+                                .requestMatchers("/board/board_delete/**").hasRole("ADMIN") // 관리자만 접근 가능
+                                .anyRequest().permitAll() // 그 외 요청은 모두 허용
                 )
-
         ;
 
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }

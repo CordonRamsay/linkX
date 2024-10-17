@@ -1,6 +1,6 @@
 package com.mjc.linkx.boardfree;
 
-import com.mjc.linkx.common.BoardBaseDto;
+import com.mjc.linkx.boardcommon.BoardBaseDto;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

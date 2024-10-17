@@ -1,4 +1,4 @@
-package com.mjc.linkx.security;
+package com.mjc.linkx.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
