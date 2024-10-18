@@ -13,11 +13,11 @@
     <button class="login-btn">Log in</button>
 </div>
 
-<div class="container">
+<div class="list-container">
     <div class="sidebar">
         <h2>게시판</h2>
         <ul>
-            <li><a href="#">자유 게시판</a></li>
+            <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
             <li><a href="/boardDept/board_list?page=1&searchName=">학과 게시판</a></li>
         </ul>
         <h2>청원하기</h2>
@@ -43,9 +43,9 @@
             </thead>
             <tbody>
             {{#boardList}}
-            <tr>
+            <tr onclick="location.href='/boardFree/board_view?id={{id}}'">
                 <td>{{id}}</td>
-                <td>{{title}}추천해줘</td>
+                <td>{{title}}</td>
                 <td>{{createName}}</td>
                 <td>{{createDt}}</td>
                 <td>{{viewQty}}</td>

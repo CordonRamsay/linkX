@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -45,7 +42,7 @@ public class BoardFreeController {
         return "board/boardFree_list";
     }
 
-    // 자유게시글 등록 화면 return
+    // 게시글 등록 화면 return
     @GetMapping("/board_add")
     public String boardAdd() {
         try {
@@ -65,7 +62,43 @@ public class BoardFreeController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list";
+        return "redirect:board_list?page=1&searchName=";
+    }
+
+    // 자유게시글 상세보기 화면 return / 해당 글의 객체 전달
+    @GetMapping("/board_view")
+    public String boardView(@RequestParam Long id, Model model) {
+        try {
+            IBoardFree find = this.boardFreeService.findById(id);
+
+            // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
+            BoardFreeDto viewDto = BoardFreeDto.builder().build();
+            viewDto.copyFields(find);
+
+            // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
+            model.addAttribute("BoardFreeDto",viewDto);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "board/boardFree_view";
+    }
+
+    // 자유게시글 수정 화면 return / 해당 글의 객체 전달
+    @GetMapping("/board_modify")
+    public String boardModify(@RequestParam Long id, Model model) {
+        try{
+            IBoardFree find = this.boardFreeService.findById(id);
+
+            // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
+            BoardFreeDto modifyDto = BoardFreeDto.builder().build();
+            modifyDto.copyFields(find);
+
+            // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
+            model.addAttribute("BoardFreeDto",modifyDto);
+        }catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "board/boardFree_modify";
     }
 
 }

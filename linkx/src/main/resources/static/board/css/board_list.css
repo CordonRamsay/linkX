@@ -4,7 +4,7 @@ body {
     padding: 0;
     background-color: #f0f0f0;
 }
-.container {
+.list-container {
     display: flex;
     max-width: 1200px;
     margin: 20px auto;

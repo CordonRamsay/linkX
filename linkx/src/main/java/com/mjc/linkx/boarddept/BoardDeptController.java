@@ -63,7 +63,7 @@ public class BoardDeptController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list";
+        return "redirect:board_list?page=1&searchName=";
     }
 
 }
