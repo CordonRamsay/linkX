@@ -17,7 +17,7 @@ import java.util.List;
 public class BoardDeptServiceImpl implements IBoardDeptService {
 
 
-    // 자유게시판 mapper 객체 변수 선언(생성자 주입)
+    // 학과게시판 mapper 객체 변수 선언(생성자 주입)
     private final IBoardDeptMyBatisMapper boardMyBatisMapper;
     // 게시판좋아요 mapper 객체 변수 선언(생성자 주입)
     private final IBoardLikeMyBatisMapper boardLikeMyBatisMapper;
@@ -25,7 +25,14 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
   
     @Override
     public IBoardDept insert(BoardDeptDto dto,Long id) {
-        return null;
+        if (dto == null) {
+            return null;
+        }
+
+        dto.setCreateId(id);  // 임시 -> 나중에 로그인정보받아온 IUser의 id 넣어주기
+        this.boardMyBatisMapper.insert(dto);
+
+        return dto;
     }
 
 
@@ -67,6 +74,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         if (dto == null) {
             return List.of();
         }
+        dto.settingValues();
         List<BoardDeptDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
         return list;
@@ -77,6 +85,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         if (dto == null) {
             return null;
         }
+        dto.settingValues();
         Integer count = this.boardMyBatisMapper.countAllByNameContains(dto);
 
         return count;

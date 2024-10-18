@@ -43,7 +43,7 @@ public class BoardDeptController {
         return "board/boardDept_list";
     }
 
-    // 자유게시글 등록 화면 return
+    // 게시글 등록 화면 return
     @GetMapping("/board_add")
     public String boardAdd() {
         try {
