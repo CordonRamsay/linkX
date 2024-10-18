@@ -7,13 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface IUserMybatisMapper{
-    UserDto findByLoginId(String loginId);
-    UserDto findByNickname(String nickname);
-    void changePassword(UserDto dto);
-    UserDto findByEmail(String email);
-    UserDto findByName(String name);
+    UserRequest findByLoginId(String loginId);
+    UserRequest findByNickname(String nickname);
+    void changePassword(UserRequest dto);
+    UserRequest findByEmail(String email);
+    UserRequest findByName(String name);
     Integer countAllByNameContains(SearchDto search);
-    List<UserDto> findAllByNameContains(SearchDto search);
+    List<UserRequest> findAllByNameContains(SearchDto search);
     int idCheck(String loginId);
     int emailCheck(String email);
     int nicknameCheck(String nickname);

@@ -4,8 +4,6 @@ package com.mjc.linkx.boardfree;
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.common.LoginAccessException;
-import com.mjc.linkx.user.IUser;
-import com.mjc.linkx.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
