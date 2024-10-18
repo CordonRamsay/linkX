@@ -59,7 +59,7 @@
              , bt.likeQty
              , bt.createDt
              , bt.createId
-             , ut.nickname AS createName
+             , ut.userNickname AS createName
              , bt.updateDt
              , bt.deleteYn
         FROM board_free_tbl bt

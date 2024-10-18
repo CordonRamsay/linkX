@@ -42,7 +42,7 @@ public class BoardFreeController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "boardfree/board_list";
+        return "board/boardFree_list";
     }
 
     // 자유게시글 등록 화면 return
@@ -53,7 +53,7 @@ public class BoardFreeController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "boardfree/board_add";
+        return "board/board_add";
     }
 
     // 자유게시글 등록 후 목록화면 return

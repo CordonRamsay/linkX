@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 글쓰기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="/board/css/board_list.css">
+    <link rel="stylesheet" href="/board/css/board_add.css">
+</head>
+<body>
+<main class="main">
+    <section id="background" class="section">
+        <div class="container mx-auto py-16 px-2">
+            <div class="board-container bg-white shadow-md rounded-lg p-3">
+                <h1 class="add-title">게시글 작성</h1>
+
+                <form id="postForm"  name="postForm" method="post"
+                      onsubmit="handleSubmit(event)" class="p-4 bg-white no-border rounded">
+                    <!-- 게시판 선택 -->
+                    <select id="boardSelect" name="boardSelect" required onchange="boardChange()"
+                            class="full-width mb-4 p-4 border border-gray-300 rounded">
+                        <option value="" disabled selected>게시판을 선택해주세요</option>
+                        <option id="free" value="free">자유게시판</option>
+                        <option id="dept" value="dept">학과게시판</option>
+                    </select>
+
+
+                    <!-- 학과 게시판 선택시 활성화 : 학과 선택 -->
+                        <select id="majorId" name="majorId"
+                                class="full-width mb-4 p-4 border border-gray-300 rounded hidden">
+                            <option value="" disabled selected>학과를 선택해 주세요</option>
+                            <option value="1" id="cse">컴퓨터공학과</option>
+                            <option value="2" id="cybersec">컴퓨터보안공학과</option>
+                            <option value="3" id="elec">전자공학과</option>
+                            <option value="4" id="ict">정보통신공학과</option>
+                            <option value="5" id="mech">기계공학과</option>
+                            <option value="6" id="ie">산업경영공학과</option>
+                            <option value="7" id="ee">전기공학과</option>
+                            <option value="8" id="civil">토목공학과</option>
+                            <option value="9" id="geo">지적공간정보학과</option>
+                            <option value="10" id="drone">드론정보공학과</option>
+                            <option value="11" id="biz">경영학과</option>
+                            <option value="12" id="tax">세무회계과</option>
+                            <option value="13" id="welfare">사회복지과</option>
+                            <option value="14" id="realEstate">부동산경영과</option>
+                            <option value="15" id="aviation">항공서비스과</option>
+                            <option value="16" id="japan">일본어과</option>
+                            <option value="17" id="edu">유아교육과</option>
+                            <option value="18" id="lit">문예창작과</option>
+                            <option value="19" id="china">중국어비즈니스과</option>
+                            <option value="20" id="id">산업디자인과</option>
+                            <option value="21" id="comdes">커뮤니케이션디자인과</option>
+                            <option value="22" id="fashion">패션리빙디자인과</option>
+                            <option value="23" id="pe">사회체육과</option>
+                            <option value="24" id="beauty">뷰티매니지먼트과</option>
+                            <option value="25" id="health">보건의료정보과</option>
+                            <option value="26" id="music">실용음악과</option>
+                            <option value="27" id="theater">연극영상학과</option>
+                        </select>
+
+                    <!-- 제목 -->
+                    <input type="text" id="title" name="title" class="mb-4 full-width p-4 border border-gray-300 rounded" placeholder="제목을 입력하세요" required>
+
+
+                    <!-- 내용 -->
+                    <div id="content" name="content" class="mb-4 border border-gray-300 p-4 rounded-lg" contenteditable="true"></div>
+                    <!-- 내용을 담을 hidden input 필드(div는 폼데이터에 포함x) -->
+                    <input type="hidden" id="hiddenContent" name="content">
+
+                    <!-- 하단 바 -->
+                    <div class="flex justify-between items-center">
+                        <!-- 취소 및 추가 버튼 -->
+                        <div class="flex space-x-4">
+                            <button type="button" onclick="goBack()"
+                                    class="bg-blue-500 text-white px-6 py-3 rounded-full text-lg">취소
+                            </button>
+                            <input type="submit" value="등록" style="cursor: pointer;" class="bg-blue-500 text-white px-6 py-3 rounded-full text-lg">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+<script>
+    //  뒤로가기
+    function goBack() {
+        window.history.back();
+    }
+
+    // 게시판 선택하면 실행되는 함수
+    function boardChange() {
+        const selectedBoard = document.getElementById("boardSelect").value;
+        const majorSelect = document.getElementById("majorId");
+
+        if (selectedBoard === "dept") {
+            majorSelect.classList.remove("hidden");
+        } else {
+            majorSelect.classList.add("hidden");
+        }
+    }
+
+    // 제목과 내용의 길이 제한 설정
+
+    let titleMinLength = 2;
+    let titleMaxLength = 100;
+    let contentMinLength = 2;
+    let contentMaxLength = 1000;
+
+    // '등록' 버튼 누르면 실행되는 함수
+    function handleSubmit(event) {
+
+        event.preventDefault(); // 폼 제출 값 없음 방지
+
+        let form = document.getElementById("postForm");
+        let selectedBoard = document.getElementById("boardSelect").value;
+
+        // 제목과 내용 지역 가져오기
+        let title = document.getElementById("title").value;
+        let content = document.getElementById("content").innerHTML.trim();
+        let majorId = document.getElementById("majorId").value;
+
+        // 게시판 선택에 따라 action 설정
+        if (selectedBoard === "free") {
+            form.action = "/boardFree/board_insert";
+        } else if (selectedBoard === "dept") {
+            form.action = "/boardDept/board_insert";
+        } else {
+            alert("게시판을 선택해 주세요.");
+            return;
+        }
+
+        // 제목과 내용의 길이 검사
+        if (selectedBoard === "dept" && (majorId === "" || majorId === null)) {
+            alert("학과를 선택해 주세요.");
+            return;
+        }
+
+        if (title.length < titleMinLength || title.length > titleMaxLength) {
+            alert("제목은 " + titleMinLength + "자에서 " + titleMaxLength + "자 사이로 입력해 주세요.");
+            return false;
+        }
+
+        if (content.length < contentMinLength || content.length > contentMaxLength) {
+            alert("내용은 " + contentMinLength + "자에서 " + contentMaxLength + "자 사이로 입력해 주세요.");
+            return false;
+        }
+        // 숨겨진 input에 content 설정
+        document.getElementById("hiddenContent").value = content;
+
+        form.submit();
+    }
+</script>
+</html>
