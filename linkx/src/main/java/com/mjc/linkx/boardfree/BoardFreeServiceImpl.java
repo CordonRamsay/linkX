@@ -22,13 +22,13 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     private final IBoardLikeMyBatisMapper boardLikeMyBatisMapper;
 
     @Override
-    public IBoardFree insert(BoardFreeDto dto,IUser user) {
+    public IBoardFree insert(BoardFreeDto dto,Long id) {
 
         if (dto == null) {
             return null;
         }
 
-        dto.setCreateId(user.getId());  // 임시
+        dto.setCreateId(id);  // 임시 -> 나중에 로그인정보받아온 IUser의 id 넣어주기
         this.boardMyBatisMapper.insert(dto);
 
         return dto;
@@ -72,6 +72,7 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         if (dto == null) {
             return List.of();
         }
+        dto.settingValues();
         List<BoardFreeDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
         return list;
@@ -82,6 +83,7 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         if (dto == null) {
             return null;
         }
+        dto.settingValues();
         Integer count = this.boardMyBatisMapper.countAllByNameContains(dto);
 
         return count;
