@@ -14,7 +14,6 @@
         VALUES ( #{title}
                , #{content}
                , #{createId})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
-
     </insert>
 
     <!-- 게시글 상세정보 조회 -->

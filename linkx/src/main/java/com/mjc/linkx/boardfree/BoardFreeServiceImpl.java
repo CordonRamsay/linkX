@@ -22,13 +22,13 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     private final IBoardLikeMyBatisMapper boardLikeMyBatisMapper;
 
     @Override
-    public IBoardFree insert(BoardFreeDto dto) {
+    public IBoardFree insert(BoardFreeDto dto,IUser user) {
 
         if (dto == null) {
             return null;
         }
 
-        dto.setCreateId(dto.getCreateId());  // 임시
+        dto.setCreateId(user.getId());  // 임시
         this.boardMyBatisMapper.insert(dto);
 
         return dto;
