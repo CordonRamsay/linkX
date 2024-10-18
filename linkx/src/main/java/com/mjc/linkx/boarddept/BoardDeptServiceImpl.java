@@ -24,7 +24,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
 
   
     @Override
-    public IBoardDept insert(BoardDeptDto dto, IUser user, List<MultipartFile> files) {
+    public IBoardDept insert(BoardDeptDto dto,Long id) {
         return null;
     }
 

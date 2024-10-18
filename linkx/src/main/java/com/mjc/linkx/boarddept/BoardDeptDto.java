@@ -15,13 +15,20 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class BoardDeptDto extends BoardBaseDto implements IBoardDept {
 
+    // id
     private Long id;
+    //  제목
     @Size(min = 2, max = 100, message = "제목은 2자~100자 사이로 입력해 주세요.")
     private String title;
+    //  내용
     @Size(min = 2, max = 1000, message = "본문은 2자~1000자 사이로 입력해 주세요.")
     private String content;
+    //조회수
     private Integer viewQty;
+    //좋아요 수
     private Integer likeQty;
+    // 학과 코드
     private Long majorId;
+    //  댓글 수
     private String countComment;
 }
