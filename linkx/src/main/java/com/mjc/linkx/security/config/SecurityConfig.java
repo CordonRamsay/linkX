@@ -1,6 +1,7 @@
 package com.mjc.linkx.security.config;
 
-import lombok.RequiredArgsConstructor;
+
+import com.mjc.linkx.security.dto.UserRole;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+
 public class SecurityConfig {
 
 
-    public static final String LOGINUSER = "linkX";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -33,8 +33,9 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable) // spring security 기본 로그인 페이지 비활성화
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/board/board_view/**").authenticated() // 로그인한 유저만 접근 가능
-                                .requestMatchers("/board/board_delete/**").hasRole("ADMIN") // 관리자만 접근 가능
+                                .requestMatchers("/boardFree/board_view/**").authenticated() // 로그인한 유저만 접근 가능
+                                .requestMatchers("/boardFree/board_delete/**").hasAuthority(UserRole.ADMIN.name()) // 관리자만 접근 가능
+                                .requestMatchers("/boardFree/board_update/**").hasAuthority(UserRole.ADMIN.name()) // 관리자만 접근 가능
                                 .anyRequest().permitAll() // 그 외 요청은 모두 허용
                 )
         ;

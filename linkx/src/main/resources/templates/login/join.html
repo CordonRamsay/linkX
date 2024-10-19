@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{pageName}}</title>
+    <style>
+        .error-class {
+            color: red;
+        }
+        .error-input {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1><a href="/{{loginType}}">{{pageName}}</a></h1>
+    <hr/>
+
+    <h2>회원 가입</h2>
+    <form method="post" action="/{{loginType}}/join">
+        <div>
+            <label for="loginId">로그인 아이디 :</label>
+            <input type="text" id="loginId" name="loginId"
+                   class="{{#errors.loginId}}error-input{{/errors.loginId}}"
+                   value="{{joinRequest.loginId}}"/>
+            {{#errors.loginId}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.loginId}}
+        </div>
+        <br/>
+
+        <div>
+            <label for="password">비밀번호 :</label>
+            <input type="password" id="password" name="password"
+                   class="{{#errors.password}}error-input{{/errors.password}}"/>
+            {{#errors.password}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.password}}
+        </div>
+        <br/>
+
+        <div>
+            <label for="passwordCheck">비밀번호 체크 :</label>
+            <input type="password" id="passwordCheck" name="passwordCheck"
+                   class="{{#errors.passwordCheck}}error-input{{/errors.passwordCheck}}"/>
+            {{#errors.passwordCheck}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.passwordCheck}}
+        </div>
+        <br/>
+
+        <div>
+            <label for="nickname">닉네임 :</label>
+            <input type="text" id="nickname" name="nickname"
+                   class="{{#errors.nickname}}error-input{{/errors.nickname}}"
+                   value="{{joinRequest.nickname}}"/>
+            {{#errors.nickname}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.nickname}}
+        </div>
+        <br/>
+
+        <button type="submit">회원 가입</button>
+    </form>
+</div>
+</body>
+</html>
