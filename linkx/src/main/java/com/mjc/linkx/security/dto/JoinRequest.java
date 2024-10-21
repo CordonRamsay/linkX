@@ -3,6 +3,7 @@ package com.mjc.linkx.security.dto;
 
 import com.mjc.linkx.user.UserDto;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class JoinRequest {
 
     @NotBlank(message = "비밀번호가 비어있습니다.")
     private String password;
+    private String passwordCheck;
 
     @NotBlank(message = "이름이 비어있습니다.")
     private String name;
@@ -36,7 +38,7 @@ public class JoinRequest {
     @NotBlank(message = "학교명이 비어있습니다.")
     private String univ;
 
-    @NotBlank(message = "학과를 선택해주세요")
+    @NotNull
     private Long majorId;
 
     @NotBlank(message = "학번이 비어있습니다.")
@@ -54,7 +56,6 @@ public class JoinRequest {
                 .univ(this.univ)
                 .majorId(this.majorId)
                 .stuNum(this.stuNum)
-                .role(UserRole.USER)
                 .build();
     }
 

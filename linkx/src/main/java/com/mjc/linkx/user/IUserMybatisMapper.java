@@ -23,11 +23,14 @@ public interface IUserMybatisMapper{
     // 로그인ID로 사용자 조회 ( 로그인 )
     UserDto findByLoginId(String loginId);
 
+    UserDto findById(Long id);
     // 사용자 정보 수정
     void update(UserDto user);
 
     // 사용자 삭제
     void delete(Long id);
+
+
 
     // 이름과 이메일로 사용자 정보 조회 (ID 찾기 )
     UserDto findByNameAndEmail(String name, String email);

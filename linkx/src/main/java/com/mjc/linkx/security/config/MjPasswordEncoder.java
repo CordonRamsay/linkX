@@ -3,14 +3,12 @@ package com.mjc.linkx.security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-
-// 비밀번호 암호화 해주는 클래스
 @Configuration
-public class PasswordEncoder {
+public class MjPasswordEncoder {
     @Bean
-    public org.springframework.security.crypto.password.PasswordEncoder encoder() {
+    public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 }

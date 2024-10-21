@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc.linkx.user.IUserMybatisMapper">
+
+    <!-- 닉네임으로 사용자 존재 여부 확인 -->
+    <select id="existByNickname" resultType="boolean" parameterType="string">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tbl WHERE nickname = #{nickname}
+        )
+    </select>
+
+    <!-- 로그인 ID로 사용자 존재 여부 확인 -->
+    <select id="existByLoginId" resultType="boolean" parameterType="string">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tbl WHERE loginId = #{loginId}
+        )
+    </select>
+
+    <!-- 이메일로 사용자 존재 여부 확인 -->
+    <select id="existByEmail" resultType="boolean" parameterType="string">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tbl WHERE email = #{email}
+        )
+    </select>
+
+    <!--회원가입 -->
+    <insert id="insert" parameterType="UserDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_tbl ( loginId
+                                ,password
+                                ,name
+                                ,phone
+                                ,univ
+                                ,majorId
+                                ,stuNum
+                                ,email
+                                ,nickname
+                                 )
+        VALUES ( #{loginId}
+               , #{password}
+               , #{name}
+               , #{phone}
+               , #{univ}
+               , #{majorId}
+               , #{stuNum}
+               , #{email}
+               , #{nickname}
+               )
+    </insert>
+
+    <!-- ID로 사용자 조회 -->
+    <select id="findById" resultType="UserDto" >
+        SELECT id
+             ,loginId
+             ,password
+             ,name
+             ,phone
+             ,univ
+             ,majorId
+             ,stuNum
+             ,email
+             ,nickname
+             ,role
+        FROM user_tbl
+        WHERE id = #{id}
+    </select>
+    <!-- 로그인 ID로 사용자 조회 -->
+    <select id="findByLoginId" resultType="UserDto" >
+        SELECT id
+             ,loginId
+             ,password
+             ,name
+             ,phone
+             ,univ
+             ,majorId
+             ,stuNum
+             ,email
+             ,nickname
+             ,role
+        FROM user_tbl
+        WHERE loginId = #{loginId}
+    </select>
+    <!-- 사용자 정보 수정 -->
+    <update id="update" parameterType="UserDto">
+        UPDATE user_tbl
+        SET nickname = #{nickname}, email = #{email}, password = #{password},
+            name = #{name}, auth = #{auth}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 사용자 삭제 -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM user_tbl WHERE id = #{id}
+    </delete>
+
+    <!-- 이름과 이메일로 사용자 정보 조회 (ID 찾기) -->
+    <select id="findByNameAndEmail" resultType="UserDto">
+        SELECT id
+             ,loginId
+             ,password
+             ,name
+             ,phone
+             ,univ
+             ,majorId
+             ,stuNum
+             ,email
+             ,nickname
+             ,role
+        FROM user_tbl WHERE name = #{name} AND email = #{email}
+    </select>
+
+    <!-- 로그인ID, 이름, 이메일로 사용자 정보 조회 (비밀번호 찾기) -->
+    <select id="findByLoginIdAndNameAndEmail" resultType="UserDto">
+        SELECT id
+             ,loginId
+             ,password
+             ,name
+             ,phone
+             ,univ
+             ,majorId
+             ,stuNum
+             ,email
+             ,nickname
+             ,role
+        FROM user_tbl
+        WHERE login_id = #{loginId} AND name = #{name} AND email = #{email}
+    </select>
+</mapper>

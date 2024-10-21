@@ -23,7 +23,7 @@
             <label for="loginId">로그인 아이디 :</label>
             <input type="text" id="loginId" name="loginId"
                    class="{{#errors.loginId}}error-input{{/errors.loginId}}"
-                   value="{{joinRequest.loginId}}"/>
+                  />
             {{#errors.loginId}}
             <div class="error-class">{{.}}</div>
             {{/errors.loginId}}
@@ -51,13 +51,85 @@
         <br/>
 
         <div>
-            <label for="nickname">닉네임 :</label>
+            <label for="name">이름 :</label>
+            <input type="text" id="name" name="name"
+                   class="{{#errors.name}}error-input{{/errors.name}}"/>
+            {{#errors.name}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.name}}
+        </div>
+        <div>
+            <label for="name">닉네임 :</label>
             <input type="text" id="nickname" name="nickname"
-                   class="{{#errors.nickname}}error-input{{/errors.nickname}}"
-                   value="{{joinRequest.nickname}}"/>
+                   class="{{#errors.nickname}}error-input{{/errors.nickname}}"/>
             {{#errors.nickname}}
             <div class="error-class">{{.}}</div>
             {{/errors.nickname}}
+        </div>
+        <div>
+            <label for="phone">전화번호 :</label>
+            <input type="text" id="phone" name="phone"
+                   class="{{#errors.phone}}error-input{{/errors.phone}}"/>
+            {{#errors.phone}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.phone}}
+        </div>
+        <div>
+            <label for="name">이메일 :</label>
+            <input type="text" id="email" name="email"
+                   class="{{#errors.email}}error-input{{/errors.email}}"/>
+            {{#errors.email}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.email}}
+        </div>
+        <div>
+            <label for="univ">학교명 :</label>
+            <input type="text" id="univ" name="univ"
+                   class="{{#errors.univ}}error-input{{/errors.univ}}"/>
+            {{#errors.univ}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.univ}}
+        </div>
+        <div>
+            <select id="majorId" name="majorId">
+                <option value="" disabled selected>학과를 선택해 주세요</option>
+                <option value="1" id="cse">컴퓨터공학과</option>
+                <option value="2" id="cybersec">컴퓨터보안공학과</option>
+                <option value="3" id="elec">전자공학과</option>
+                <option value="4" id="ict">정보통신공학과</option>
+                <option value="5" id="mech">기계공학과</option>
+                <option value="6" id="ie">산업경영공학과</option>
+                <option value="7" id="ee">전기공학과</option>
+                <option value="8" id="civil">토목공학과</option>
+                <option value="9" id="geo">지적공간정보학과</option>
+                <option value="10" id="drone">드론정보공학과</option>
+                <option value="11" id="biz">경영학과</option>
+                <option value="12" id="tax">세무회계과</option>
+                <option value="13" id="welfare">사회복지과</option>
+                <option value="14" id="realEstate">부동산경영과</option>
+                <option value="15" id="aviation">항공서비스과</option>
+                <option value="16" id="japan">일본어과</option>
+                <option value="17" id="edu">유아교육과</option>
+                <option value="18" id="lit">문예창작과</option>
+                <option value="19" id="china">중국어비즈니스과</option>
+                <option value="20" id="id">산업디자인과</option>
+                <option value="21" id="comdes">커뮤니케이션디자인과</option>
+                <option value="22" id="fashion">패션리빙디자인과</option>
+                <option value="23" id="pe">사회체육과</option>
+                <option value="24" id="beauty">뷰티매니지먼트과</option>
+                <option value="25" id="health">보건의료정보과</option>
+                <option value="26" id="music">실용음악과</option>
+                <option value="27" id="theater">연극영상학과</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="univ">학번 :</label>
+            <input type="text" id="stuNum" name="stuNum"
+                   class="{{#errors.stuNum}}error-input{{/errors.stuNum}}"/>
+            {{#errors.stuNum}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.stuNum}}
         </div>
         <br/>
 
