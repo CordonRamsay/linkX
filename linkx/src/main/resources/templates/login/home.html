@@ -19,7 +19,12 @@
     <h3>{{nickname}}님 환영합니다!</h3>
     <button onclick="location.href='/{{loginType}}/info'">유저 정보</button> <br/><br/>
     <button onclick="location.href='/{{loginType}}/admin'">관리자 페이지</button> <br/><br/>
+    <button onclick="location.href='/{{loginType}}/logout'">로그아웃</button><br/><br/>
+    <button onclick="location.href='/boardDept/board_list?page=1&searchName='">자유게시판</button><br/><br/>
+    <button onclick="location.href='/boardDept/board_list?page=1&searchName='">학과게시판</button><br/><br/>
     <button onclick="location.href='/{{loginType}}/logout'">로그아웃</button>
+    <a href="/rest">맛집 api</a>
+    <a href="">청원</a>
     {{/nickname}}
 </div>
 </body>

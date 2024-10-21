@@ -4,6 +4,10 @@ package com.mjc.linkx.boardfree;
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.common.LoginAccessException;
+import com.mjc.linkx.user.UserDto;
+import com.mjc.linkx.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import java.util.List;
 public class BoardFreeController {
 
     private final IBoardFreeService boardFreeService;
+    private final UserService userService;
 
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto")SearchBoardDto searchBoardDto, Model model){
@@ -55,9 +60,11 @@ public class BoardFreeController {
 
     // 자유게시글 등록 후 목록화면 return
     @PostMapping("/board_insert")
-    public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model) {
+    public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model, @SessionAttribute(name = "userId")Long userId ){
         try {
-            this.boardFreeService.insert(dto,1L);
+
+            UserDto user = this.userService.getLoginUserById(userId);
+            this.boardFreeService.insert(dto,user.getId());
 
         } catch (Exception ex) {
             log.error(ex.toString());

@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,9 +53,10 @@ public class BoardDeptController {
 
     // 자유게시글 등록 후 목록화면 return
     @PostMapping("/board_insert")
-    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model) {
+    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model,@SessionAttribute(name = "userId")Long userId) {
         try {
-            this.boardDeptService.insert(dto,1L);
+
+            this.boardDeptService.insert(dto,userId);
 
         } catch (Exception ex) {
             log.error(ex.toString());
