@@ -74,7 +74,7 @@
             <p class="board-content">{{BoardFreeDto.content}}</p>
             <p class="board-like">💗 좋아요 {{BoardFreeDto.likeQty}}</p>
             <div class="buttons">
-                <button>수정</button>
+                <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
                 <button>삭제</button>
             </div>
         </div>
