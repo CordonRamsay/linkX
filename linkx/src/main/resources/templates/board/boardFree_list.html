@@ -76,9 +76,9 @@
             </thead>
             <tbody>
             {{#boardList}}
-            <tr onclick="location.href='/boardFree/board_view?id={{id}}'">
+            <tr>
                 <td>{{id}}</td>
-                <td>{{title}}</td>
+                <td class="title" onclick="location.href='/boardFree/board_view?id={{id}}'">{{title}}</td>
                 <td>{{createName}}</td>
                 <td>{{createDt}}</td>
                 <td>{{viewQty}}</td>

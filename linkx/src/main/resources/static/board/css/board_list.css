@@ -69,6 +69,13 @@ th, td {
 th {
     background-color: #cccccc;
 }
+.title{
+    cursor: pointer;
+    text-decoration-line: underline;
+}
+.title:hover{
+    color:pink;
+}
 .pagination {
     display: flex;
     justify-content: center;
