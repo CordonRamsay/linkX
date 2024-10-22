@@ -71,16 +71,29 @@ public class BoardDeptController {
     public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
         try {
             IUser user = this.userService.getLoginUserById(userId);
-            this.boardDeptService.addViewQty(id,user);
+            this.boardDeptService.addViewQty(id, user);
 
             IBoardDept find = this.boardDeptService.findById(id);
             BoardDeptDto viewDto = BoardDeptDto.builder().build();
             viewDto.copyFields(find);
 
-            model.addAttribute("BoardDeptDto",find);
+            model.addAttribute("BoardDeptDto", find);
         } catch (Exception ex) {
             log.error(ex.toString());
         }
         return "board/boardDept_view";
+    }
+
+    @GetMapping("/board_delete")
+    public String boardDelete(@RequestParam Long id) {
+        Long majorId = null;
+        try {
+            this.boardDeptService.delete(id);
+            IBoardDept find = this.boardDeptService.findById(id);
+            majorId = find.getMajorId();
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "redirect:board_list?page=1&searchName=&majorId="+majorId;
     }
 }

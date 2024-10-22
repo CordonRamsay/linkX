@@ -120,6 +120,17 @@ public class BoardFreeController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_view?id="+dto.getId();
+        return "redirect:board_view?id=" + dto.getId();
+    }
+
+    // 해당 게시글 삭제 후 list 화면으로 redirect
+    @GetMapping("/board_delete")
+    public String boardDelete(@RequestParam Long id) {
+        try {
+            this.boardFreeService.delete(id);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "redirect:board_list?page=1&searchName=";
     }
 }
