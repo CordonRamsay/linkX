@@ -56,6 +56,9 @@ public interface IBoardFree extends IBoardBase {
         if (from.getCreateName() != null) {
             this.setCreateName(from.getCreateName());
         }
+        if (from.getCountComment() != null) {
+            this.setCountComment(from.getCountComment());
+        }
 
     }
 }

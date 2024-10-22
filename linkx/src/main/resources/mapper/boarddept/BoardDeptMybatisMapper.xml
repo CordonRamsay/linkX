@@ -27,7 +27,7 @@
              , bt.createId
              , bt.updateDt
              , bt.deleteYn
-             , bt.areaCode
+             , bt.majorId
         FROM board_dept_tbl bt LEFT JOIN user_tbl ut
         ON bt.createId = ut.id
         WHERE bt.id = #{id}
@@ -66,6 +66,8 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
+          AND bt.majorId = #{majorId}
+        ORDER BY bt.id DESC
 
     </select>
 
@@ -76,8 +78,8 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
-          <if test="areaCode != null and areaCode != ''">
-          AND bt.areaCode = #{areaCode}
+          <if test="majorId != null and majorId != ''">
+          AND bt.majorId = #{majorId}
           </if>
     </select>
 

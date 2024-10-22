@@ -42,8 +42,6 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/boardFree/board_view/**").authenticated() // 로그인한 유저만 접근 가능
-                                .requestMatchers("/boardDept/board_view/**").authenticated() // 로그인한 유저만 접근 가능
                                 .requestMatchers("/boardFree/board_delete/**").hasAuthority(UserRole.ADMIN.name()) // 관리자만 접근 가능
                                 .requestMatchers("/boardFree/board_update/**").hasAuthority(UserRole.ADMIN.name()) // 관리자만 접근 가능
                                 .anyRequest().permitAll() // 그 외 요청은 모두 허용

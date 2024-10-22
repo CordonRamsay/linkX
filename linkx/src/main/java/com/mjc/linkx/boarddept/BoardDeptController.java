@@ -3,6 +3,8 @@ package com.mjc.linkx.boarddept;
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.common.LoginAccessException;
+import com.mjc.linkx.user.IUser;
+import com.mjc.linkx.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,9 +21,10 @@ import java.util.List;
 public class BoardDeptController {
 
     private final IBoardDeptService boardDeptService;
+    private final UserService userService;
 
     @GetMapping("/board_list")
-    public String boardList(@ModelAttribute("searchBoardDto")SearchBoardDto searchBoardDto, Model model){
+    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model) {
 
 
         try {
@@ -53,15 +56,31 @@ public class BoardDeptController {
 
     // 자유게시글 등록 후 목록화면 return
     @PostMapping("/board_insert")
-    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model,@SessionAttribute(name = "userId")Long userId) {
+    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model, @SessionAttribute(name = "userId") Long userId) {
         try {
 
-            this.boardDeptService.insert(dto,userId);
+            this.boardDeptService.insert(dto, userId);
 
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list?page=1&searchName=";
+        return "redirect:board_list?page=1&searchName=&majorId=" + dto.getMajorId();
     }
 
+    @GetMapping("/board_view")
+    public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
+        try {
+            IUser user = this.userService.getLoginUserById(userId);
+            this.boardDeptService.addViewQty(id,user);
+
+            IBoardDept find = this.boardDeptService.findById(id);
+            BoardDeptDto viewDto = BoardDeptDto.builder().build();
+            viewDto.copyFields(find);
+
+            model.addAttribute("BoardDeptDto",find);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "board/boardDept_view";
+    }
 }

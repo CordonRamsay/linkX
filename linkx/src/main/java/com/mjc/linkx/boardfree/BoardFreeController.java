@@ -4,6 +4,7 @@ package com.mjc.linkx.boardfree;
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.common.LoginAccessException;
+import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
 import com.mjc.linkx.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,8 +75,10 @@ public class BoardFreeController {
 
     // 자유게시글 상세보기 화면 return / 해당 글의 객체 전달
     @GetMapping("/board_view")
-    public String boardView(@RequestParam Long id, Model model) {
+    public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId")Long userId) {
         try {
+            IUser user = this.userService.getLoginUserById(userId);
+            this.boardFreeService.addViewQty(id,user);
             IBoardFree find = this.boardFreeService.findById(id);
 
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
@@ -91,21 +94,21 @@ public class BoardFreeController {
     }
 
     // 자유게시글 수정 화면 return / 해당 글의 객체 전달
-    @GetMapping("/board_modify")
+    @GetMapping("/board_update")
     public String boardModify(@RequestParam Long id, Model model) {
         try{
             IBoardFree find = this.boardFreeService.findById(id);
 
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
-            BoardFreeDto modifyDto = BoardFreeDto.builder().build();
-            modifyDto.copyFields(find);
+            BoardFreeDto updateDto = BoardFreeDto.builder().build();
+            updateDto.copyFields(find);
 
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
-            model.addAttribute("BoardFreeDto",modifyDto);
+            model.addAttribute("BoardFreeDto",updateDto);
         }catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "board/boardFree_modify";
+        return "board/boardFree_update";
     }
 
 }

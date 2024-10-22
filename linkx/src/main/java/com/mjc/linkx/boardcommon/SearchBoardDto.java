@@ -22,7 +22,8 @@ public class SearchBoardDto {
     private String sortAscDesc;  //오름차순 OR 내림차순
     private Integer rowsOnePage; //1페이지에 들어가는 행 개수
     private Integer firstIndex;  //어디서부터 가져올지
-    private Integer areaCode;    //지역코드
+    
+    private Long majorId;  //학과 코드
 
     public Integer getFirstIndex() {
         return (this.page - 1) * this.rowsOnePage;
