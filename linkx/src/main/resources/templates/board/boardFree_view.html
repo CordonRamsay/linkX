@@ -74,7 +74,7 @@
         <div class="board-container">
             <p class="board-content">{{BoardFreeDto.content}}</p>
             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" width="25px" height="25px">
-            <span id="likeQty"> 좋아요 {{BoardDeptDto.likeQty}}</span></img>
+            <span id="likeQty"> 좋아요 {{BoardFreeDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>
@@ -83,7 +83,7 @@
 
         <div class="comments">
 
-            <p><strong>박영희</strong>: 확인했습니다~ 참가 꼭 할게요</p>
+            <p><strong>{{User.nickname}}</strong>: 확인했습니다~ 참가 꼭 할게요</p>
             <textarea placeholder="댓글 추가"></textarea>
             <button>댓글 추가</button>
         </div>
@@ -97,5 +97,38 @@
             window.location.href="/boardFree/board_delete?id="+id;
         }
     };
+
+    // 게시글 좋아요
+    $.likeItem = function (id) {
+        let likeIcon = $("#likeIcon");
+        let src = likeIcon.attr("src");
+        let bOff = src.includes("unlike");
+        let url = bOff ? "/api/v1/boardlike/like/" + id : "/api/v1/boardlike/unlike/" + id;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            datatype: "JSON",
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+
+                //좋아요 개수 업데이트
+                $("#likeQty").text(data.responseData.likeQty);
+
+                // 좋아요 상태에 따른 아이콘 업데이트
+                let count = data.responseData.updateDt * 1;
+                if (count > 0) {
+                    likeIcon.attr("src", "/board/like_icon.png");
+                } else {
+                    likeIcon.attr("src", "/board/unlike_icon.png");
+                }
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("실패 했습니다. " + jqXHR.responseJSON.message);
+        });
+    }
 </script>
 </html>

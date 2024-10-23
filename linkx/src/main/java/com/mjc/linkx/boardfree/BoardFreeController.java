@@ -87,6 +87,8 @@ public class BoardFreeController {
 
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
             model.addAttribute("BoardFreeDto", viewDto);
+            // findById로 찾아온 User 객체 뷰에 전달
+            model.addAttribute("User", user);
         } catch (Exception ex) {
             log.error(ex.toString());
         }
