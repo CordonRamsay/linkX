@@ -5,6 +5,8 @@
     <title>자유게시판 상세보기</title>
     <link rel="stylesheet" href="/board/css/board_view.css">
     <link rel="stylesheet" href="/board/css/board_drop.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+
 </head>
 <body>
 <header>
@@ -74,8 +76,8 @@
             <p class="board-content">{{BoardDeptDto.content}}</p>
             <p class="board-like">💗 좋아요 {{BoardDeptDto.likeQty}}</p>
             <div class="buttons">
-                <button>수정</button>
-                <button>삭제</button>
+                <button onclick="location.href='/boardDept/board_update?id={{BoardDeptDto.id}}'">수정</button>
+                <button onclick="$.boardDelete({{BoardDeptDto.id}});">삭제</button>
             </div>
         </div>
 
@@ -88,4 +90,12 @@
     </main>
 </div>
 </body>
+<script>
+    $.boardDelete = function (id) {
+        let alert = confirm("해당 게시글을 삭제하시겠습니까?");
+        if (alert) {
+            window.location.href="/boardDept/board_delete?id="+id;
+        }
+    };
+</script>
 </html>

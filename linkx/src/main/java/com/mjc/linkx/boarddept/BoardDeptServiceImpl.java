@@ -75,6 +75,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
             return List.of();
         }
         dto.settingValues();
+
         List<BoardDeptDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
         return list;

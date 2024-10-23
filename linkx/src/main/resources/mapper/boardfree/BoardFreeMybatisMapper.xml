@@ -65,7 +65,7 @@
         FROM board_free_tbl bt
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
-          AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
+          AND ${searchType} LIKE CONCAT('%',#{searchName},'%')  <!-- select : searchType을 선택하고 input type="text" : searchName을 입력 -->
         ORDER BY bt.id DESC
     </select>
 

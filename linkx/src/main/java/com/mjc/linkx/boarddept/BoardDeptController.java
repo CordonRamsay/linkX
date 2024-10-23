@@ -86,6 +86,7 @@ public class BoardDeptController {
 
     @GetMapping("/board_delete")
     public String boardDelete(@RequestParam Long id) {
+        // majorId 를 try - catch 문 바깥부분에 선언 - > return문에서도 사용하기 위함
         Long majorId = null;
         try {
             this.boardDeptService.delete(id);
@@ -94,6 +95,34 @@ public class BoardDeptController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list?page=1&searchName=&majorId="+majorId;
+        // 저장해놓은 majorId 값으로 해당 글 삭제후 원래 위치하고있었던 학과 게시판으로 이동
+        if(majorId != null) {
+            return "redirect:board_list?page=1&searchName=&majorId=" + majorId;
+        }else{
+            return "redirect:board_list?page=1&searchName=";
+        }
+    }
+
+    @GetMapping("/board_update")
+    public String boardUpdate(@RequestParam Long id, Model model) {
+        try {
+            IBoardDept find = this.boardDeptService.findById(id);
+            BoardDeptDto dto = BoardDeptDto.builder().build();
+            dto.copyFields(find);
+            model.addAttribute("BoardDeptDto", dto);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "board/boardDept_update";
+    }
+
+    @PostMapping("/board_update")
+    public String boardUpdate(@ModelAttribute BoardDeptDto dto) {
+        try {
+            IBoardDept update = this.boardDeptService.update(dto);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "redirect:board_view?id="+dto.getId();
     }
 }

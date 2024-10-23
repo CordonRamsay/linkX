@@ -31,7 +31,6 @@
         FROM board_dept_tbl bt LEFT JOIN user_tbl ut
         ON bt.createId = ut.id
         WHERE bt.id = #{id}
-          AND bt.deleteYn = false
     </select>
 
     <!-- 게시글 수정 -->
