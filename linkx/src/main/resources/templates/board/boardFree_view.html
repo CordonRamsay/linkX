@@ -73,7 +73,8 @@
 
         <div class="board-container">
             <p class="board-content">{{BoardFreeDto.content}}</p>
-            <p class="board-like">💗 좋아요 {{BoardFreeDto.likeQty}}</p>
+            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" width="25px" height="25px">
+            <span id="likeQty"> 좋아요 {{BoardDeptDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>

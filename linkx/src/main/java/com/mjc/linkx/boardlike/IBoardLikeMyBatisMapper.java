@@ -11,6 +11,6 @@ public interface IBoardLikeMyBatisMapper {
     void deleteById(Long id);
     BoardLikeDto findById(Long id);
 
-    void deleteByTableUserBoard(BoardLikeDto dto);
-    Integer countByTableUserBoard(BoardLikeDto searchDto);
+    void deleteByTableUserBoard(BoardLikeDto boardLikeDto);
+    Integer countByTypeAndIdAndUser(BoardLikeDto boardLikeDto);
 }

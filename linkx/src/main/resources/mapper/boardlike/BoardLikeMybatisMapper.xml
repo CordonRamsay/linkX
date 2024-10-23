@@ -19,10 +19,10 @@
           AND boardId = #{boardId}
     </delete>
 
-    <select id="countByTableUserBoard" resultType="Integer" parameterType="BoardLikeDto">
+    <select id="countByTypeAndIdAndUser" resultType="Integer" parameterType="BoardLikeDto">
         SELECT count(*)
         FROM board_like_tbl
-        WHERE tbl = #{tbl}
+        WHERE boardType = #{boardType}
           AND createId = #{createId}
           AND boardId = #{boardId}
     </select>
