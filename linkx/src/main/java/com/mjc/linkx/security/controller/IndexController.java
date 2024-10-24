@@ -19,12 +19,12 @@ public class IndexController {
     private final UserService userService;
 
     @GetMapping("")
-    public String index(Model model, @SessionAttribute(name = "userId", required =false ) Long userId, HttpSession session){
+    public String index(@SessionAttribute(name = "userId", required =false ) Long userId, HttpSession session){
+
 
         if (userId != null) {
             IUser loginUser = this.userService.getLoginUserById(userId);
             session.setAttribute("LoginUser",loginUser);  // 세션에 저장
-            model.addAttribute("LoginUser", loginUser);
 
         }
         return "index";

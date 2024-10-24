@@ -10,6 +10,7 @@ import com.mjc.linkx.common.dto.ResponseDto;
 import com.mjc.linkx.common.exception.IdNotFoundException;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,12 @@ public class BoardFreeRestController implements IResponseController {
     private IBoardLikeService boardLikeService;
 
     @GetMapping("/like/{id}")
-    public ResponseEntity<ResponseDto> addLikeQty(@SessionAttribute(name = "LoginUser", required = false) IUser loginUser, @Validated @PathVariable Long id) {
+    public ResponseEntity<ResponseDto> addLikeQty(HttpSession session, @Validated @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST, ResponseCode.R000051, "입력 매개변수 에러", null);
             }
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
             CUInfoDto CUInfoDto = makeResponseCheckLogin(loginUser);
             this.boardFreeService.addLikeQty(id,CUInfoDto.getLoginUser());
             IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
