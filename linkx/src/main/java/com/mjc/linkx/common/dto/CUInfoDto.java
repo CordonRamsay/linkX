@@ -31,6 +31,7 @@ public class CUInfoDto {
         iBase.setCreateDt(this.getSystemDt());
         iBase.setCreateId(loginUser.getId());
     }
+
     // IBoardBase 타입의 객체에 updateDt(수정일) 값을 세팅
     public void setUpdateInfo(IBoardBase iBase) {
         if (iBase == null) {

@@ -9,7 +9,7 @@
 </head>
 <body>
 <header>
-    <h1>Link X</h1>
+    <h1 onclick="location.href='/'" style="cursor: pointer">Link X</h1>
     <button>Log in</button>
 </header>
 
@@ -73,7 +73,7 @@
 
         <div class="board-container">
             <p class="board-content">{{BoardFreeDto.content}}</p>
-            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" width="25px" height="25px">
+            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardFreeDto.id}});" width="25px" height="25px">
             <span id="likeQty"> 좋아요 {{BoardFreeDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
@@ -103,7 +103,7 @@
         let likeIcon = $("#likeIcon");
         let src = likeIcon.attr("src");
         let bOff = src.includes("unlike");
-        let url = bOff ? "/api/v1/boardlike/like/" + id : "/api/v1/boardlike/unlike/" + id;
+        let url = bOff ? "/api/v1/boardfree/like/" + id : "/api/v1/boardfree/unlike/" + id;
 
         $.ajax({
             url: url,
@@ -120,9 +120,9 @@
                 // 좋아요 상태에 따른 아이콘 업데이트
                 let count = data.responseData.updateDt * 1;
                 if (count > 0) {
-                    likeIcon.attr("src", "/board/like_icon.png");
+                    likeIcon.attr("src", "/board/img/likeIcon.png");
                 } else {
-                    likeIcon.attr("src", "/board/unlike_icon.png");
+                    likeIcon.attr("src", "/board/img/unlikeIcon.png");
                 }
             }
         }).fail(function (jqXHR, status, errorThrown) {

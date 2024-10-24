@@ -109,11 +109,17 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardFreeDto().getTbl())
                 .boardId(id)
+                .boardType(new BoardFreeDto().getBoardType())
                 .build();
-        // 좋아요 테이블에 데이터 삽입
+
+        Integer count = this.boardLikeMyBatisMapper.countByTypeAndIdAndUser(boardLikeDto);
+        if (count > 0) {
+            return;
+        }
+        //좋아요 테이블에 행 삽입
         this.boardLikeMyBatisMapper.insert(boardLikeDto);
+
         // 자유 게시판 테이블에 좋아요 수 증가
         this.boardMyBatisMapper.addLikeQty(id);
     }
@@ -125,11 +131,11 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardFreeDto().getTbl())
+                .boardType(new BoardFreeDto().getBoardType())
                 .boardId(id)
                 .build();
         // 좋아요 테이블에 데이터 삽입
-        this.boardLikeMyBatisMapper.deleteByTableUserBoard(boardLikeDto);
+        this.boardLikeMyBatisMapper.deleteByTypeAndIdAndUser(boardLikeDto);
         // 자유 게시판 테이블에 좋아요 수 증가
         this.boardMyBatisMapper.subLikeQty(id);
     }

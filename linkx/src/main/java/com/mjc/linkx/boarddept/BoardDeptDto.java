@@ -31,4 +31,8 @@ public class BoardDeptDto extends BoardBaseDto implements IBoardDept {
     private Long majorId;
     //  댓글 수
     private String countComment;
+
+    public String getBoardType() {
+        return "dept";
+    }
 }

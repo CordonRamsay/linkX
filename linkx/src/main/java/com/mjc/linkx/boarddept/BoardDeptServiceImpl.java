@@ -112,7 +112,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardDeptDto().getTbl())
+                .boardType(new BoardDeptDto().getBoardType())
                 .boardId(id)
                 .build();
         // 좋아요 테이블에 데이터 삽입
@@ -128,11 +128,11 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardDeptDto().getTbl())
+                .boardType(new BoardDeptDto().getBoardType())
                 .boardId(id)
                 .build();
         // 좋아요 테이블에 데이터 삽입
-        this.boardLikeMyBatisMapper.deleteByTableUserBoard(boardLikeDto);
+        this.boardLikeMyBatisMapper.deleteByTypeAndIdAndUser(boardLikeDto);
         // 자유 게시판 테이블에 좋아요 수 증가
         this.boardMyBatisMapper.subLikeQty(id);
     }

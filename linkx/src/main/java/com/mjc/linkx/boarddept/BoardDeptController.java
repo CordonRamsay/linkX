@@ -2,7 +2,7 @@ package com.mjc.linkx.boarddept;
 
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
-import com.mjc.linkx.common.LoginAccessException;
+import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserService;
 import lombok.RequiredArgsConstructor;

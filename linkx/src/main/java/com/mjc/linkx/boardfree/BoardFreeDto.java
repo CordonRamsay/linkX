@@ -32,7 +32,7 @@ public class BoardFreeDto extends BoardBaseDto implements IBoardFree {
     // 댓글 수
     private String countComment;
 
-    public String getTbl() {
+    public String getBoardType() {
         return "free";
     }
 }
