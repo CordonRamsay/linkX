@@ -40,4 +40,23 @@ public interface IPetition {
     Boolean getPlaying();
     void setPlaying(Boolean playing);
 
+    default void copyField(IPetition from){         //임시로 따라 만든 카피본 이론을 이해 못했어 이정도만 구현
+        if(from == null){
+            return;
+        }
+        if(from.getId() != null){
+            this.setId(from.getId());
+        }
+        if(from.getPetiTitle() != null && !from.getPetiTitle().isEmpty()){
+            this.setPetiTitle(from.getPetiTitle());
+        }
+        if(from.getPetiField() != null && !from.getPetiField().isEmpty()){
+            this.setPetiField(from.getPetiField());
+        }
+        if(from.getPetiContent() != null && !from.getPetiContent().isEmpty()){
+            this.setPetiContent(from.getPetiContent());
+        }
+
+    }
+
 }
