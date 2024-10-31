@@ -109,6 +109,7 @@ public class SessionLoginController {
             httpServletRequest.getSession().invalidate();
             HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
             // 세션에 userId를 넣어줌
+            session.setAttribute("LoginUser",user);
             session.setAttribute("userId", user.getId());
             session.setMaxInactiveInterval(3600); // Session이 1시간동안 유지
 
@@ -118,6 +119,7 @@ public class SessionLoginController {
         }
         return "redirect:/session-login";
     }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, Model model) {
         model.addAttribute("loginType", "session-login");

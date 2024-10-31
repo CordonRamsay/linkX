@@ -134,9 +134,9 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
                 .boardType(new BoardFreeDto().getBoardType())
                 .boardId(id)
                 .build();
-        // 좋아요 테이블에 데이터 삽입
+        // 좋아요 테이블에 데이터 삭제
         this.boardLikeMyBatisMapper.deleteByTypeAndIdAndUser(boardLikeDto);
-        // 자유 게시판 테이블에 좋아요 수 증가
+        // 자유 게시판 테이블에 좋아요 수 감소
         this.boardMyBatisMapper.subLikeQty(id);
     }
 }
