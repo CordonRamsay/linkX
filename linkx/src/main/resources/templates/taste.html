@@ -3,21 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j5sii37kyv"></script>
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j5sii37kyv&submodules=geocoder"></script>
 </head>
 <body>
-<h1>맛집 api</h1>
+<h1>맛집 지도</h1>
 <div>
   <h2>MAP</h2>
   <div id="map" style="width:100%;height:400px;"></div>
 
   <script>
-    var mapOptions = {
-      center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997),
-      zoom: 17
-    };
+    naver.maps.onJSContentLoaded = function() {
+      // 위경도 좌표 리스트 (소수점을 넣어서 변환)
+      const places = [
+        { id: 4, title: "팔공티 명지전문대점", mapx: 126.9257078, mapy: 37.5830049 },
+        { id: 5, title: "메가MGC커피 명지전문대점", mapx: 126.9237572, mapy: 37.5850014 },
+        { id: 6, title: "김밥천국 명지전문대점", mapx: 126.9241894, mapy: 37.5845316 },
+        { id: 7, title: "파리바게뜨 총암점", mapx: 126.9238993, mapy: 37.5848465 },
+        { id: 8, title: "봉구스밥버거 명지전문대점", mapx: 126.9242916, mapy: 37.5839296 }
+      ];
 
-    var map = new naver.maps.Map('map', mapOptions);
+      // 지도 초기 설정
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997), // 임시 중심
+        zoom: 17
+      };
+      var map = new naver.maps.Map('map', mapOptions);
+
+      // 위경도 좌표로 마커 생성
+      places.forEach(place => {
+        var latLng = new naver.maps.LatLng(place.mapy, place.mapx); // WGS84 좌표 사용
+
+        // 마커 생성
+        var marker = new naver.maps.Marker({
+          position: latLng,
+          map: map,
+          title: place.title
+        });
+
+        // 정보 창 생성
+        var infoWindow = new naver.maps.InfoWindow({
+          content: `<div style="padding:5px;">${place.title}</div>`
+        });
+
+        // 마커 클릭 시 정보 창 표시
+        naver.maps.Event.addListener(marker, "click", function() {
+          infoWindow.open(map, marker);
+        });
+      });
+    };
   </script>
 </div>
 <div>
