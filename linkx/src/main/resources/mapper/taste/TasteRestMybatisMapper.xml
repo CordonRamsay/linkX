@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc.linkx.taste.ITasteRestMyBatisMapper">
+
+    <insert id="insert" parameterType="TasteRestDto" useGeneratedKeys="true" keyProperty="id">  <!-- useGeneratedKeys 속성으로 자동생성된 키를 가져오고,
+                                                                                                    keyProperty 속성에 "id" 필드를 정의하여 id 값이
+                                                                                                     자동 증감되어 DB에 저장된다 -->
+
+        INSERT INTO taste_rest_tbl ( title
+                                   , link
+                                   , category
+                                    , addr
+                                    , roadaddr
+                                    , mapx
+                                    , mapy)
+        VALUES ( #{title}
+               , #{link}
+               , #{category}
+                , #{addr}
+                , #{roadAddr}
+                , #{mapX}
+                , #{mapY})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
+    </insert>
+
+    <!-- 음식점 정보 조회 -->
+    <select id="setMapMaker" resultType="TasteRestDto" >
+        SELECT id
+                , title
+                , mapx
+                , mapy
+        FROM taste_rest_tbl
+    </select>
+
+
+
+</mapper>
