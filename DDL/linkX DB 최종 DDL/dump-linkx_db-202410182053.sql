@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: linkx_db
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.38
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,12 +32,12 @@ CREATE TABLE `board_dept_tbl` (
   `likeQty` int NOT NULL DEFAULT '0',
   `updateDt` varchar(20) DEFAULT NULL,
   `deleteYn` tinyint NOT NULL DEFAULT '0',
-  `deptId` bigint NOT NULL,
+  `majorId` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `createId` (`createId`),
-  KEY `deptId` (`deptId`),
+  KEY `deptId` (`majorId`),
   CONSTRAINT `board_dept_tbl_ibfk_1` FOREIGN KEY (`createId`) REFERENCES `user_tbl` (`id`),
-  CONSTRAINT `board_dept_tbl_ibfk_2` FOREIGN KEY (`deptId`) REFERENCES `dept_tbl` (`id`)
+  CONSTRAINT `board_dept_tbl_ibfk_2` FOREIGN KEY (`majorId`) REFERENCES `major_tbl` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -169,26 +169,27 @@ LOCK TABLES `comment_tbl` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dept_tbl`
+-- Table structure for table `major_tbl`
 --
 
-DROP TABLE IF EXISTS `dept_tbl`;
+DROP TABLE IF EXISTS `major_tbl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dept_tbl` (
+CREATE TABLE `major_tbl` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `deptName` varchar(20) NOT NULL,
+  `majorName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `dept_tbl`
+-- Dumping data for table `major_tbl`
 --
 
-LOCK TABLES `dept_tbl` WRITE;
-/*!40000 ALTER TABLE `dept_tbl` DISABLE KEYS */;
-/*!40000 ALTER TABLE `dept_tbl` ENABLE KEYS */;
+LOCK TABLES `major_tbl` WRITE;
+/*!40000 ALTER TABLE `major_tbl` DISABLE KEYS */;
+INSERT INTO `major_tbl` VALUES (1,'컴퓨터공학과'),(2,'컴퓨터보안공학과'),(3,'전자공학과'),(4,'정보통신공학과'),(5,'기계공학과'),(6,'산업경영공학과'),(7,'전기공학과'),(8,'토목공학과'),(9,'지적공간정보학과'),(10,'드론정보공학과'),(11,'경영학과'),(12,'세무회계과'),(13,'사회복지과'),(14,'부동산경영과'),(15,'항공서비스과'),(16,'일본어과'),(17,'유아교육과'),(18,'문예창작과'),(19,'중국어비즈니스과'),(20,'산업디자인과'),(21,'커뮤니케이션디자인과'),(22,'패션리빙디자인과'),(23,'사회체육과'),(24,'뷰티매니지먼트과'),(25,'보건의료정보과'),(26,'실용음악과'),(27,'연극영상학과');
+/*!40000 ALTER TABLE `major_tbl` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -202,15 +203,14 @@ CREATE TABLE `petition_tbl` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `petiTitle` varchar(100) NOT NULL,
   `petiField` varchar(100) NOT NULL,
-  `petiEffect` varchar(500) DEFAULT NULL,
   `petiContent` varchar(3000) NOT NULL,
   `userId` bigint NOT NULL,
   `createDt` datetime DEFAULT CURRENT_TIMESTAMP,
   `endDt` datetime NOT NULL,
   `agreeQty` int NOT NULL DEFAULT '0',
-  `answer` tinyint NOT NULL DEFAULT '0',
-  `answerContent` varchar(2000) NOT NULL,
-  `petiState` varchar(10) DEFAULT NULL,
+  `deleteYn` tinyint NOT NULL DEFAULT '0',
+  `userNickname` varchar(100) NOT NULL,
+  `playing` varchar(100) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `petition_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`)
@@ -224,32 +224,6 @@ CREATE TABLE `petition_tbl` (
 LOCK TABLES `petition_tbl` WRITE;
 /*!40000 ALTER TABLE `petition_tbl` DISABLE KEYS */;
 /*!40000 ALTER TABLE `petition_tbl` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `restaurant_tbl`
---
-
-DROP TABLE IF EXISTS `restaurant_tbl`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `restaurant_tbl` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `restName` varchar(100) NOT NULL,
-  `restTel` varchar(3000) NOT NULL,
-  `restLocation` varchar(30) NOT NULL,
-  `restStar` float DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `restaurant_tbl`
---
-
-LOCK TABLES `restaurant_tbl` WRITE;
-/*!40000 ALTER TABLE `restaurant_tbl` DISABLE KEYS */;
-/*!40000 ALTER TABLE `restaurant_tbl` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -271,8 +245,7 @@ CREATE TABLE `review_tbl` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `restId` (`restId`),
-  CONSTRAINT `review_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`),
-  CONSTRAINT `review_tbl_ibfk_2` FOREIGN KEY (`restId`) REFERENCES `restaurant_tbl` (`id`)
+  CONSTRAINT `review_tbl_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user_tbl` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -328,14 +301,16 @@ CREATE TABLE `user_tbl` (
   `userName` varchar(15) NOT NULL,
   `userPhone` varchar(13) NOT NULL,
   `userUniv` varchar(30) NOT NULL,
-  `deptId` bigint DEFAULT NULL,
+  `majorId` bigint DEFAULT NULL,
   `userNum` varchar(10) NOT NULL,
   `userEmail` varchar(50) NOT NULL,
+  `userNickname` varchar(50) NOT NULL,
   `authority` tinyint NOT NULL DEFAULT '0',
   `active` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `deptId` (`deptId`),
-  CONSTRAINT `user_tbl_ibfk_1` FOREIGN KEY (`deptId`) REFERENCES `dept_tbl` (`id`)
+  UNIQUE KEY `userId` (`userId`),
+  KEY `deptId` (`majorId`),
+  CONSTRAINT `user_tbl_ibfk_1` FOREIGN KEY (`majorId`) REFERENCES `major_tbl` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -361,4 +336,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-11 15:01:53
+-- Dump completed on 2024-10-18 20:53:03

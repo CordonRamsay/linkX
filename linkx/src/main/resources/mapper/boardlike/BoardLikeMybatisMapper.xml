@@ -4,26 +4,28 @@
 <mapper namespace="com.mjc.linkx.boardlike.IBoardLikeMyBatisMapper">
 
     <insert id="insert" parameterType="BoardLikeDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO board_like_tbl ( tbl
+        INSERT INTO board_like_tbl ( boardType
                               , createId
                               , boardId)
-        VALUES ( #{tbl}
+        VALUES ( #{boardType}
                , #{createId}
                , #{boardId})
     </insert>
 
-    <delete id="deleteByTableUserBoard" parameterType="BoardLikeDto">
+    <delete id="deleteByTypeAndIdAndUser" parameterType="BoardLikeDto">
         DELETE FROM board_like_tbl
-        WHERE tbl = #{tbl}
-          AND createId = #{createId}
+        WHERE boardType = #{boardType}
           AND boardId = #{boardId}
+          AND createId = #{createId}
+
     </delete>
 
-    <select id="countByTableUserBoard" resultType="Integer" parameterType="BoardLikeDto">
+    <select id="countByTypeAndIdAndUser" resultType="Integer" parameterType="BoardLikeDto">
         SELECT count(*)
         FROM board_like_tbl
-        WHERE tbl = #{tbl}
-          AND createId = #{createId}
+        WHERE boardType = #{boardType}
           AND boardId = #{boardId}
+          AND createId = #{createId}
+
     </select>
 </mapper>

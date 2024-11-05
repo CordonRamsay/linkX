@@ -25,6 +25,6 @@ public class BoardBaseDto implements IBoardBase{
     //삭제 여부
     Boolean deleteYn;
     //테이블명
-    String tbl;
+    String boardType;
 
 }

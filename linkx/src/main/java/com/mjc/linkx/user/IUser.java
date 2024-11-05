@@ -4,26 +4,26 @@ public interface IUser {
     Long getId();
     void setId(Long id);
 
-    String getUserId();
-    void setUserId(String userId);
+    String getLoginId();
+    void setLoginId(String LoginId);
 
-    String getUserPassword();
-    void setUserPassword(String userPassword);
+    String getPassword();
+    void setPassword(String password);
 
-    String getUserName();
-    void setUserName(String userName);
+    String getName();
+    void setName(String Name);
 
-    String getUserNickname();
-    void setUserNickname(String userNickname);
+    String getNickname();
+    void setNickname(String Nickname);
 
-    String getUserPhone();
-    void setUserPhone(String userPhone);
+    String getPhone();
+    void setPhone(String Phone);
 
-    String getUserEmail();
-    void setUserEmail(String userEmail);
+    String getEmail();
+    void setEmail(String Email);
 
-    String getUserUniv();
-    void setUserUniv(String userUniv);
+    String getUniv();
+    void setUniv(String Univ);
 
     Long getMajorId();
     void setMajorId(Long majorId);
@@ -31,8 +31,11 @@ public interface IUser {
     String getMajorName();
     void setMajorName(String majorName);
 
-    String getUserNum();
-    void setUserNum(String userNum);
+    String getStuNum();
+    void setStuNum(String stuNum);
+
+    Boolean getActive();
+    void setActive(Boolean active);
 
 
 

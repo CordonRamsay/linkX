@@ -17,15 +17,22 @@ import java.util.List;
 public class BoardDeptServiceImpl implements IBoardDeptService {
 
 
-    // 자유게시판 mapper 객체 변수 선언(생성자 주입)
+    // 학과게시판 mapper 객체 변수 선언(생성자 주입)
     private final IBoardDeptMyBatisMapper boardMyBatisMapper;
     // 게시판좋아요 mapper 객체 변수 선언(생성자 주입)
     private final IBoardLikeMyBatisMapper boardLikeMyBatisMapper;
 
   
     @Override
-    public IBoardDept insert(BoardDeptDto dto, IUser user, List<MultipartFile> files) {
-        return null;
+    public IBoardDept insert(BoardDeptDto dto,Long id) {
+        if (dto == null) {
+            return null;
+        }
+
+        dto.setCreateId(id);  // 임시 -> 나중에 로그인정보받아온 IUser의 id 넣어주기
+        this.boardMyBatisMapper.insert(dto);
+
+        return dto;
     }
 
 
@@ -67,6 +74,8 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         if (dto == null) {
             return List.of();
         }
+        dto.settingValues();
+
         List<BoardDeptDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
         return list;
@@ -77,6 +86,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         if (dto == null) {
             return null;
         }
+        dto.settingValues();
         Integer count = this.boardMyBatisMapper.countAllByNameContains(dto);
 
         return count;
@@ -102,7 +112,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardDeptDto().getTbl())
+                .boardType(new BoardDeptDto().getBoardType())
                 .boardId(id)
                 .build();
         // 좋아요 테이블에 데이터 삽입
@@ -118,11 +128,11 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardDeptDto().getTbl())
+                .boardType(new BoardDeptDto().getBoardType())
                 .boardId(id)
                 .build();
         // 좋아요 테이블에 데이터 삽입
-        this.boardLikeMyBatisMapper.deleteByTableUserBoard(boardLikeDto);
+        this.boardLikeMyBatisMapper.deleteByTypeAndIdAndUser(boardLikeDto);
         // 자유 게시판 테이블에 좋아요 수 증가
         this.boardMyBatisMapper.subLikeQty(id);
     }

@@ -22,13 +22,13 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     private final IBoardLikeMyBatisMapper boardLikeMyBatisMapper;
 
     @Override
-    public IBoardFree insert(BoardFreeDto dto) {
+    public IBoardFree insert(BoardFreeDto dto,Long id) {
 
         if (dto == null) {
             return null;
         }
 
-        dto.setCreateId(dto.getCreateId());  // 임시
+        dto.setCreateId(id);  // 임시 -> 나중에 로그인정보받아온 IUser의 id 넣어주기
         this.boardMyBatisMapper.insert(dto);
 
         return dto;
@@ -72,6 +72,7 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         if (dto == null) {
             return List.of();
         }
+        dto.settingValues();
         List<BoardFreeDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
         return list;
@@ -82,6 +83,7 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         if (dto == null) {
             return null;
         }
+        dto.settingValues();
         Integer count = this.boardMyBatisMapper.countAllByNameContains(dto);
 
         return count;
@@ -107,11 +109,17 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardFreeDto().getTbl())
                 .boardId(id)
+                .boardType(new BoardFreeDto().getBoardType())
                 .build();
-        // 좋아요 테이블에 데이터 삽입
+
+        Integer count = this.boardLikeMyBatisMapper.countByTypeAndIdAndUser(boardLikeDto);
+        if (count > 0) {
+            return;
+        }
+        //좋아요 테이블에 행 삽입
         this.boardLikeMyBatisMapper.insert(boardLikeDto);
+
         // 자유 게시판 테이블에 좋아요 수 증가
         this.boardMyBatisMapper.addLikeQty(id);
     }
@@ -123,12 +131,12 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         }
         BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                 .createId(user.getId())
-                .boardType(new BoardFreeDto().getTbl())
+                .boardType(new BoardFreeDto().getBoardType())
                 .boardId(id)
                 .build();
-        // 좋아요 테이블에 데이터 삽입
-        this.boardLikeMyBatisMapper.deleteByTableUserBoard(boardLikeDto);
-        // 자유 게시판 테이블에 좋아요 수 증가
+        // 좋아요 테이블에 데이터 삭제
+        this.boardLikeMyBatisMapper.deleteByTypeAndIdAndUser(boardLikeDto);
+        // 자유 게시판 테이블에 좋아요 수 감소
         this.boardMyBatisMapper.subLikeQty(id);
     }
 }

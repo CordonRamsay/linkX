@@ -27,11 +27,10 @@
              , bt.createId
              , bt.updateDt
              , bt.deleteYn
-             , bt.areaCode
+             , bt.majorId
         FROM board_dept_tbl bt LEFT JOIN user_tbl ut
         ON bt.createId = ut.id
         WHERE bt.id = #{id}
-          AND bt.deleteYn = false
     </select>
 
     <!-- 게시글 수정 -->
@@ -54,9 +53,6 @@
     <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="BoardDeptDto">
         SELECT bt.id
              , bt.title
-             , ( SELECT COUNT(*)
-                 FROM board_comment_tbl
-                 WHERE tbl = 'review' AND boardId = bt.id AND deleteYn = false) AS countComment
              , bt.content
              , bt.viewQty
              , bt.likeQty
@@ -69,11 +65,9 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
-        <if test="areaCode != null and areaCode != ''">
-          AND bt.areaCode = #{areaCode}
-        </if>
-        ORDER BY ${orderByWord}
-        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+          AND bt.majorId = #{majorId}
+        ORDER BY bt.id DESC
+
     </select>
 
     <!-- 게시글 카운트 -->
@@ -83,8 +77,8 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
-          <if test="areaCode != null and areaCode != ''">
-          AND bt.areaCode = #{areaCode}
+          <if test="majorId != null and majorId != ''">
+          AND bt.majorId = #{majorId}
           </if>
     </select>
 

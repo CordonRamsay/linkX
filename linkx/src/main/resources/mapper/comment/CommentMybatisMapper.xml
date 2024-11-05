@@ -31,7 +31,7 @@
         WHERE id = #{id} AND deleteYn = false
     </select>
 
-    <select id="countAllByBoardId" parameterType="SearchAjaxDto" resultType="Integer">
+    <select id="countAllByBoardId" parameterType="SearchDto" resultType="Integer">
         SELECT count(*)
         FROM comment_tbl
         WHERE boardId = #{boardId} AND deleteYn = false

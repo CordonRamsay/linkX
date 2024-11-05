@@ -26,8 +26,8 @@ public interface IBoardBase {
     void setDeleteYn(Boolean deleteYn);
 
     // 테이블명
-    String getTbl();
-    void setTbl(String tbl);
+    String getBoardType();
+    void setBoardType(String BoardType);
 
     // 현재날짜 출력
     default String getSystemDt() {

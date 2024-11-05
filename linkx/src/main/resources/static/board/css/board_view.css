@@ -1,0 +1,120 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+header {
+    background-color: #ffccd5;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#container {
+    display: flex;
+}
+
+nav {
+    width: 200px;
+    background-color: white;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 10px 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+}
+.boardListBtn{
+    cursor: pointer;
+    color: #dc98c6;
+}
+.board-header {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.board-title{
+    font-size:30px;
+    padding: 10px 0px;
+    font-weight: bold;
+}
+
+.post-header h2 {
+    margin: 0;
+}
+
+.createDt-viewQty span{
+    font-size: 15px;
+    color: #787575;
+}
+.createName{
+    font-size:20px;
+    font-weight: bold;
+    color:#000;
+}
+
+.board-container{
+
+    border-bottom: 1px solid #ddd;
+}
+.board-content{
+    margin-bottom:50px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.buttons button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+}
+
+.comments textarea {
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+}
+#likeIcon{
+    cursor: pointer;
+}
