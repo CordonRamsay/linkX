@@ -15,6 +15,7 @@ public class BoardLikeServiceImpl implements IBoardLikeService{
 
     // BoardLikeDto의 BoardType, BoardId, UserId로 검색하여 해당하는 좋아요테이블의 데이터 count를 리턴
     // 해당 return값이 0보다 크다면 해당 게시글은 좋아요가 안 된 상태
+    // 좋아요 상태 -> 1 / 좋아요 안 된 상태 -> 0 리턴
     @Override
     public Integer countByTypeAndIdAndUser(IBoardLike boardLike) {
         if ( boardLike == null || boardLike.getBoardId() == null

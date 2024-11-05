@@ -91,6 +91,7 @@
 </div>
 </body>
 <script>
+    // 게시글 삭제
     $.boardDelete = function (id) {
         let alert = confirm("해당 글을 삭제하시겠습니까?");
         if (alert) {
@@ -101,9 +102,12 @@
     // 게시글 좋아요
     $.likeItem = function (id) {
         let likeIcon = $("#likeIcon");
+        // likeIcon의 src 속성 가져오기
         let src = likeIcon.attr("src");
-        let bOff = src.includes("unlike");
-        let url = bOff ? "/api/v1/boardfree/like/" + id : "/api/v1/boardfree/unlike/" + id;
+        // src 속성 안에 "unlike" 문자열이 있는지 확인
+        let check = src.includes("unlike");
+        // src 속성값에 "unlike"가 포함되어 있다면 좋아요 요청 / 없다면 좋아요 취소 요청
+        let url = check ? "/api/v1/boardfree/like/" + id : "/api/v1/boardfree/unlike/" + id;
 
         $.ajax({
             url: url,
