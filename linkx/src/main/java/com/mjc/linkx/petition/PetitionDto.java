@@ -45,5 +45,7 @@ public class PetitionDto implements IPetition{
 
     private Boolean playing;            //청원이 현재 진행중인지 종료됬는지 확인하는 필드, 진행중일 경우 1, 종료됬으면 0으로 값을 업데이트 한다.
 
-
+    public String getBoardType() {
+        return "petition";
+    }       //현재 게시판이 어떤 게시판인지 알려주기 위한 코드, 일단 코드를 따라 적었으며 return을 통해 청원 게시판임을 알림
 }
