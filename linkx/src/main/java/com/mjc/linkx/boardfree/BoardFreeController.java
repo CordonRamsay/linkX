@@ -82,7 +82,7 @@ public class BoardFreeController {
             this.boardFreeService.addViewQty(id, user);
             IBoardFree find = this.boardFreeService.findById(id);
 
-            // 좋아요 개수 조회
+            // 좋아요 개수 조회 후 updateDt값 넣기
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                     .boardType(new BoardFreeDto().getBoardType())
                     .createId(userId)
