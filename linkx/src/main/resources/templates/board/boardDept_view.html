@@ -74,7 +74,7 @@
 
         <div class="board-container">
             <p class="board-content">{{BoardDeptDto.content}}</p>
-            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" width="25px" height="25px">
+            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardDeptDto.id}});"width="25px" height="25px">
             <span id="likeQty"> 좋아요 {{BoardDeptDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardDept/board_update?id={{BoardDeptDto.id}}'">수정</button>
@@ -109,7 +109,7 @@
         // src 속성값에 "unlike"가 포함되어 있다면 좋아요 요청 / 없다면 좋아요 취소 요청
         let url = check ? "/api/v1/boarddept" +
             "" +
-            "/like/" + id : "/api/v1/boardfree/unlike/" + id;
+            "/like/" + id : "/api/v1/boarddept/unlike/" + id;
 
         $.ajax({
             url: url,
