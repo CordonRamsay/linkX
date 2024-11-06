@@ -134,5 +134,12 @@
             alert("실패 했습니다. " + jqXHR.responseJSON.message);
         });
     }
+
+    window.onload = function () {
+        let like = "{{BoardFreeDto.updateDt}}";
+        var unlikeIcon = "/board/img/unlikeIcon.png";
+        var likeIcon = "/board/img/likeIcon.png";
+        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+    };
 </script>
 </html>
