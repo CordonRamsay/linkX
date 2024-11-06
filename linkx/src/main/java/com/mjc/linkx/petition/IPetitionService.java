@@ -1,16 +1,25 @@
 package com.mjc.linkx.petition;
 
+import com.mjc.linkx.user.IUser;
+
+import java.util.List;
+
 public interface IPetitionService {
 
-    static void save(PetitionDto petitionDto) {
 
-    }
 
-    IPetition insert(IPetition petition);
+    IPetition insert(IPetition petition, Long id);
 
     IPetition findById(Long id);
 
     Boolean delete(Long id);
+
+    List<PetitionDto> findAllByNameContains(SearchPetiDto dto);
+
+    Integer countAllByNameContains(SearchPetiDto dto);
+
+    void addagreeQty(Long id, IUser user);
+
 
 
 }

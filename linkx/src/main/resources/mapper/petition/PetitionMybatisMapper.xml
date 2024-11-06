@@ -47,39 +47,32 @@
     </delete>
 
 
-
-
-
 <!-- SerchBoardDto는 기본으로 만들어 놓으신 자바 코드로 필요에 따라 상속 받아서 사용하거나 하면 될것 같음 -->
 
 
-    <!-- 게시글 리스트 & 해당 글에 달린 댓글 개수 조회 여기 수정해야 함 resulttype만 변경 -->
+    <!-- 게시글 리스트 조회 -->
     <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="PetitionDto">
-        SELECT bt.id
-             , bt.title
-             , (SELECT count(*)
-                from board_comment_tbl
-                WHERE tbl='free' AND boardId = bt.id AND deleteYn=false) AS countComment
-             , bt.content
-             , bt.viewQty
-             , bt.likeQty
-             , bt.createDt
-             , bt.createId
+        SELECT pt.id
+             , pt.petiTitle
+             , pt.petiField
+             , pt.petiContent
+             , pt.createDt
+             , pt.endDt
              , ut.nickname AS createName
-             , bt.updateDt
-             , bt.deleteYn
-        FROM board_free_tbl bt
-        LEFT JOIN user_tbl ut ON bt.createId = ut.id
-        WHERE bt.deleteYn = false
+             , pt.agreeQty
+             , pt.playing
+        FROM petition_tbl pt
+        LEFT JOIN user_tbl ut ON pt.userId = ut.id
+        WHERE pt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 
-    <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음 나한텐 의미 없음
+    <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음
     <select id="countAllByNameContains" parameterType="SearchBoardDto" resultType="Integer">
         SELECT COUNT(*)
-        FROM peti_tbl pt
+        FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
         WHERE pt.playing = false
         AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
@@ -94,8 +87,8 @@
     </update>
         -->
     <!--동의자수 증가-->
-    <update id="addagreeQty">
-        UPDATE peti_tbl
+    <update id="addAgreeQty">
+        UPDATE petition_tbl
         SET agreeQty = agreeQty + 1
         WHERE id = #{id}
         AND playing = false
