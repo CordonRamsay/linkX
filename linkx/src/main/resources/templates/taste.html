@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>맛집 지도</title>
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j5sii37kyv&submodules=geocoder"></script>
 </head>
 <body>
@@ -12,16 +12,7 @@
   <div id="map" style="width:100%;height:400px;"></div>
 
   <script>
-    naver.maps.onJSContentLoaded = function() {
-      // 위경도 좌표 리스트 (소수점을 넣어서 변환)
-      const places = [
-        { id: 4, title: "팔공티 명지전문대점", mapx: 126.9257078, mapy: 37.5830049 },
-        { id: 5, title: "메가MGC커피 명지전문대점", mapx: 126.9237572, mapy: 37.5850014 },
-        { id: 6, title: "김밥천국 명지전문대점", mapx: 126.9241894, mapy: 37.5845316 },
-        { id: 7, title: "파리바게뜨 총암점", mapx: 126.9238993, mapy: 37.5848465 },
-        { id: 8, title: "봉구스밥버거 명지전문대점", mapx: 126.9242916, mapy: 37.5839296 }
-      ];
-
+    document.addEventListener('DOMContentLoaded', function() {
       // 지도 초기 설정
       var mapOptions = {
         center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997), // 임시 중심
@@ -29,32 +20,74 @@
       };
       var map = new naver.maps.Map('map', mapOptions);
 
-      // 위경도 좌표로 마커 생성
-      places.forEach(place => {
-        var latLng = new naver.maps.LatLng(place.mapy, place.mapx); // WGS84 좌표 사용
+      // 맛집 데이터 로드 함수
+      function loadRestaurants() {
+        fetch('/taste/data/list')
+                .then(response => response.json())
+                .then(restaurants => {
+                  // 각 맛집에 대해 마커 추가
+                  restaurants.forEach(function(restaurant) {
+                    var lat = parseFloat(restaurant.mapY) / 1e7;
+                    var lng = parseFloat(restaurant.mapX) / 1e7;
+                    var latLng = new naver.maps.LatLng(lat, lng);
 
-        // 마커 생성
-        var marker = new naver.maps.Marker({
-          position: latLng,
-          map: map,
-          title: place.title
-        });
+                    // 마커 생성
+                    var marker = new naver.maps.Marker({
+                      position: latLng,
+                      map: map,
+                      title: restaurant.title
+                    });
 
-        // 정보 창 생성
-        var infoWindow = new naver.maps.InfoWindow({
-          content: `<div style="padding:5px;">${place.title}</div>`
-        });
+                    // 정보 창 생성
+                    var infoWindow = new naver.maps.InfoWindow({
+                      content: `<div style="padding:5px;">${restaurant.title}</div>`
+                    });
 
-        // 마커 클릭 시 정보 창 표시
-        naver.maps.Event.addListener(marker, "click", function() {
-          infoWindow.open(map, marker);
-        });
-      });
-    };
+                    // 마커 클릭 시 정보 창 표시
+                    naver.maps.Event.addListener(marker, "click", function() {
+                      infoWindow.open(map, marker);
+                    });
+                  });
+                })
+                .catch(error => console.error('Error fetching restaurant data:', error));
+      }
+
+      // 로드 시 맛집 데이터를 불러와 지도에 표시
+      loadRestaurants();
+    });
   </script>
 </div>
 <div>
   <h2>REVIEW</h2>
+  <script>
+    // 리뷰 리스트를 로드하여 표시하는 함수
+    //  function loadReviews() {
+    //   fetch('/taste/data/list/details')
+    //           .then(response => response.json())
+    //           .then(restaurants => {
+    //             const reviewContainer = document.getElementById('review-list');
+    //             reviewContainer.innerHTML = ''; // 기존 내용을 비웁니다.
+    //
+    //             restaurants.forEach(restaurant => {
+    //               // 각 음식점 정보를 담을 div 생성
+    //               const reviewItem = document.createElement('div');
+    //               reviewItem.classList.add('review-item');
+    //               reviewItem.innerHTML = `
+    //           <div>
+    //             <strong>${restaurant.title}</strong>
+    //           </div>
+    //           <div>${restaurant.addr}</div>
+    //           <div>${restaurant.roadAddr}</div>
+    //           <div>리뷰 개수: ${restaurant.reviewCount || 0}</div>
+    //           <div>좋아요 수: ${restaurant.likeCount || 0}</div>
+    //         `;
+    //               reviewContainer.appendChild(reviewItem);
+    //             });
+    //           })
+    //           .catch(error => console.error('Error fetching review data:', error));
+    // }
+
+  </script>
 </div>
 </body>
 </html>

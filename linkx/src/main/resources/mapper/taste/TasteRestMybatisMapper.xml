@@ -32,6 +32,14 @@
         FROM taste_rest_tbl
     </select>
 
+    <select id="getAllRestaurants" resultMap="TasteRestDto">
+        SELECT id
+             , title
+             , category
+             , addr
+             , roadaddr
+        FROM taste_rest_tbl
+    </select>
 
 
 </mapper>

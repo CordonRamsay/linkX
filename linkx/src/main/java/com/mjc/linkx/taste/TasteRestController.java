@@ -83,4 +83,12 @@ public class TasteRestController {
         }
         return dtos;
     }
+    @GetMapping("/list")
+    public List<TasteRestDto> getTasteList() {
+        return tasteRestMapper.setMapMaker(); // DB에서 음식점 리스트를 가져옵니다.
+    }
+    //@GetMapping("/list/details")
+    //public List<TasteRestDto> getRestaurantDetails() {
+        //return tasteRestMapper.getAllRestaurants(); // DB에서 모든 음식점 데이터를 가져옵니다.
+    //}
 }
