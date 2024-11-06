@@ -8,7 +8,7 @@ public interface IPetitionService {
 
 
 
-    IPetition insert(IPetition petition, Long id);
+    IPetition insert(PetitionDto dto, Long id);
 
     IPetition findById(Long id);
 

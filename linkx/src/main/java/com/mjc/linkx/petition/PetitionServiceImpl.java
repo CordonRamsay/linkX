@@ -1,8 +1,11 @@
 package com.mjc.linkx.petition;
 
 
+import com.mjc.linkx.user.IUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor        //mapper필드에 생성자 주입을 위한 어노테이션
@@ -32,5 +35,21 @@ public class PetitionServiceImpl implements IPetitionService{
     @Override
     public Boolean delete(Long id) {
         return null;
+    }
+
+    @Override
+    public List<PetitionDto> findAllByNameContains(SearchPetiDto dto) {
+        return List.of();
+    }
+
+
+    @Override
+    public Integer countAllByNameContains(SearchPetiDto dto) {
+        return 0;
+    }
+
+    @Override
+    public void addagreeQty(Long id, IUser user) {
+
     }
 }
