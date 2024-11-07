@@ -44,12 +44,12 @@ public interface IResponseController {
     }
 
     // HTTP 응답 리턴 ( 상태코드, 메시지, ResponseDto(데이터) )
-    default ResponseEntity<ResponseDto> makeResponseEntity(HttpStatus httpStatus
-            , ResponseCode responseCode
+    default ResponseEntity<ResponseDto> makeResponseEntity(Integer code, HttpStatus httpStatus
             , String message
             , Object responseData) {
         ResponseDto dto = ResponseDto.builder()
-                .responseCode(responseCode)
+                .code(code)
+                .httpStatus(httpStatus)
                 .message(message)
                 .responseData(responseData)
                 .build();

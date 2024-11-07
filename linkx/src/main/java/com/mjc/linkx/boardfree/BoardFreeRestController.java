@@ -36,7 +36,7 @@ public class BoardFreeRestController implements IResponseController {
     public ResponseEntity<ResponseDto> addLikeQty(HttpSession session, @Validated @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
-                return makeResponseEntity(HttpStatus.BAD_REQUEST, ResponseCode.R000051, "입력 매개변수 에러", null);
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
             // 세션에서 User 가져옴
             IUser user = (IUser) session.getAttribute("LoginUser");
@@ -46,16 +46,16 @@ public class BoardFreeRestController implements IResponseController {
             this.boardFreeService.addLikeQty(id,CUInfoDto.getLoginUser());
             // 좋아요 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
             IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(),HttpStatus.FORBIDDEN, ex.getMessage(), null);
         } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
 
@@ -63,7 +63,7 @@ public class BoardFreeRestController implements IResponseController {
     public ResponseEntity<ResponseDto> subLikeQty(HttpSession session, @Validated @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
-                return makeResponseEntity(HttpStatus.BAD_REQUEST, ResponseCode.R000051, "입력 매개변수 에러", null);
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
 
             // 세션에서 User 가져옴
@@ -76,16 +76,17 @@ public class BoardFreeRestController implements IResponseController {
             IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
 
 
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+
+            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK, "성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.FORBIDDEN,  ex.getMessage(), null);
         } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
     

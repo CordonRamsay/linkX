@@ -75,7 +75,7 @@
         <div class="board-container">
             <p class="board-content">{{BoardDeptDto.content}}</p>
             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardDeptDto.id}});"width="25px" height="25px">
-            <span id="likeQty"> 좋아요 {{BoardDeptDto.likeQty}}</span></img>
+            <span id="likeQty"> {{BoardDeptDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardDept/board_update?id={{BoardDeptDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardDeptDto.id}});">삭제</button>

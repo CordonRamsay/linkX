@@ -74,7 +74,7 @@
         <div class="board-container">
             <p class="board-content">{{BoardFreeDto.content}}</p>
             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardFreeDto.id}});" width="25px" height="25px">
-            <span id="likeQty"> 좋아요 {{BoardFreeDto.likeQty}}</span></img>
+            <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
             <div class="buttons">
                 <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>
@@ -109,12 +109,17 @@
         // src 속성값에 "unlike"가 포함되어 있다면 좋아요 요청 / 없다면 좋아요 취소 요청
         let url = check ? "/api/v1/boardfree/like/" + id : "/api/v1/boardfree/unlike/" + id;
 
+
+        // ajax를 이용한 비동기 통신
         $.ajax({
             url: url,
             type: "GET",
-            datatype: "JSON",
-            contentType: "application/json; charset=UTF-8",
+            datatype: "JSON",   // 응답 데이터 타입
+            contentType: "application/json; charset=UTF-8", // 전달하는 데이터 타입 : JSON , 인코딩 : UTF-8
         }).done(function (data, status, xhr) {
+            // data : ResponseEntity.body
+            // status : JQuery 상태 문자열 성공시 success
+            // xhr : HTTP 상태코드, 응답 헤더 포함
             console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
             if (status === "success") {
 
