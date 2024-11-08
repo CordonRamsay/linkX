@@ -3,6 +3,8 @@ package com.mjc.linkx.boardfree;
 
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
+import com.mjc.linkx.boardlike.BoardLikeDto;
+import com.mjc.linkx.boardlike.IBoardLikeService;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
@@ -25,6 +27,7 @@ public class BoardFreeController {
 
     private final IBoardFreeService boardFreeService;
     private final UserService userService;
+    private final IBoardLikeService boardLikeService;
 
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model) {
@@ -79,7 +82,16 @@ public class BoardFreeController {
             this.boardFreeService.addViewQty(id, user);
             IBoardFree find = this.boardFreeService.findById(id);
 
-            // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
+            // 좋아요 개수 조회 후 updateDt값 넣기
+            BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                    .boardType(new BoardFreeDto().getBoardType())
+                    .createId(userId)
+                    .boardId(id)
+                    .build();
+            Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
+            find.setUpdateDt(likeCount.toString());
+
+            // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 viewDto에 복사
             BoardFreeDto viewDto = BoardFreeDto.builder().build();
             viewDto.copyFields(find);
 

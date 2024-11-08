@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
@@ -12,7 +13,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDto {
-    private ResponseCode responseCode;
+    // http 상태코드, http 상태, 메세지, 응답데이터
+    private Integer code;
+    private HttpStatus httpStatus;
     private String message;
     private Object responseData;
 }
