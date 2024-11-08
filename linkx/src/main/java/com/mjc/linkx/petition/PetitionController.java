@@ -1,7 +1,9 @@
 package com.mjc.linkx.petition;
 
 
-import ch.qos.logback.core.model.Model;
+import com.mjc.linkx.common.IResponseController;
+import com.mjc.linkx.user.UserService;
+import org.springframework.ui.Model;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
@@ -17,11 +19,12 @@ import java.util.List;
 @Slf4j
 
 @RequestMapping("/petition")
-public class PetitionController {
+public class PetitionController{
 
     //서비스를 구현 하지 못해 에러가 다수 발생, 서비스를 구현후 다시 수정 예정
 
     private final IPetitionService petitionService;
+    private final UserService userService;
 
     @GetMapping("/petition_list")               //청원글 리스트 조회
     public String petitionList(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model) {
@@ -52,7 +55,7 @@ public class PetitionController {
     }
 
     @PostMapping("/petition_insert")        //청원 게시글 등록 후 목록화면 return
-    public String petitionInsert(@ModelAttribute PetitionDto petitionDto, Model model, @SessionAttribute(name = "userId") Long userId){
+    public String petitionInsert(@ModelAttribute PetitionDto dto, Model model, @SessionAttribute(name = "userId") Long userId){
         try{
             UserDto user = this.userService.getLoginUserById(userId);
             this.petitionService.insert(dto, user.getId());
@@ -67,7 +70,7 @@ public class PetitionController {
     public String petitionView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId){
         try{
             IUser user = this.userService.getLoginUserById(userId);
-            this.petitionService.addView(id, user);
+            //this.petitionService.addViewQty(id, user);        원래 이 항목은 조회수를 +1하는 항목이었지만 청원은 조회수 항목이 없어서 비활성화 / 추후 조회수가 필요하면 활성화할것
             IPetition find = this.petitionService.findById(id);
 
             //IPetition 타입의 find의 데이터를 petitionDto타입의 dto에 복사
