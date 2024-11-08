@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청원하기 - 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #f2f2f2;
+    }
+    .container {
+      width: 900px;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #f4a8c0;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+    }
+    .login {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 15px;
+      border: none;
+      cursor: pointer;
+    }
+    .sidebar {
+      float: left;
+      width: 200px;
+      background-color: #ffc0cb;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .sidebar .section {
+      margin-bottom: 20px;
+    }
+    .sidebar h3 {
+      margin: 0;
+      padding: 10px 0;
+      font-weight: bold;
+    }
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+    .category-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .category-buttons button {
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #dddddd;
+      text-align: center;
+    }
+    .pagination, .search-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .search-bar select, .search-bar input {
+      padding: 5px;
+      font-size: 14px;
+    }
+    .pagination button {
+      padding: 5px 10px;
+      border: 1px solid #4A90E2;
+      background-color: #4A90E2;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    청원하기 - 목록
+    <button class="login">Log in</button>
+  </div>
+
+  <div class="sidebar">
+    <div class="section">
+      <h3>Link X</h3>
+    </div>
+    <div class="section">
+      <h3>게시판</h3>
+      <ul>
+        <li>자유 게시판</li>
+        <li>학과 게시판</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>청원하기</h3>
+      <ul>
+        <li>청원 진행중</li>
+        <li>청원 종료</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>맛집추천</h3>
+    </div>
+  </div>
+
+  <div class="content">
+    <h3>청원목록</h3>
+    <div class="category-buttons">
+      <button>수리</button>
+      <button>교내행사</button>
+      <button>강의</button>
+      <button>홈페이지</button>
+      <button>급식</button>
+      <button>기숙사</button>
+      <button>학생회</button>
+      <button>기타</button>
+    </div>
+
+    <div class="search-bar">
+      <div>
+        <label>정렬:</label>
+        <select>
+          <option value="date">최신순</option>
+          <option value="popularity">인기순</option>
+        </select>
+        <label>순서:</label>
+        <select>
+          <option value="asc">오름차순</option>
+          <option value="desc">내림차순</option>
+        </select>
+      </div>
+      <div>
+        <select>
+          <option value="">분야 선택</option>
+          <option value="수리">수리</option>
+          <option value="교내행사">교내행사</option>
+          <option value="강의">강의</option>
+          <option value="홈페이지">홈페이지</option>
+          <option value="기타">기타</option>
+        </select>
+        <input type="text" placeholder="검색어를 입력해 주세요">
+        <button>검색</button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>NO</th>
+          <th>분야</th>
+          <th>청원명</th>
+          <th>청원인</th>
+          <th>청원 시작일</th>
+          <th>참여자수</th>
+          <th>마감일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>10</td>
+          <td>수리</td>
+          <td>고쳐주세요</td>
+          <td>홍**</td>
+          <td>2024.09.15</td>
+          <td>3</td>
+          <td>2024.10.15</td>
+        </tr>
+        <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span>게시글 수: 10</span>
+      <div>
+        <button>Prev</button>
+        <button>1</button>
+        <button>2</button>
+        <button>Next</button>
+      </div>
+      <button>청원하기</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
