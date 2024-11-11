@@ -94,6 +94,7 @@ public class BoardFreeController {
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 viewDto에 복사
             BoardFreeDto viewDto = BoardFreeDto.builder().build();
             viewDto.copyFields(find);
+            viewDto.setBoardType(viewDto.getBoardType());
 
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
             model.addAttribute("BoardFreeDto", viewDto);

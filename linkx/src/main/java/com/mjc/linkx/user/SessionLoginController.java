@@ -111,6 +111,7 @@ public class SessionLoginController {
             // 세션에 userId를 넣어줌
             session.setAttribute("LoginUser",user);
             session.setAttribute("userId", user.getId());
+
             session.setMaxInactiveInterval(3600); // Session이 1시간동안 유지
 
         } catch (Exception ex) {

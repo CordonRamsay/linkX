@@ -1,12 +1,13 @@
 package com.mjc.linkx.comment;
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
+import com.mjc.linkx.user.IUser;
 
 import java.util.List;
 
 public interface ICommentService {
     // 댓글 작성
-    void insert(CommentDto dto);
+    IComment insert(IUser user, CommentDto dto);
 
     //댓글 개수
     Integer countAllByBoardId(SearchBoardDto dto);

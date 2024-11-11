@@ -60,6 +60,8 @@
 
     <main>
         <div class="board-header">
+            <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
+            <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
             <div class="boardListBtn" onclick="location.href='/boardFree/board_list?page=1&searchName='">자유게시판</div>
             <div class="board-title">{{BoardFreeDto.title}}</div>
             <div class="createInfo">
@@ -82,10 +84,9 @@
         </div>
 
         <div class="comments">
-
             <p><strong>{{User.nickname}}</strong>: 확인했습니다~ 참가 꼭 할게요</p>
-            <textarea placeholder="댓글 추가"></textarea>
-            <button>댓글 추가</button>
+            <label for="comment"></label><textarea id="comment"  name="comment" placeholder="댓글 추가"></textarea>
+            <button onclick="$.addComment();">댓글 추가</button>
         </div>
     </main>
 </div>
@@ -138,6 +139,14 @@
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
             alert("실패 했습니다. " + jqXHR.responseJSON.message);
         });
+    }
+
+    // 댓글 추가
+    $.addComment= fuction() {
+        let type = $("#boardType");
+        let boardId = $("#id");
+        let comment = $("#comment");
+
     }
 
     window.onload = function () {
