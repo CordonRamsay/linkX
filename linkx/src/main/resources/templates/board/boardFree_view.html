@@ -142,11 +142,36 @@
     }
 
     // 댓글 추가
-    $.addComment= fuction() {
-        let type = $("#boardType");
-        let boardId = $("#id");
-        let comment = $("#comment");
+    $.addComment= function() {
+        let type = $("#boardType").val();
+        let boardId = $("#id").val();
+        let comment = $("#comment").val();
 
+        let url = "/api/v1/comment";
+
+        if (comment === "") {
+            alert("댓글 내용을 입력해 주세요!");
+            return;
+        }
+        if (!confirm("댓글을 추가하시겠습니까?")) {
+            return;
+        }
+
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({"boardType": type, "boardId": boardId, "comment": comment})
+        }).done(function (data, status, xhr) {
+            console.log("data :", data, ",status : ", +status, ",xhr : ", xhr);
+            $("#comment").val("");
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
+            let message = getErrorMessage(jqXHR.responseJSON);
+            alert("댓글 추가를 실패했습니다. " + message);
+        });
     }
 
     window.onload = function () {

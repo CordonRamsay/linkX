@@ -5,10 +5,12 @@ package com.mjc.linkx.boardfree;
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.boardlike.BoardLikeDto;
 import com.mjc.linkx.boardlike.IBoardLikeService;
+import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
 import com.mjc.linkx.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,14 +25,14 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @RequestMapping("/boardFree")
-public class BoardFreeController {
+public class BoardFreeController implements IResponseController {
 
     private final IBoardFreeService boardFreeService;
     private final UserService userService;
     private final IBoardLikeService boardLikeService;
 
     @GetMapping("/board_list")
-    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model) {
+    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
 
 
         try {
@@ -39,7 +41,13 @@ public class BoardFreeController {
             List<BoardFreeDto> list = this.boardFreeService.findAllByNameContains(searchBoardDto);
 
 
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }
             model.addAttribute("boardList", list);
+
+
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
             return "redirect:/login/login";

@@ -2,7 +2,6 @@ package com.mjc.linkx.comment;
 
 
 import com.mjc.linkx.common.IResponseController;
-import com.mjc.linkx.common.dto.ResponseCode;
 import com.mjc.linkx.common.dto.ResponseDto;
 import com.mjc.linkx.common.exception.IdNotFoundException;
 import com.mjc.linkx.common.exception.LoginAccessException;
@@ -10,7 +9,6 @@ import com.mjc.linkx.user.IUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
