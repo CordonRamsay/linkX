@@ -75,7 +75,7 @@ public class SessionLoginController {
         }
 
         userService.join(joinRequest);  // 회원가입 처리
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     // 로그인 페이지 이동
@@ -118,7 +118,7 @@ public class SessionLoginController {
             log.error(ex.toString());
             return "login/login";
         }
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
@@ -130,7 +130,7 @@ public class SessionLoginController {
         if(session != null) {
             session.invalidate();
         }
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     // 사용자 정보 페이지
@@ -167,7 +167,7 @@ public class SessionLoginController {
             return "redirect:/session-login/login";
         }
         if(!loginUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/session-login";
+            return "redirect:/";
         }
         return "login/admin";
     }
