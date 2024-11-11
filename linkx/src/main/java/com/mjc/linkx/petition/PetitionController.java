@@ -21,8 +21,6 @@ import java.util.List;
 @RequestMapping("/petition")
 public class PetitionController{
 
-    //서비스를 구현 하지 못해 에러가 다수 발생, 서비스를 구현후 다시 수정 예정
-
     private final IPetitionService petitionService;
     private final UserService userService;
 
@@ -32,8 +30,6 @@ public class PetitionController{
             Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);
-
-
             model.addAttribute("petitionList",list);
         }catch(LoginAccessException ex){
             log.error(ex.toString());

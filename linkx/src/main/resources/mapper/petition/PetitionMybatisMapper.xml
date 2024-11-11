@@ -63,8 +63,7 @@
              , pt.playing
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
-        WHERE pt.deleteYn = false
-          AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
+
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
