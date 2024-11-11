@@ -39,7 +39,14 @@ public class PetitionServiceImpl implements IPetitionService{
 
     @Override
     public List<PetitionDto> findAllByNameContains(SearchPetiDto dto) {
-        return List.of();
+        if(dto == null){
+            return List.of();
+        }
+        dto.settingValues();
+        List<PetitionDto> list = this.petitionMyBatisMapper.findAllByNameContains(dto);
+
+        return list;
+
     }
 
 

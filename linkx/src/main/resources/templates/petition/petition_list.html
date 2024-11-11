@@ -182,15 +182,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>10</td>
-          <td>수리</td>
-          <td>고쳐주세요</td>
-          <td>홍**</td>
-          <td>2024.09.15</td>
-          <td>3</td>
-          <td>2024.10.15</td>
+        {{#petitionList}}
+        <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">
+          <td>{{id}}</td>
+          <td>{{petiField}}</td>
+          <td>{{petiTitle}}</td>
+          <td>{{userId}}</td>
+          <td>{{createDt}}</td>
+          <td>{{agreeQty}}</td>
+          <td>{{endDt}}</td>
         </tr>
+        {{/petitionList}}
         <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
         </tbody>
       </table>
