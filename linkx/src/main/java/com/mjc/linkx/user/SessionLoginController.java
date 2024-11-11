@@ -23,23 +23,23 @@ public class SessionLoginController {
 
     private final UserService userService;
 
-    @GetMapping(value = {"", "/"})
-    public String home(Model model, @SessionAttribute(name="userId", required = false)Long userId) {
-        try {
-            model.addAttribute("loginType", "session-login");
-            model.addAttribute("pageName", "세션 로그인");
-
-           UserDto user = this.userService.getLoginUserById(userId);
-
-            if (user != null) {
-                model.addAttribute("nickname", user.getNickname());
-            }
-        } catch (Exception ex) {
-            log.error(ex.toString());
-        }
-
-        return "login/home";
-    }
+//    @GetMapping(value = {"", "/"})
+//    public String home(Model model, @SessionAttribute(name="userId", required = false)Long userId) {
+//        try {
+//            model.addAttribute("loginType", "session-login");
+//            model.addAttribute("pageName", "세션 로그인");
+//
+//           UserDto user = this.userService.getLoginUserById(userId);
+//
+//            if (user != null) {
+//                model.addAttribute("nickname", user.getNickname());
+//            }
+//        } catch (Exception ex) {
+//            log.error(ex.toString());
+//        }
+//
+//        return "index";
+//    }
     // 회원가입 페이지 이동
     @GetMapping("/join")
     public String joinPage(Model model) {

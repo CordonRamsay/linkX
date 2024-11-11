@@ -2,6 +2,7 @@ package com.mjc.linkx.security.controller;
 
 
 import com.mjc.linkx.user.IUser;
+import com.mjc.linkx.user.UserDto;
 import com.mjc.linkx.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,22 @@ public class IndexController {
     private final UserService userService;
 
     @GetMapping("")
-    public String index(@SessionAttribute(name = "userId", required =false ) Long userId, HttpSession session){
+    public String index(Model model, @SessionAttribute(name = "userId", required = false) Long userId, HttpSession session) {
 
+        model.addAttribute("loginType", "session-login");
+        model.addAttribute("pageName", "세션 로그인");
 
         if (userId != null) {
             IUser loginUser = this.userService.getLoginUserById(userId);
-            session.setAttribute("LoginUser",loginUser);  // 세션에 저장
+            session.setAttribute("LoginUser", loginUser);  // 세션에 저장
 
         }
+        UserDto user = this.userService.getLoginUserById(userId);
+
+        if (user != null) {
+            model.addAttribute("nickname", user.getNickname());
+        }
+
         return "index";
     }
 }
