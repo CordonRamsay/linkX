@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="/board/css/board_drop.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <title>학과 게시판</title>
-    \
 </head>
 <body>
 <div class="header">
     <h1 onclick="location.href='/'" style="cursor: pointer">Link X</h1>
-    <button class="login-btn" onclick="location.href='/session-login/login'">Log in</button>
+    <div class="loginJoin-btn">
+        {{^nickname}} <!-- nickname이 null인 경우 -->
+        <button class="join-btn" onclick="location.href='/session-login/join'">회원가입</button>
+        <button class="login-btn" onclick="location.href='/session-login/login'">LOGIN</button>
+        {{/nickname}}
+        {{#nickname}} <!-- nickname이 있는 경우 -->
+        <button class="logout-btn" onclick="location.href='/session-login/logout'">LOGOUT</button>
+        {{/nickname}}
+    </div>
 </div>
 
 <div class="list-container">

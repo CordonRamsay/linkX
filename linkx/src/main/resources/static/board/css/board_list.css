@@ -56,7 +56,12 @@ body {
     padding: 10px;
     cursor: pointer;
 }
-.login-btn {
+.loginJoin-btn{
+    display: flex;
+
+}
+.login-btn, .join-btn, .logout-btn {
+    margin: 5px;
     background-color: #006699;
     color: white;
     border: none;
