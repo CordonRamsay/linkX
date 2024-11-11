@@ -20,11 +20,17 @@ public class BoardBaseDto implements IBoardBase{
     String createDt;
     //작성자 이름
     String createName;
-    //수정일
-    String updateDt;
     //삭제 여부
     Boolean deleteYn;
+
+    //수정일
+    String updateDt;
+
     //테이블명
     String boardType;
+    //조회수
+    private Integer viewQty;
+    //좋아요 수
+    private Integer likeQty;
 
 }

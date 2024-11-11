@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mjc.linkx.comment.ICommentMyBatisMapper">
     <insert id="insert" parameterType="CommentDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO comment_tbl (tbl,
+        INSERT INTO comment_tbl (boardType,
                                        boardId,
                                        comment,
                                        createId)
-        VALUES ( #{tbl},
+        VALUES ( #{boardType},
                 #{boardId},
                 #{comment},
                 #{createId} )
@@ -68,7 +68,7 @@
                            ON bct.id = cl.commentId
                                AND cl.createId = #{createId}
         WHERE bct.boardId = #{boardId}
-          AND bct.tbl = #{tbl}
+          AND bct.boardType = #{boardType}
           AND bct.deleteYn = false
         ORDER BY ${orderByWord}
             LIMIT #{rowsOnePage} OFFSET #{firstIndex}

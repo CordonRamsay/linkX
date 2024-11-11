@@ -13,11 +13,6 @@ public interface IBoardFree extends IBoardBase {
     String getContent();
     void setContent(String content);
 
-    Integer getViewQty();
-    void setViewQty(Integer viewQty);
-
-    Integer getLikeQty();
-    void setLikeQty(Integer likeQty);
 
     String getCountComment();
     void setCountComment(String countComment);

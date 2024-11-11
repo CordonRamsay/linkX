@@ -1,17 +1,14 @@
 package com.mjc.linkx.boardlike;
 
-public interface IBoardLike{
+import com.mjc.linkx.boardcommon.IBoardBase;
+
+public interface IBoardLike extends IBoardBase {
     Long getId();
     void setId(Long id);
-
-    String getBoardType();
-    void setBoardType(String boardType);
 
     Long getBoardId();
     void setBoardId(Long boardId);
 
-    Long getCreateId();
-    void setCreateId(Long createId);
 
     default void copyFields(IBoardLike from) {
         if (from == null) {

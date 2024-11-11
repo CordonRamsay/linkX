@@ -25,10 +25,6 @@ public class BoardFreeDto extends BoardBaseDto implements IBoardFree {
 
     // 내용
     private String content;
-    // 조회수
-    private Integer viewQty;
-    // 좋아요 수
-    private Integer likeQty;
     // 댓글 수
     private String countComment;
 

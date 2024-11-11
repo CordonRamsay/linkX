@@ -14,8 +14,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchCommentDto extends SearchBoardDto {
+
     private String boardId;
     private Long createId;
-    private String tbl;
+    private String boardType;
     private Long commentId;
 }

@@ -21,11 +21,19 @@ public interface IBoardBase {
     String getUpdateDt();
     void setUpdateDt(String updateDt);
 
+    // 조회수
+    Integer getViewQty();
+    void setViewQty(Integer viewQty);
+
+    // 좋아요 수
+    Integer getLikeQty();
+    void setLikeQty(Integer likeQty);
+
     //삭제여부
     Boolean getDeleteYn();
     void setDeleteYn(Boolean deleteYn);
 
-    // 테이블명
+    // 테이블 종류
     String getBoardType();
     void setBoardType(String BoardType);
 
