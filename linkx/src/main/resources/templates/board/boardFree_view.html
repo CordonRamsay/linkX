@@ -89,6 +89,17 @@
 </div>
 </body>
 <script>
+
+    // 페이지 로드 후 실행되는 함수
+    window.onload = function () {
+        let like = "{{BoardFreeDto.updateDt}}";
+        var unlikeIcon = "/board/img/unlikeIcon.png";
+        var likeIcon = "/board/img/likeIcon.png";
+        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+
+        $.getBoardCommentList();
+    };
+
     // 게시글 삭제
     $.boardDelete = function (id) {
         let alert = confirm("해당 글을 삭제하시겠습니까?");
@@ -171,11 +182,29 @@
         });
     }
 
-    window.onload = function () {
-        let like = "{{BoardFreeDto.updateDt}}";
-        var unlikeIcon = "/board/img/unlikeIcon.png";
-        var likeIcon = "/board/img/likeIcon.png";
-        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
-    };
+    // 댓글 조회 -> 로드 후 / 좋아요 할 때마다 호출 해줘야함
+    $.getBoardCommentList = function () {
+        let id = $("#id").val();
+        let type = $("#boardType").val();
+
+        $.ajax({
+            url: "/api/v1/comment/viewComment",
+            type: "POST",
+            datatype: "JSON",
+            data: JSON.stringify({"boardId": id, "boardType": type}),
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                let commentCount = data.responseData.length;
+                $("#commentCount").text(`${commentCount}`);
+                // 댓글 성공하면 댓글 리스트 다시 조회
+                $.showBoardCommentList(data.responseData);
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON.message);
+        });
+    }
 </script>
 </html>

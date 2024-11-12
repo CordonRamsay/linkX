@@ -36,7 +36,7 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
-    public List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto) {
+    public List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto,IUser user) {
         return List.of();
     }
 
