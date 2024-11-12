@@ -86,8 +86,8 @@ public class BoardFreeController implements IResponseController {
     }
 
     // 자유게시글 상세보기 화면 return / 해당 글의 객체 전달
-    @GetMapping("/board_view")
-    public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
+    @GetMapping("/board_view/{id}")
+    public String boardView(@PathVariable Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
         try {
             IUser user = this.userService.getLoginUserById(userId);
             this.boardFreeService.addViewQty(id, user);
@@ -118,8 +118,8 @@ public class BoardFreeController implements IResponseController {
     }
 
     // 자유게시글 수정 화면 return / 해당 글의 객체 전달
-    @GetMapping("/board_update")
-    public String boardModify(@RequestParam Long id, Model model) {
+    @GetMapping("/board_update/{id}")
+    public String boardModify(@PathVariable Long id, Model model) {
         try {
             IBoardFree find = this.boardFreeService.findById(id);
 
@@ -144,17 +144,17 @@ public class BoardFreeController implements IResponseController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_view?id=" + dto.getId();
+        return "redirect:board_view/" + dto.getId();
     }
 
     // 해당 게시글 삭제 후 list 화면으로 redirect
-    @GetMapping("/board_delete")
-    public String boardDelete(@RequestParam Long id) {
+    @GetMapping("/board_delete/{id}")
+    public String boardDelete(@PathVariable Long id) {
         try {
             this.boardFreeService.delete(id);
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list?page=1&searchName=";
+        return "redirect:/boardFree/board_list?page=1&searchName=";
     }
 }

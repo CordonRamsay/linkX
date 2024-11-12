@@ -75,7 +75,7 @@
             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardFreeDto.id}});" width="25px" height="25px">
             <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
             <div class="buttons">
-                <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
+                <button onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>
             </div>
         </div>
@@ -93,7 +93,7 @@
     $.boardDelete = function (id) {
         let alert = confirm("해당 글을 삭제하시겠습니까?");
         if (alert) {
-            window.location.href="/boardFree/board_delete?id="+id;
+            window.location.href="/boardFree/board_delete/"+id;
         }
     };
 
