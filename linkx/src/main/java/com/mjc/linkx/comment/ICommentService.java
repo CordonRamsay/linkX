@@ -13,7 +13,7 @@ public interface ICommentService {
     Integer countAllByBoardId(SearchBoardDto dto);
 
     // 댓글 조회
-    List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto);
+    List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto,IUser user);
 
     // 댓글 수정
     void update(CommentDto dto);
