@@ -103,7 +103,7 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     }
 
     @Override
-    public void addLikeQty(Long id,IUser user) {
+    public void addLikeQty(Long id, IUser user) {
         if (id == null || id < 0 || user == null) {
             return;
         }

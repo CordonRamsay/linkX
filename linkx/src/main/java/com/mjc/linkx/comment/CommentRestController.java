@@ -37,6 +37,7 @@ public class CommentRestController implements IResponseController {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
             IUser loginUser = (IUser) session.getAttribute("LoginUser");
+
             IComment result = this.commentService.insert(loginUser, dto);
             return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
         } catch (LoginAccessException ex) {
