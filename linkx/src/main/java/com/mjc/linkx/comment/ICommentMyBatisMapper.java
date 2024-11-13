@@ -12,9 +12,6 @@ public interface ICommentMyBatisMapper {
     // 댓글 작성
     void insert(CommentDto dto);
 
-    //댓글 개수
-    Integer countAllByBoardId(SearchBoardDto dto);
-    
     // 댓글 조회
     List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto);
 

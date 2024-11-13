@@ -31,12 +31,6 @@
         WHERE id = #{id} AND deleteYn = false
     </select>
 
-    <select id="countAllByBoardId" parameterType="SearchDto" resultType="Integer">
-        SELECT count(*)
-        FROM comment_tbl
-        WHERE boardId = #{boardId} AND deleteYn = false
-    </select>
-
     <update id="addLikeQty">
         UPDATE comment_tbl
         SET likeQty = likeQty + 1
@@ -65,8 +59,8 @@
         FROM comment_tbl ct
                  LEFT JOIN user_tbl ut ON ct.createId = ut.id
                  LEFT JOIN comment_like_tbl clt ON ct.id = clt.commentId AND clt.createId = #{createId}
-        WHERE ct.boardId = #{boardId}
-          AND ct.boardType = #{boardType}
+        WHERE ct.boardType = #{boardType}
+          AND ct.boardId = #{boardId}
           AND ct.deleteYn = false
         ORDER BY ${orderByWord}
             LIMIT #{rowsOnePage} OFFSET #{firstIndex}

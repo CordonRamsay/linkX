@@ -9,11 +9,9 @@ public interface ICommentService {
     // 댓글 작성
     IComment insert(IUser user, CommentDto dto);
 
-    //댓글 개수
-    Integer countAllByBoardId(SearchBoardDto dto);
 
     // 댓글 조회
-    List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto,IUser user);
+    List<CommentDto> findAllByBoardTypeId(SearchCommentDto dto,IUser user);
 
     // 댓글 수정
     void update(CommentDto dto);

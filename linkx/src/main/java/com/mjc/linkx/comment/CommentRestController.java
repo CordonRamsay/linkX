@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,22 +50,31 @@ public class CommentRestController implements IResponseController {
     }
     
     // 댓글 가져오기
-    @PostMapping("/viewComment")
-    public ResponseEntity<ResponseDto> findByBoardIdTbl(Model model
-            , @Validated @RequestBody SearchCommentDto dto
-            , HttpSession session
-    ) {
+    @GetMapping("/board/{boardType}/{boardId}/comments")
+    public ResponseEntity<ResponseDto> commentList(@PathVariable String boardType,@PathVariable Long boardId, HttpSession session) {
         try {
-            if (dto == null) {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+//            if (loginUser == null) {
+//                throw new LoginAccessException("로그인 필요");
+//            }
+
+            if (boardType == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }if (boardId == null) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            SearchCommentDto dto = SearchCommentDto.builder()
+                    .boardType(boardType)
+                    .boardId(boardId)
+                    .build();
+
+
             List<CommentDto> result = this.commentService.findAllByBoardTypeId(dto, loginUser);
 
             return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
-        } catch (LoginAccessException ex) {
-            log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
+//        } catch (LoginAccessException ex) {
+//            log.error(ex.toString());
+//            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
         }catch (IdNotFoundException ex) {
             log.error(ex.toString());
             return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);

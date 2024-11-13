@@ -30,14 +30,16 @@ public class CommentServiceImpl implements ICommentService{
         return dto;
     }
 
-    @Override
-    public Integer countAllByBoardId(SearchBoardDto dto) {
-        return 0;
-    }
 
     @Override
-    public List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto,IUser user) {
-        return List.of();
+    public List<CommentDto> findAllByBoardTypeId(SearchCommentDto dto,IUser user) {
+        if (dto == null) {
+            return null;
+        }
+        dto.settingValues();
+        dto.setFirstIndex(dto.getFirstIndex());
+        List<CommentDto> list = this.commentMyBatisMapper.findAllByBoardTypeId(dto);
+        return list;
     }
 
     @Override

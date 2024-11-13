@@ -62,9 +62,18 @@ public class BoardFreeController implements IResponseController {
 
     // 게시글 등록 화면 return
     @GetMapping("/board_add")
-    public String boardAdd() {
+    public String boardAdd(Model model, HttpSession session) {
         try {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
 
+        }catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -73,13 +82,21 @@ public class BoardFreeController implements IResponseController {
 
     // 자유게시글 등록 후 목록화면 return
     @PostMapping("/board_insert")
-    public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model, @SessionAttribute(name = "userId") Long userId) {
+    public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model, HttpSession session) {
         try {
 
-            UserDto user = this.userService.getLoginUserById(userId);
-            this.boardFreeService.insert(dto, user.getId());
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
+            this.boardFreeService.insert(dto, loginUser);
 
-        } catch (Exception ex) {
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }catch (Exception ex) {
             log.error(ex.toString());
         }
         return "redirect:board_list?page=1&searchName=";
@@ -87,16 +104,21 @@ public class BoardFreeController implements IResponseController {
 
     // 자유게시글 상세보기 화면 return / 해당 글의 객체 전달
     @GetMapping("/board_view/{id}")
-    public String boardView(@PathVariable Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
+    public String boardView(@PathVariable Long id, Model model,HttpSession session) {
         try {
-            IUser user = this.userService.getLoginUserById(userId);
-            this.boardFreeService.addViewQty(id, user);
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
+            this.boardFreeService.addViewQty(id, loginUser);
             IBoardFree find = this.boardFreeService.findById(id);
 
             // 좋아요 개수 조회 후 updateDt값 넣기
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                    .boardType(new BoardFreeDto().getBoardType())
-                    .createId(userId)
+                    .boardType(find.getBoardType())
+                    .createId(loginUser.getId())
                     .boardId(id)
                     .build();
             Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
@@ -110,8 +132,12 @@ public class BoardFreeController implements IResponseController {
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
             model.addAttribute("BoardFreeDto", viewDto);
             // findById로 찾아온 User 객체 뷰에 전달
-            model.addAttribute("User", user);
-        } catch (Exception ex) {
+            model.addAttribute("User", loginUser);
+
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }catch (Exception ex) {
             log.error(ex.toString());
         }
         return "board/boardFree_view";
@@ -119,8 +145,15 @@ public class BoardFreeController implements IResponseController {
 
     // 자유게시글 수정 화면 return / 해당 글의 객체 전달
     @GetMapping("/board_update/{id}")
-    public String boardModify(@PathVariable Long id, Model model) {
+    public String boardModify(@PathVariable Long id, Model model,HttpSession session) {
         try {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
+
             IBoardFree find = this.boardFreeService.findById(id);
 
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
@@ -129,7 +162,10 @@ public class BoardFreeController implements IResponseController {
 
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
             model.addAttribute("BoardFreeDto", updateDto);
-        } catch (Exception ex) {
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }catch (Exception ex) {
             log.error(ex.toString());
         }
         return "board/boardFree_update";

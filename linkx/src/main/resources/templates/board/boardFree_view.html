@@ -7,55 +7,18 @@
     <link rel="stylesheet" href="/board/css/board_list.css">
     <link rel="stylesheet" href="/board/css/board_drop.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
+<!--    <link rel="stylesheet" href="/css/default.css">-->
+<!--    <link rel="stylesheet" href="/css/common.css"/>-->
+<!--    <link rel="stylesheet" href="/css/content.css" />-->
+    <link rel="stylesheet" href="/css/button.css"/>
 </head>
 <body>
-{{>layout/header}}
+{{>layout/header}}  <!-- 헤더 -->
 <div id="container">
-    <nav>
-        <ul>
-            <li><strong>게시판</strong></li>
-            <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
-            <li class="dropdown">
-                <a href="#">학과 게시판 ▼</a>
-                <ul class="dropdown-content">
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=1">컴퓨터공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=2">컴퓨터보안공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=3">전자공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=4">정보통신공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=5">기계공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=6">산업경영공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=7">전기공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=8">토목공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=9">지적공간정보학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=10">드론정보공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=11">경영학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=12">세무회계과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=13">사회복지과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=14">부동산경영과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=15">항공서비스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=16">일본어과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=17">유아교육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=18">문예창작과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=19">중국어비즈니스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=20">산업디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=21">커뮤니케이션디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=22">패션리빙디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=23">사회체육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=24">뷰티매니지먼트과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=25">보건의료정보과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=26">실용음악과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=27">연극영상학과</a></li>
-
-                </ul>
-            </li>
-            <li><strong>청원하기</strong></li>
-            <li><a href="#">청원 진행중</a></li>
-            <li><a href="#">청원 종료</a></li>
-            <li><strong>맛집추천</strong></li>
-        </ul>
-    </nav>
-
+    {{>layout/nav}}   <!-- 메뉴바 -->
     <main>
+        <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
         <div class="board-header">
             <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
             <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
@@ -70,20 +33,27 @@
             </div>
         </div>
 
+        <!-- 게시판 바디 ( 내용, 좋아요 ) -->
         <div class="board-container">
             <p class="board-content">{{BoardFreeDto.content}}</p>
-            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardFreeDto.id}});" width="25px" height="25px">
+            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem('{{BoardFreeDto.id}}');" width="25px" height="25px">
             <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
+            <!-- 수정/삭제 버튼 -->
             <div class="buttons">
-                <button onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
-                <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>
+                <button type="button" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
+                <button type="button" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardFreeDto.id}}');">삭제</button>
+                <button type="button" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
             </div>
         </div>
 
+        <!-- 댓글 영역-->
         <div class="comments">
-            <p><strong>{{User.nickname}}</strong>: 확인했습니다~ 참가 꼭 할게요</p>
-            <label for="comment"></label><textarea id="comment"  name="comment" placeholder="댓글 추가"></textarea>
-            <button onclick="$.addComment();">댓글 추가</button>
+            <!-- 댓글리스트 렌더링 영역 -->
+            <div id="commentList"></div>
+            <!-- 댓글 추가 -->
+            <div>{{nickname}}</div>
+            <label for="comment"></label><textarea id="comment"  name="comment" placeholder="댓글을 남겨보세요"></textarea>
+            <button id="addComment" onclick="$.addComment();">댓글 추가</button>
         </div>
     </main>
 </div>
@@ -98,6 +68,11 @@
         $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
 
         $.getBoardCommentList();
+    };
+
+    // 게시글 목록 페이지로 이동
+    $.goListPage = function () {
+        window.location.href = '/boardFree/board_list?page=1&searchName=';
     };
 
     // 게시글 삭제
@@ -175,6 +150,7 @@
         }).done(function (data, status, xhr) {
             console.log("data :", data, ",status : ", +status, ",xhr : ", xhr);
             $("#comment").val("");
+            $.getBoardCommentList();
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
             let message = getErrorMessage(jqXHR.responseJSON);
@@ -188,23 +164,56 @@
         let type = $("#boardType").val();
 
         $.ajax({
-            url: "/api/v1/comment/viewComment",
-            type: "POST",
+            url: `/api/v1/comment/board/${type}/${id}/comments`,
+            type: "GET",
             datatype: "JSON",
-            data: JSON.stringify({"boardId": id, "boardType": type}),
             contentType: "application/json; charset=UTF-8",
         }).done(function (data, status, xhr) {
             console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
             if (status === "success") {
                 let commentCount = data.responseData.length;
                 $("#commentCount").text(`${commentCount}`);
-                // 댓글 성공하면 댓글 리스트 다시 조회
+
+                // 댓글조회 성공 시 댓글 리스트 조회
                 $.showBoardCommentList(data.responseData);
             }
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-            alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON.message);
+            alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON);
         });
     }
+    // 댓글 표시
+    $.showBoardCommentList = function (commentList) {
+        // 조회된 댓글이 없을 경우
+        if (!commentList.length) {
+            $("#commentList").html('<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>');
+            return false;
+        }
+
+        // 렌더링할 html 변수
+        let commentHtml = '';
+
+        // 댓글 html 추가
+        commentList.forEach(row => {
+            commentHtml += `
+                        <div>
+                            <span class="writer_img"><img src="/board/img/user_icon.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
+                            <p class="writer">
+                                <em>${row.createName}</em>
+                                <span class="date">${dayjs(row.createDt).format('YYYY-MM-DD HH:mm')}</span>
+                            </p>
+                            <div class="cont"><div class="txt_con">${row.comment}</div></div>
+                            <p class="func_btns">
+                                <button type="button" class="btns"><span class="icons icon_modify">수정</span></button>
+                                <button type="button" class="btns"><span class="icons icon_del">삭제</span></button>
+                            </p>
+                        </div>
+                    `;
+        })
+
+        $("#commentList").html(commentHtml);
+    };
+
+
 </script>
 </html>
