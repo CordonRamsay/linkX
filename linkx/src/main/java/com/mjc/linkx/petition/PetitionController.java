@@ -62,7 +62,7 @@ public class PetitionController{
         } catch (Exception ex){
             log.error(ex.toString());
         }
-        return "redirect:petition_list?page=1&searchName=";
+        return "redirect:petition_list?petiField=&searchName=";
     }
 
     // 청원 게시글 상세보기 화면 return / 해당 글의 객체 전달
