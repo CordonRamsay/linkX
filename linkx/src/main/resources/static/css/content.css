@@ -18,7 +18,7 @@
 
 #container h3 {font-size:22px; position:relative; padding-left:17px;}
 #container h3::before {content:''; background:#434b53; width:6px; height:23px; position:absolute; top:5px; left:0;}
-#container h3::after {content:''; background:#47bac1; width:6px; height:5px; position:absolute; top:5px; left:0;}
+/*#container h3::after {content:''; background:#47bac1; width:6px; height:5px; position:absolute; top:5px; left:0;}*/
 #container h4 {font-size:16px; position:relative; padding-left:8px; color:#d74242;}
 #container h4::before {content:''; background:#d74242; border-radius:50px; width:3px; height:3px; position:absolute; top:11px; left:0;}
 #container h4::first-child {margin-top:0;}

@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
 <!--    <link rel="stylesheet" href="/css/default.css">-->
 <!--    <link rel="stylesheet" href="/css/common.css"/>-->
-<!--    <link rel="stylesheet" href="/css/content.css" />-->
+    <link rel="stylesheet" href="/css/content.css" />
     <link rel="stylesheet" href="/css/button.css"/>
 </head>
 <body>
@@ -51,9 +51,15 @@
             <!-- 댓글리스트 렌더링 영역 -->
             <div id="commentList"></div>
             <!-- 댓글 추가 -->
-            <div>{{nickname}}</div>
-            <label for="comment"></label><textarea id="comment"  name="comment" placeholder="댓글을 남겨보세요"></textarea>
-            <button id="addComment" onclick="$.addComment();">댓글 추가</button>
+            <div class="cm_write">
+                <fieldset>
+                    <legend class="skipinfo"></legend>
+                    <div class="cm_input">
+                        <p><textarea id="comment" name="comment" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
+                        <span><button type="button" class="btns" id="addComment" onclick="$.addComment();">등 록</button><i id="counter">0/300자</i></span>
+                    </div>
+                </fieldset>
+            </div>
         </div>
     </main>
 </div>
@@ -196,7 +202,7 @@
         // 댓글 html 추가
         commentList.forEach(row => {
             commentHtml += `
-                        <div>
+                        <div class="comment">
                             <span class="writer_img"><img src="/board/img/user_icon.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
                             <p class="writer">
                                 <em>${row.createName}</em>
