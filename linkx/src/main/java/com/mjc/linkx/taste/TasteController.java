@@ -15,7 +15,6 @@ public class TasteController {
 
     @GetMapping("")
     public String taste(Model model) {
-
         return "taste";
     }
 }

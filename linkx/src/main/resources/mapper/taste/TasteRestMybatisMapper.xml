@@ -24,7 +24,7 @@
     </insert>
 
     <!-- 음식점 정보 조회 -->
-    <select id="setMapMaker" resultType="TasteRestDto" >
+    <select id="getTasteList" resultType="TasteRestDto" >
         SELECT id
                 , title
                 , mapx

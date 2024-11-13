@@ -6,6 +6,6 @@ import java.util.List;
 @Mapper
 public interface ITasteRestMyBatisMapper {
     void insert(TasteRestDto tasteRestDto);
-    List<TasteRestDto> setMapMaker();
+    List<TasteRestDto> getTasteList();
     //List<TasteRestDto> getAllRestaurants();
 }
