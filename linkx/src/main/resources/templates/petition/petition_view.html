@@ -88,13 +88,14 @@
             cursor: pointer;
         }
     </style>
+    <link rel="stylesheet" href="/board/css/board_list.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+
 <div class="container">
-    <div class="header">
-        청원 상세보기
-        <button class="login">Log in</button>
-    </div>
+    {{>layout/header}}
+
 
     <div class="sidebar">
         <div class="section">
@@ -120,32 +121,48 @@
     </div>
 
     <div class="content">
+        <h3>청원 상세보기</h3>
         <table class="details-table">
             <tr>
                 <th>청원분야</th>
-                <th>동의 기간</th>
-                <th>동의자 수</th>
                 <th>게시일</th>
+                <th>동의자 수</th>
+                <th>청원 마감일</th>
             </tr>
             <tr>
-                <td>수리</td>
-                <td>2024.09.15 ~ 2024.10.16</td>
-                <td>3</td>
-                <td>2024.09.15</td>
+                <td>{{PetitionDto.petiField}}</td>
+                <td>{{PetitionDto.createDt}}</td>
+                <td>{{PetitionDto.agreeQty}}</td>
+                <td>{{PetitionDto.endDt}}</td>
             </tr>
         </table>
 
         <div class="info">
-            <div class="info-item"><strong>청원인:</strong> 홍**</div>
-            <div class="info-item"><strong>청원제목:</strong> 고쳐주세요</div>
-            <div class="info-item"><strong>청원내용:</strong> 1번 스터디룸 에어컨 고장났어요. 1주일 넘게 지속되었습니다. 고쳐주세요.</div>
+            <div class="info-item"><strong>청원인:</strong>{{PetitionDto.userNickName}}</div>
+            <div class="info-item"><strong>청원제목:</strong>{{PetitionDto.petiTitle}}</div>
+            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
+            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
+            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
+            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
+            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
         </div>
-
-        <div class="buttons">
-            <button>목록</button>
+        <div class="buttons" id="adfafd">
+            <button type="button" onclick="goBackList()" >목록</button>
             <button>동의하기</button>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function goBackList(){
+        if(document.referrer){
+            window.history.back();
+        }
+        else{
+            location.href='/petition/petition_list?petiField='
+        }
+    }
+
+
+</script>
 </html>

@@ -27,7 +27,12 @@ public class PetitionServiceImpl implements IPetitionService{
 
     @Override
     public IPetition findById(Long id) {
-        return null;
+        if(id == null || id < 0){
+            return null;
+        }
+       IPetition petition = this.petitionMyBatisMapper.findById(id);
+        return petition;
+
     }
 
     @Override

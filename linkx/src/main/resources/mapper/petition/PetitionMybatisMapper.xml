@@ -31,10 +31,11 @@
              , pt.petiField
              , pt.petititle
              , pt.userId
-             , ut.userNickName as userNickName
-             , pt.createDt
+             , ut.nickname AS userNickName
+             , date_format(pt.createDt,"%Y-%m-%d") as createDt
              , pt.peticontent
-             , pt.endDt
+             , date_format(pt.endDt,"%Y-%m-%d") as endDt
+             , pt.agreeQty
 
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
