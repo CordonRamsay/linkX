@@ -58,7 +58,7 @@
              , pt.petiContent
              , pt.createDt
              , pt.endDt
-             , ut.nickname AS createName
+             , ut.nickname AS userNickName
              , pt.agreeQty
              , pt.playing
         FROM petition_tbl pt
