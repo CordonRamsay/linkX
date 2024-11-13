@@ -97,13 +97,11 @@
       cursor: pointer;
     }
   </style>
+  <link rel="stylesheet" href="/board/css/board_list.css">
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    청원하기 - 목록
-    <button class="login">Log in</button>
-  </div>
+  {{>layout/header}}
 
   <div class="sidebar">
     <div class="section">
@@ -131,7 +129,7 @@
   <div class="content">
     <h3>청원목록</h3>
     <div class="category-buttons">
-      <button>수리</button>
+      <button onclick="location.href='/petition/petition_list?petifield=수리'">수리</button>
       <button>교내행사</button>
       <button>강의</button>
       <button>홈페이지</button>
@@ -206,7 +204,7 @@
         <button>2</button>
         <button>Next</button>
       </div>
-      <button>청원하기</button>
+      <button onclick="location.href='/petition/petition_add'">청원하기</button>
     </div>
   </div>
 </div>

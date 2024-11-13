@@ -117,13 +117,11 @@
             cursor: pointer;
         }
     </style>
+    <link rel="stylesheet" href="/board/css/board_list.css">
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        청원 작성
-        <button class="login">Log in</button>
-    </div>
+   {{>layout/header}}
 
     <div class="sidebar">
         <div class="section">
@@ -149,32 +147,32 @@
     </div>
 
     <div class="content">
+        <form class="form-group" id="petition" action="/petition/petition_insert" method="post">
+            <label for="petiTitle">청원제목</label>
+            <input type="text" id="petiTitle" name="petiTitle">
+            <div class="form-group">
+            <label for="petiField">분야</label>
+                <select id="petiField" name="petiField">
+                    <option value="수리">수리</option>
+                    <option value="교내행사">교내행사</option>
+                    <option value="강의">강의</option>
+                    <option value="홈페이지">홈페이지</option>
+                    <option value="급식">급식</option>
+                    <option value="기숙사">기숙사</option>
+                    <option value="학생회">학생회</option>
+                    <option value="기타">기타</option>
+                </select>
+            </div>
         <div class="form-group">
-            <label for="title">청원제목</label>
-            <input type="text" id="title" name="title">
-        </div>
-        <div class="form-group">
-            <label for="category">분야</label>
-            <select id="category" name="category">
-                <option value="수리">수리</option>
-                <option value="교내행사">교내행사</option>
-                <option value="강의">강의</option>
-                <option value="홈페이지">홈페이지</option>
-                <option value="급식">급식</option>
-                <option value="기숙사">기숙사</option>
-                <option value="학생회">학생회</option>
-                <option value="기타">기타</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea id="content" name="content" rows="10"></textarea>
+            <label for="petiContent">내용</label>
+            <textarea id="petiContent" name="petiContent" rows="10"></textarea>
         </div>
         <div class="buttons">
             <button onclick="openModal()">작성하기</button>
             <button>취소</button>
         </div>
-    </div>
+        </form>
+
 </div>
 
 <!-- Modal -->
@@ -194,6 +192,9 @@
     }
     function confirmYes() {
         document.getElementById("modal").style.display = "none";
+
+
+        $("#petition").submit();
         alert("청원이 등록되었습니다.");
         // 여기에 작성 완료 처리를 추가할 수 있습니다.
     }

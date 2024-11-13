@@ -20,6 +20,7 @@ public class PetitionServiceImpl implements IPetitionService{
         if(dto == null){
             return null;
         }
+        dto.setUserId(id);
 
         //원래 코드에도 임시로 id받아오지만 추후 IUser에서 id를 받아오는 형태로 수정할 예정이라고 함
         this.petitionMyBatisMapper.insert(dto);

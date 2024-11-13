@@ -13,9 +13,6 @@ public interface IPetition {
     String getPetiField();
     void setPetiField(String petiField);
 
-/*    String getPetiEffect();                   //사용 중지(
-    void setPetiEffect(String petiEffect);*/
-
     String getPetiContent();
     void setPetiContent(String petiContent);
 

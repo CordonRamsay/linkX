@@ -3,6 +3,7 @@ package com.mjc.linkx.petition;
 
 import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
@@ -25,15 +26,18 @@ public class PetitionController{
     private final UserService userService;
 
     @GetMapping("/petition_list")               //청원글 리스트 조회
-    public String petitionList(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model) {
+    public String petitionList(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model, HttpSession session) {
         try{
             Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);
+
+            IUser loginUser =(IUser) session.getAttribute("LoginUser");
+            model.addAttribute("nickname",loginUser.getNickname());
             model.addAttribute("petitionList",list);
         }catch(LoginAccessException ex){
             log.error(ex.toString());
-            return "redirect:/login/login";
+            return "redirect:/session-login/login";
         }catch(Exception ex){
             log.error(ex.toString());
         }

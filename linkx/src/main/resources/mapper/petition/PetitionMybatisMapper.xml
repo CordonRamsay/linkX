@@ -14,7 +14,7 @@
                                     ,userId
 
                                    )
-        VALUES ( #{petititle}
+        VALUES ( #{petiTitle}
                 ,#{petiField}
                , #{petiContent}
                 ,#{userId}
