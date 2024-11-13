@@ -8,12 +8,7 @@
     <title>자유 게시판</title>
 </head>
 <body>
-
-<div class="header">
-    <h1 onclick="location.href='/'" style="cursor: pointer">Link X</h1>
-    <button class="login-btn" onclick="location.href='/session-login/login'">Log in</button>
-</div>
-
+{{>layout/header}}
 <div class="list-container">
     <div class="sidebar">
         <h2>게시판</h2>
@@ -78,7 +73,7 @@
             {{#boardList}}
             <tr>
                 <td>{{id}}</td>
-                <td class="title" onclick="location.href='/boardFree/board_view?id={{id}}'">{{title}}</td>
+                <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
                 <td>{{createName}}</td>
                 <td>{{createDt}}</td>
                 <td>{{viewQty}}</td>

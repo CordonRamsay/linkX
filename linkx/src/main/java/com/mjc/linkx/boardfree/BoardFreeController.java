@@ -5,10 +5,12 @@ package com.mjc.linkx.boardfree;
 import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.boardlike.BoardLikeDto;
 import com.mjc.linkx.boardlike.IBoardLikeService;
+import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
 import com.mjc.linkx.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,14 +25,14 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @RequestMapping("/boardFree")
-public class BoardFreeController {
+public class BoardFreeController implements IResponseController {
 
     private final IBoardFreeService boardFreeService;
     private final UserService userService;
     private final IBoardLikeService boardLikeService;
 
     @GetMapping("/board_list")
-    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model) {
+    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
 
 
         try {
@@ -39,10 +41,19 @@ public class BoardFreeController {
             List<BoardFreeDto> list = this.boardFreeService.findAllByNameContains(searchBoardDto);
 
 
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            // 로그인이 되어있으면 nickname을 화면으로 보내고, 안 되어있으면 로그인 페이지로 리다이렉트
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인을 해주세요");
+            }
             model.addAttribute("boardList", list);
+
+
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/login/login";
+            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -75,8 +86,8 @@ public class BoardFreeController {
     }
 
     // 자유게시글 상세보기 화면 return / 해당 글의 객체 전달
-    @GetMapping("/board_view")
-    public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
+    @GetMapping("/board_view/{id}")
+    public String boardView(@PathVariable Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
         try {
             IUser user = this.userService.getLoginUserById(userId);
             this.boardFreeService.addViewQty(id, user);
@@ -94,6 +105,7 @@ public class BoardFreeController {
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 viewDto에 복사
             BoardFreeDto viewDto = BoardFreeDto.builder().build();
             viewDto.copyFields(find);
+            viewDto.setBoardType(viewDto.getBoardType());
 
             // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
             model.addAttribute("BoardFreeDto", viewDto);
@@ -106,8 +118,8 @@ public class BoardFreeController {
     }
 
     // 자유게시글 수정 화면 return / 해당 글의 객체 전달
-    @GetMapping("/board_update")
-    public String boardModify(@RequestParam Long id, Model model) {
+    @GetMapping("/board_update/{id}")
+    public String boardModify(@PathVariable Long id, Model model) {
         try {
             IBoardFree find = this.boardFreeService.findById(id);
 
@@ -132,17 +144,17 @@ public class BoardFreeController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_view?id=" + dto.getId();
+        return "redirect:board_view/" + dto.getId();
     }
 
     // 해당 게시글 삭제 후 list 화면으로 redirect
-    @GetMapping("/board_delete")
-    public String boardDelete(@RequestParam Long id) {
+    @GetMapping("/board_delete/{id}")
+    public String boardDelete(@PathVariable Long id) {
         try {
             this.boardFreeService.delete(id);
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_list?page=1&searchName=";
+        return "redirect:/boardFree/board_list?page=1&searchName=";
     }
 }

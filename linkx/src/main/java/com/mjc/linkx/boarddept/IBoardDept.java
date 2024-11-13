@@ -13,11 +13,6 @@ public interface IBoardDept extends IBoardBase {
     String getContent();
     void setContent(String content);
 
-    Integer getViewQty();
-    void setViewQty(Integer viewQty);
-
-    Integer getLikeQty();
-    void setLikeQty(Integer likeQty);
 
     Long getMajorId();
     void setMajorId(Long majorId);

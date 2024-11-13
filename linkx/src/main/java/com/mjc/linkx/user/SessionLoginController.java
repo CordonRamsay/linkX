@@ -23,23 +23,23 @@ public class SessionLoginController {
 
     private final UserService userService;
 
-    @GetMapping(value = {"", "/"})
-    public String home(Model model, @SessionAttribute(name="userId", required = false)Long userId) {
-        try {
-            model.addAttribute("loginType", "session-login");
-            model.addAttribute("pageName", "세션 로그인");
-
-           UserDto user = this.userService.getLoginUserById(userId);
-
-            if (user != null) {
-                model.addAttribute("nickname", user.getNickname());
-            }
-        } catch (Exception ex) {
-            log.error(ex.toString());
-        }
-
-        return "login/home";
-    }
+//    @GetMapping(value = {"", "/"})
+//    public String home(Model model, @SessionAttribute(name="userId", required = false)Long userId) {
+//        try {
+//            model.addAttribute("loginType", "session-login");
+//            model.addAttribute("pageName", "세션 로그인");
+//
+//           UserDto user = this.userService.getLoginUserById(userId);
+//
+//            if (user != null) {
+//                model.addAttribute("nickname", user.getNickname());
+//            }
+//        } catch (Exception ex) {
+//            log.error(ex.toString());
+//        }
+//
+//        return "index";
+//    }
     // 회원가입 페이지 이동
     @GetMapping("/join")
     public String joinPage(Model model) {
@@ -75,7 +75,7 @@ public class SessionLoginController {
         }
 
         userService.join(joinRequest);  // 회원가입 처리
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     // 로그인 페이지 이동
@@ -111,13 +111,14 @@ public class SessionLoginController {
             // 세션에 userId를 넣어줌
             session.setAttribute("LoginUser",user);
             session.setAttribute("userId", user.getId());
+
             session.setMaxInactiveInterval(3600); // Session이 1시간동안 유지
 
         } catch (Exception ex) {
             log.error(ex.toString());
             return "login/login";
         }
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
@@ -129,7 +130,7 @@ public class SessionLoginController {
         if(session != null) {
             session.invalidate();
         }
-        return "redirect:/session-login";
+        return "redirect:/";
     }
 
     // 사용자 정보 페이지
@@ -166,7 +167,7 @@ public class SessionLoginController {
             return "redirect:/session-login/login";
         }
         if(!loginUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/session-login";
+            return "redirect:/";
         }
         return "login/admin";
     }

@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <title>자유게시판 상세보기</title>
     <link rel="stylesheet" href="/board/css/board_view.css">
+    <link rel="stylesheet" href="/board/css/board_list.css">
     <link rel="stylesheet" href="/board/css/board_drop.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-<header>
-    <h1 onclick="location.href='/'" style="cursor: pointer">Link X</h1>
-    <button>Log in</button>
-</header>
-
+{{>layout/header}}
 <div id="container">
     <nav>
         <ul>
@@ -60,6 +57,8 @@
 
     <main>
         <div class="board-header">
+            <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
+            <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
             <div class="boardListBtn" onclick="location.href='/boardFree/board_list?page=1&searchName='">자유게시판</div>
             <div class="board-title">{{BoardFreeDto.title}}</div>
             <div class="createInfo">
@@ -76,26 +75,36 @@
             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardFreeDto.id}});" width="25px" height="25px">
             <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
             <div class="buttons">
-                <button onclick="location.href='/boardFree/board_update?id={{BoardFreeDto.id}}'">수정</button>
+                <button onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
                 <button onclick="$.boardDelete({{BoardFreeDto.id}});">삭제</button>
             </div>
         </div>
 
         <div class="comments">
-
             <p><strong>{{User.nickname}}</strong>: 확인했습니다~ 참가 꼭 할게요</p>
-            <textarea placeholder="댓글 추가"></textarea>
-            <button>댓글 추가</button>
+            <label for="comment"></label><textarea id="comment"  name="comment" placeholder="댓글 추가"></textarea>
+            <button onclick="$.addComment();">댓글 추가</button>
         </div>
     </main>
 </div>
 </body>
 <script>
+
+    // 페이지 로드 후 실행되는 함수
+    window.onload = function () {
+        let like = "{{BoardFreeDto.updateDt}}";
+        var unlikeIcon = "/board/img/unlikeIcon.png";
+        var likeIcon = "/board/img/likeIcon.png";
+        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+
+        $.getBoardCommentList();
+    };
+
     // 게시글 삭제
     $.boardDelete = function (id) {
         let alert = confirm("해당 글을 삭제하시겠습니까?");
         if (alert) {
-            window.location.href="/boardFree/board_delete?id="+id;
+            window.location.href="/boardFree/board_delete/"+id;
         }
     };
 
@@ -140,11 +149,62 @@
         });
     }
 
-    window.onload = function () {
-        let like = "{{BoardFreeDto.updateDt}}";
-        var unlikeIcon = "/board/img/unlikeIcon.png";
-        var likeIcon = "/board/img/likeIcon.png";
-        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
-    };
+    // 댓글 추가
+    $.addComment= function() {
+        let type = $("#boardType").val();
+        let boardId = $("#id").val();
+        let comment = $("#comment").val();
+
+        let url = "/api/v1/comment";
+
+        if (comment === "") {
+            alert("댓글 내용을 입력해 주세요!");
+            return;
+        }
+        if (!confirm("댓글을 추가하시겠습니까?")) {
+            return;
+        }
+
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({"boardType": type, "boardId": boardId, "comment": comment})
+        }).done(function (data, status, xhr) {
+            console.log("data :", data, ",status : ", +status, ",xhr : ", xhr);
+            $("#comment").val("");
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
+            let message = getErrorMessage(jqXHR.responseJSON);
+            alert("댓글 추가를 실패했습니다. " + message);
+        });
+    }
+
+    // 댓글 조회 -> 로드 후 / 좋아요 할 때마다 호출 해줘야함
+    $.getBoardCommentList = function () {
+        let id = $("#id").val();
+        let type = $("#boardType").val();
+
+        $.ajax({
+            url: "/api/v1/comment/viewComment",
+            type: "POST",
+            datatype: "JSON",
+            data: JSON.stringify({"boardId": id, "boardType": type}),
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                let commentCount = data.responseData.length;
+                $("#commentCount").text(`${commentCount}`);
+                // 댓글 성공하면 댓글 리스트 다시 조회
+                $.showBoardCommentList(data.responseData);
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON.message);
+        });
+    }
 </script>
 </html>

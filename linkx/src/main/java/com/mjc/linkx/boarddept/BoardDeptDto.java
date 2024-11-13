@@ -23,10 +23,6 @@ public class BoardDeptDto extends BoardBaseDto implements IBoardDept {
     //  내용
 //    @Size(min = 2, max = 1000, message = "본문은 2자~1000자 사이로 입력해 주세요.")
     private String content;
-    //조회수
-    private Integer viewQty;
-    //좋아요 수
-    private Integer likeQty;
     // 학과 코드
     private Long majorId;
     //  댓글 수

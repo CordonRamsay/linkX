@@ -5,6 +5,7 @@ import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class BoardDeptController {
     private final UserService userService;
 
     @GetMapping("/board_list")
-    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model) {
+    public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
 
 
         try {
@@ -33,10 +34,18 @@ public class BoardDeptController {
             List<BoardDeptDto> list = this.boardDeptService.findAllByNameContains(searchBoardDto);
 
 
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            // 로그인이 되어있으면 nickname을 화면으로 보내고, 안 되어있으면 로그인 페이지로 리다이렉트
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인을 해주세요");
+            }
             model.addAttribute("boardList", list);
+
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/login/login";
+            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }

@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mjc.linkx.comment.ICommentMyBatisMapper">
     <insert id="insert" parameterType="CommentDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO comment_tbl (tbl,
+        INSERT INTO comment_tbl (boardType,
                                        boardId,
                                        comment,
                                        createId)
-        VALUES ( #{tbl},
+        VALUES ( #{boardType},
                 #{boardId},
                 #{comment},
                 #{createId} )
@@ -51,25 +51,23 @@
           AND deleteYn = false
     </update>
 
-    <select id="findAllByBoardIdTbl" parameterType="SearchCommentDto" resultType="CommentDto">
-        SELECT bct.id,
-               bct.comment,
-               bct.likeQty,
-               bct.boardId,
-               bct.createDt,
-               bct.createId,
+    <select id="findAllByBoardTypeId" parameterType="SearchCommentDto" resultType="CommentDto">
+        SELECT ct.id,
+               ct.comment,
+               ct.likeQty,
+               ct.boardId,
+               ct.createDt,
+               ct.createId,
                ut.nickname AS createName,
-               bct.updateDt,
-               bct.deleteYn,
-               cl.commentId
-        FROM comment_tbl bct
-                 LEFT JOIN user_tbl ut ON bct.createId = ut.id
-                 LEFT JOIN comment_like_tbl cl
-                           ON bct.id = cl.commentId
-                               AND cl.createId = #{createId}
-        WHERE bct.boardId = #{boardId}
-          AND bct.tbl = #{tbl}
-          AND bct.deleteYn = false
+               ct.updateDt,
+               ct.deleteYn,
+               clt.commentId
+        FROM comment_tbl ct
+                 LEFT JOIN user_tbl ut ON ct.createId = ut.id
+                 LEFT JOIN comment_like_tbl clt ON ct.id = clt.commentId AND clt.createId = #{createId}
+        WHERE ct.boardId = #{boardId}
+          AND ct.boardType = #{boardType}
+          AND ct.deleteYn = false
         ORDER BY ${orderByWord}
             LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

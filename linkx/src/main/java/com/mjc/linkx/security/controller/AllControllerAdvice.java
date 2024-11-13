@@ -22,6 +22,7 @@ public class AllControllerAdvice {
             , "/boardDept"
             , "/session-login"
             ,"/api/v1/boardfree"
+            ,"/api/v1/comment"
 
     };
 
