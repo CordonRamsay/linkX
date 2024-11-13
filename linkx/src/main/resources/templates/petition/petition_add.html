@@ -169,7 +169,7 @@
         </div>
         <div class="buttons">
             <button  type="button"  onclick="$.openModal()">작성하기</button>
-            <button>취소</button>
+            <button type="button" onclick="goBackList()">취소</button>
         </div>
         </form>
 
@@ -201,6 +201,15 @@
     }
     $.canclePeti = function(){
         $("#modal").css("display", "none");
+    }
+
+    function goBackList(){
+        if(document.referrer){
+            window.history.back();
+        }
+        else{
+            location.href='/petition/petition_list?petiField='
+        }
     }
 
 </script>
