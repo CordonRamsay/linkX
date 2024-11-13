@@ -97,7 +97,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 300px;
+            width: 500px;
             text-align: center;
             font-size: 14px;
         }
@@ -117,12 +117,12 @@
             cursor: pointer;
         }
     </style>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="/board/css/board_list.css">
 </head>
 <body>
 <div class="container">
    {{>layout/header}}
-
     <div class="sidebar">
         <div class="section">
             <h3>Link X</h3>
@@ -168,7 +168,7 @@
             <textarea id="petiContent" name="petiContent" rows="10"></textarea>
         </div>
         <div class="buttons">
-            <button onclick="openModal()">작성하기</button>
+            <button  type="button"  onclick="$.openModal()">작성하기</button>
             <button>취소</button>
         </div>
         </form>
@@ -178,29 +178,30 @@
 <!-- Modal -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <p>※ 청원등록 이후에는 게시글을 삭제할 수 없습니다.</p>
+        <p>※ 청원등록 이후에는 게시글을 <span style="color: red;">삭제</span>할 수 없습니다.</p>
+        <p>※ <span style="color: red;">청원</span>을 등록하시겠습니까?</p>
         <div class="modal-buttons">
-            <button onclick="confirmYes()">Y</button>
-            <button onclick="confirmNo()">N</button>
+            <button onclick="$.insertPeti()">Yes</button>
+            <button onclick="$.canclePeti()">No</button>
         </div>
     </div>
 </div>
-
+</div>
+</body>
 <script>
-    function openModal() {
-        document.getElementById("modal").style.display = "block";
+
+    $.openModal = function() {
+        $("#modal").css("display", "block");
     }
-    function confirmYes() {
-        document.getElementById("modal").style.display = "none";
 
-
+    $.insertPeti = function(){
+        $("#modal").css("display", "none");
         $("#petition").submit();
         alert("청원이 등록되었습니다.");
-        // 여기에 작성 완료 처리를 추가할 수 있습니다.
     }
-    function confirmNo() {
-        document.getElementById("modal").style.display = "none";
+    $.canclePeti = function(){
+        $("#modal").css("display", "none");
     }
+
 </script>
-</body>
 </html>

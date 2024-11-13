@@ -12,12 +12,15 @@
                                     , petiField
                                    , petiContent
                                     ,userId
-
+                                    ,createDt
+                                    ,endDt
                                    )
         VALUES ( #{petiTitle}
                 ,#{petiField}
                , #{petiContent}
                 ,#{userId}
+                , CURRENT_TIMESTAMP
+                ,DATE_ADD(CURRENT_TIMESTAMP,INTERVAL 7 DAY)
                )    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
 
     </insert>
@@ -56,14 +59,14 @@
              , pt.petiTitle
              , pt.petiField
              , pt.petiContent
-             , pt.createDt
-             , pt.endDt
+             , date_format(pt.createDt,"%Y-%m-%d") as createDt
+             , date_format(pt.endDt,"%Y-%m-%d") as endDt
              , ut.nickname AS userNickName
              , pt.agreeQty
              , pt.playing
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
-
+        where petiField like CONCAT ('%',#{petiField},'%')
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

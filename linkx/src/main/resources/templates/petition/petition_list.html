@@ -98,6 +98,7 @@
     }
   </style>
   <link rel="stylesheet" href="/board/css/board_list.css">
+  <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -127,16 +128,17 @@
   </div>
 
   <div class="content">
-    <h3>청원목록</h3>
+    <h3>청원목록 - <span id="petiField">전체</span></h3>
     <div class="category-buttons">
-      <button onclick="location.href='/petition/petition_list?petifield=수리'">수리</button>
-      <button>교내행사</button>
-      <button>강의</button>
-      <button>홈페이지</button>
-      <button>급식</button>
-      <button>기숙사</button>
-      <button>학생회</button>
-      <button>기타</button>
+      <button onclick="location.href='/petition/petition_list?petiField='">전체</button>
+      <button onclick="location.href='/petition/petition_list?petiField=수리'">수리</button>
+      <button onclick="location.href='/petition/petition_list?petiField=교내행사'">교내행사</button>
+      <button onclick="location.href='/petition/petition_list?petiField=강의'">강의</button>
+      <button onclick="location.href='/petition/petition_list?petiField=홈페이지'">홈페이지</button>
+      <button onclick="location.href='/petition/petition_list?petiField=급식'">급식</button>
+      <button onclick="location.href='/petition/petition_list?petiField=기숙사'">기숙사</button>
+      <button onclick="location.href='/petition/petition_list?petiField=학생회'">학생회</button>
+      <button onclick="location.href='/petition/petition_list?petiField=기타'">기타</button>
     </div>
 
     <div class="search-bar">
@@ -209,4 +211,20 @@
   </div>
 </div>
 </body>
+<script>
+  // 페이지 로드 될 때 자동 실행되는 함수
+  $(function(){
+    let petiField = "{{searchPetiDto.petiField}}";
+
+    if (petiField.trim() === "") {
+      petiField = "전체";
+      $("#petiField").text(petiField);
+
+    }
+    $("#petiField").text(petiField);
+
+  });
+
+
+</script>
 </html>
