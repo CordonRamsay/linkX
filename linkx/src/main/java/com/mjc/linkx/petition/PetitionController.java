@@ -73,6 +73,9 @@ public class PetitionController{
             //this.petitionService.addViewQty(id, user);        원래 이 항목은 조회수를 +1하는 항목이었지만 청원은 조회수 항목이 없어서 비활성화 / 추후 조회수가 필요하면 활성화할것
             IPetition find = this.petitionService.findById(id);
 
+            //동의자수 조회 수
+
+
             //IPetition 타입의 find의 데이터를 petitionDto타입의 dto에 복사
             PetitionDto viewDto = PetitionDto.builder().build();
             viewDto.copyFields(find);

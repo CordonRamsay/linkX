@@ -97,7 +97,6 @@
         UPDATE petition_tbl
         SET agreeQty = agreeQty + 1
         WHERE id = #{id}
-        AND playing = false
     </update>
 
 
