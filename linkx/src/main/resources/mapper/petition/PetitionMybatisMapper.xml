@@ -68,7 +68,9 @@
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
         where petiField like CONCAT ('%',#{petiField},'%')
-          AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
+        <if test="searchType != null and searchType != ''">
+            AND ${searchType} LIKE CONCAT('%', #{searchName}, '%')
+        </if>
         ORDER BY ${orderByWord}
 
     </select>
@@ -95,6 +97,7 @@
         UPDATE petition_tbl
         SET agreeQty = agreeQty + 1
         WHERE id = #{id}
+        AND playing = false
     </update>
 
 
