@@ -73,7 +73,7 @@ public class PetitionServiceImpl implements IPetitionService{
                 .sigDt(String.valueOf(LocalDateTime.now()))
                 .build();
 
-        Integer count = this.PetitionSinitureMapper.countByIdAndUser(psdto);
+        Integer count = this.petiSignitureMapper.countByIdAndUser(psdto);
         if(count > 0){
             return;
         }

@@ -67,10 +67,8 @@
              , pt.playing
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
-        where pt.petiField like CONCAT ('%',#{petiField},'%')
-        <if test="searchType != null and searchType != ''">
-            AND ${searchType} LIKE CONCAT('%', #{searchName}, '%')
-        </if>
+        where petiField like CONCAT ('%',#{petiField},'%')
+          AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
         ORDER BY ${orderByWord}
 
     </select>
