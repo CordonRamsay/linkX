@@ -157,7 +157,10 @@
 
 
       <!-- 검색 -->
-      <form id="search-peti" name="search-peti" action="/petiton/petition/petition_list" method="GET">
+      <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
+        <!-- Hidden input to keep petiField in search -->
+        <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
+
         <select id="searchField" name="searchField">
           <option value="petiTitle">청원명</option>
           <option value="petiContent">내용</option>
@@ -180,6 +183,7 @@
           <th>마감일</th>
         </tr>
         </thead>
+        <!--db에서 값을 가져와 리스트 출력(반복)-->
         <tbody>
         {{#petitionList}}
         <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">

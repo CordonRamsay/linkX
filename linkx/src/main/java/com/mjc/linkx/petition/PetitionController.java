@@ -28,6 +28,12 @@ public class PetitionController{
     @GetMapping("/petition_list")               //청원글 리스트 조회
     public String petitionList(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model, HttpSession session) {
         try{
+            // petiField 값이 검색 중에도 유지되도록 확인
+            String petiField = searchPetiDto.getPetiField();
+            if (petiField == null || petiField.trim().isEmpty()) {
+                searchPetiDto.setPetiField(""); // 기본값 설정
+            }
+
             Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);
