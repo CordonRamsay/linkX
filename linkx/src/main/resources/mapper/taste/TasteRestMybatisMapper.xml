@@ -27,11 +27,50 @@
     <select id="getTasteList" resultType="TasteRestDto" >
         SELECT id
                 , title
+                , category
+                , addr
+                , roadaddr
                 , mapx
                 , mapy
         FROM taste_rest_tbl
     </select>
 
+    <!-- 특정 음식점의 리뷰 리스트 조회 -->
+    <select id="getReviewsByRestaurantId" parameterType="Long" resultType="TasteReviewDto">
+        SELECT r.id
+             , r.reviewTitle
+             , r.reviewContent
+             , r.reviewStar
+             , r.reviewLike
+             , r.reviewDate
+             , u.nickname AS userNickname
+        FROM taste_review_tbl r
+                 JOIN user_tbl u ON r.userId = u.id
+        WHERE r.restId = #{restId}
+        ORDER BY r.reviewDate DESC
+    </select>
+
+    <insert id="insertReview" parameterType="TasteReviewDto" useGeneratedKeys="true" keyProperty="id">  <!-- useGeneratedKeys 속성으로 자동생성된 키를 가져오고,
+                                                                                                    keyProperty 속성에 "id" 필드를 정의하여 id 값이
+                                                                                                     자동 증감되어 DB에 저장된다 -->
+
+        INSERT INTO taste_review_tbl ( reviewTitle
+        , reviewContent
+        , restId
+        , userId
+        , reviewDate
+        , reviewStar
+        , reviewLike
+        , userNickName)
+        VALUES ( #{reviewTitle}
+        , #{reviewContent}
+        , #{restId}
+        , #{userId}
+        , #{reviewDate}
+        , #{reviewStar}
+        , #{reviewLike}
+        , #{userNickName})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
+    </insert>
 
 
 </mapper>
