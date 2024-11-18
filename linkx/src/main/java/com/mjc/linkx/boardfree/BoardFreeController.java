@@ -13,6 +13,7 @@ import com.mjc.linkx.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -112,8 +113,13 @@ public class BoardFreeController implements IResponseController {
             }else{
                 throw new LoginAccessException("로그인 필요");
             }
+
             this.boardFreeService.addViewQty(id, loginUser);
             IBoardFree find = this.boardFreeService.findById(id);
+
+            //썸머노트로 인한 content HTML 태그 제거
+            String plainTextContent = Jsoup.parse(find.getContent()).text();
+            find.setContent(plainTextContent);
 
             // 좋아요 개수 조회 후 updateDt값 넣기
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()

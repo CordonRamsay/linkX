@@ -73,7 +73,9 @@ main {
     padding: 10px 0px;
     font-weight: bold;
 }
-
+.writer{
+    display: inline-block;
+}
 .post-header h2 {
     margin: 0;
 }
