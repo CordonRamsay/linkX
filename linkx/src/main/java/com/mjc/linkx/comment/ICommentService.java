@@ -13,6 +13,8 @@ public interface ICommentService {
     // 댓글 조회
     List<CommentDto> findAllByBoardTypeId(SearchCommentDto dto,IUser user);
 
+    // 댓글 상세 조회
+    CommentDto findByCommentId(Long id);
     // 댓글 수정
     void update(CommentDto dto);
 

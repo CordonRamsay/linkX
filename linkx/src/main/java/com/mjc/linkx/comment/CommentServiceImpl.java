@@ -43,7 +43,18 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
+    public CommentDto findByCommentId(Long id){
+        if (id == null) {
+            return null;
+        }
+        CommentDto find = this.commentMyBatisMapper.findByCommentId(id);
+        return find;
+    }
+    @Override
     public void update(CommentDto dto) {
+        if (dto == null) {
+            return;
+        }
 
     }
 

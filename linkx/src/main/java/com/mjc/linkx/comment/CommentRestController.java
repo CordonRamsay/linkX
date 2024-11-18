@@ -28,7 +28,7 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 추가
     @PostMapping
-    public ResponseEntity<ResponseDto> insert(Model model, @RequestBody CommentDto dto, HttpSession session) {
+    public ResponseEntity<ResponseDto> insert(@RequestBody CommentDto dto, HttpSession session) {
         try {
             if (dto == null) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
@@ -40,27 +40,28 @@ public class CommentRestController implements IResponseController {
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
             return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
-        }catch (IdNotFoundException ex) {
+        } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
-    
+
     // 댓글 가져오기
     @GetMapping("/board/{boardType}/{boardId}/comments")
-    public ResponseEntity<ResponseDto> commentList(@PathVariable String boardType,@PathVariable Long boardId, HttpSession session) {
+    public ResponseEntity<ResponseDto> findAllComments(@PathVariable String boardType, @PathVariable Long boardId, HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
-//            if (loginUser == null) {
-//                throw new LoginAccessException("로그인 필요");
-//            }
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser == null) {
+                throw new LoginAccessException("로그인 필요");
+            }
 
             if (boardType == null) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
-            }if (boardId == null) {
+            }
+            if (boardId == null) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
             SearchCommentDto dto = SearchCommentDto.builder()
@@ -72,15 +73,85 @@ public class CommentRestController implements IResponseController {
             List<CommentDto> result = this.commentService.findAllByBoardTypeId(dto, loginUser);
 
             return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
-//        } catch (LoginAccessException ex) {
-//            log.error(ex.toString());
-//            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
-        }catch (IdNotFoundException ex) {
+        } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
+        } catch (IdNotFoundException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
+        }
+    }
+
+    // 댓글 상세정보 조회
+    @GetMapping("/board/{boardType}/{boardId}/comments/{id}")
+    public ResponseEntity<ResponseDto> findCommentById(@PathVariable String boardType, @PathVariable Long boardId, @PathVariable Long id, HttpSession session) {
+        try {
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser == null) {
+                throw new LoginAccessException("로그인 필요");
+            }
+
+            if (boardType == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+            if (boardId == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+            if (id == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+
+            CommentDto find = this.commentService.findByCommentId(id);
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", find);
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
+        } catch (IdNotFoundException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
+        }
+    }
+
+    // 댓글 수정
+    @PatchMapping("/board/{boardType}/{boardId}/comments/{id}")
+    public ResponseEntity<ResponseDto> updateComment(@PathVariable String boardType,
+                                                     @PathVariable Long boardId, @PathVariable Long id,
+                                                     @RequestBody CommentDto dto, HttpSession session) {
+        try {
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser == null) {
+                throw new LoginAccessException("로그인 필요");
+            }
+
+            if (boardType == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+            if (boardId == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+            if (id == null) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+
+
+            this.commentService.update(dto);
+
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", boardType);
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
+        } catch (IdNotFoundException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
 }

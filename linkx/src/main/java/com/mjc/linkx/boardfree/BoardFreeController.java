@@ -114,30 +114,34 @@ public class BoardFreeController implements IResponseController {
                 throw new LoginAccessException("로그인 필요");
             }
 
+            // 조회수 증가
             this.boardFreeService.addViewQty(id, loginUser);
+            // 게시글 조회
             IBoardFree find = this.boardFreeService.findById(id);
 
             //썸머노트로 인한 content HTML 태그 제거
             String plainTextContent = Jsoup.parse(find.getContent()).text();
             find.setContent(plainTextContent);
 
-            // 좋아요 개수 조회 후 updateDt값 넣기
+            // 게시글에 좋아요를 했는지 안했는지 체크
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                     .boardType(find.getBoardType())
                     .createId(loginUser.getId())
                     .boardId(id)
                     .build();
+            
             Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
-            find.setUpdateDt(likeCount.toString());
+            if (likeCount == 1) {
+                find.setLikeYn(true);
+            }
 
-            // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 viewDto에 복사
+            // Dto 형변환
             BoardFreeDto viewDto = BoardFreeDto.builder().build();
             viewDto.copyFields(find);
             viewDto.setBoardType(viewDto.getBoardType());
 
-            // findById로 찾아온 BoardFreeDto 객체 뷰에 전달
+            // Model에 데이터 추가
             model.addAttribute("BoardFreeDto", viewDto);
-            // findById로 찾아온 User 객체 뷰에 전달
             model.addAttribute("User", loginUser);
 
         } catch (LoginAccessException ex) {
