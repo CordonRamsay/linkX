@@ -2,6 +2,8 @@ package com.mjc.linkx.boarddept;
 
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
+import com.mjc.linkx.boardlike.BoardLikeDto;
+import com.mjc.linkx.boardlike.IBoardLikeService;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserService;
@@ -23,7 +25,7 @@ import java.util.List;
 public class BoardDeptController {
 
     private final IBoardDeptService boardDeptService;
-    private final UserService userService;
+    private final IBoardLikeService boardLikeService;
 
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
@@ -78,16 +80,38 @@ public class BoardDeptController {
     }
 
     @GetMapping("/board_view")
-    public String boardView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId) {
+    public String boardView(@RequestParam Long id, Model model, HttpSession session) {
         try {
-            IUser user = this.userService.getLoginUserById(userId);
-            this.boardDeptService.addViewQty(id, user);
+            //유저 가져오기
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
 
+            // 조회수 증가
+            this.boardDeptService.addViewQty(id, loginUser);
+            // 게시글 조회
             IBoardDept find = this.boardDeptService.findById(id);
 
             //썸머노트로 인한 content HTML 태그 제거
             String plainTextContent = Jsoup.parse(find.getContent()).text();
             find.setContent(plainTextContent);
+
+            // 게시글에 좋아요를 했는지 안했는지 체크 ( 페이지 로드 시 이미지를 선택하여 보여주기 위함 )
+            BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                    .boardType(find.getBoardType())
+                    .createId(loginUser.getId())
+                    .boardId(id)
+                    .build();
+
+            Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
+            if (likeCount == 1) {
+                find.setLikeYn(true);
+            }else{
+                find.setLikeYn(false);
+            }
 
             BoardDeptDto viewDto = BoardDeptDto.builder().build();
             viewDto.copyFields(find);

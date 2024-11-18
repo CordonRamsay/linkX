@@ -58,6 +58,9 @@ public interface IBoardDept extends IBoardBase {
         if (from.getCountComment() != null) {
             this.setCountComment(from.getCountComment());
         }
+        if (from.getLikeYn() != null) {
+            this.setLikeYn(from.getLikeYn());
+        }
 
     }
 }

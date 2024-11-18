@@ -89,6 +89,18 @@
 </div>
 </body>
 <script>
+    // 페이지 로드 후 실행되는 함수
+    window.onload = function () {
+        // mustahce로 받아온 값은 문자열 이기때문에 boolean형으로 변경해준다.
+        let like = "{{BoardDeptDto.likeYn}}" === "true";
+        var unlikeIcon = "/board/img/unlikeIcon.png";
+        var likeIcon = "/board/img/likeIcon.png";
+        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+
+        $.getBoardCommentList();
+    };
+
+    // 게시글 삭제
     $.boardDelete = function (id) {
         let alert = confirm("해당 게시글을 삭제하시겠습니까?");
         if (alert) {
@@ -121,7 +133,7 @@
                 $("#likeQty").text(data.responseData.likeQty);
 
                 // 좋아요 상태에 따른 아이콘 업데이트
-                let count = data.responseData.updateDt * 1;
+                let count = data.responseData.likeYn * 1;
                 if (count > 0) {
                     likeIcon.attr("src", "/board/img/likeIcon.png");
                 } else {

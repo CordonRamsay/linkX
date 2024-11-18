@@ -29,7 +29,6 @@ import java.util.List;
 public class BoardFreeController implements IResponseController {
 
     private final IBoardFreeService boardFreeService;
-    private final UserService userService;
     private final IBoardLikeService boardLikeService;
 
     @GetMapping("/board_list")
@@ -123,7 +122,7 @@ public class BoardFreeController implements IResponseController {
             String plainTextContent = Jsoup.parse(find.getContent()).text();
             find.setContent(plainTextContent);
 
-            // 게시글에 좋아요를 했는지 안했는지 체크
+            // 게시글에 좋아요를 했는지 안했는지 체크 ( 페이지 로드 시 이미지를 선택하여 보여주기 위함)
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                     .boardType(find.getBoardType())
                     .createId(loginUser.getId())
@@ -133,6 +132,8 @@ public class BoardFreeController implements IResponseController {
             Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
             if (likeCount == 1) {
                 find.setLikeYn(true);
+            }else{
+                find.setLikeYn(false);
             }
 
             // Dto 형변환

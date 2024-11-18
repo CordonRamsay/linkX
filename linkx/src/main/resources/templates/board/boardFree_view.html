@@ -97,10 +97,11 @@
 
     // 페이지 로드 후 실행되는 함수
     window.onload = function () {
-        let like = "{{BoardFreeDto.likeYn}}";
+        // mustahce로 받아온 값은 문자열 이기때문에 boolean형으로 변경해준다.
+        let like = "{{BoardFreeDto.likeYn}}" === "true";
         var unlikeIcon = "/board/img/unlikeIcon.png";
         var likeIcon = "/board/img/likeIcon.png";
-        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+        $("#likeIcon").attr("src", (like ? likeIcon : unlikeIcon));
 
         $.getBoardCommentList();
     };
