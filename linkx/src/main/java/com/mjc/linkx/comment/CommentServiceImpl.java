@@ -51,16 +51,23 @@ public class CommentServiceImpl implements ICommentService{
         return find;
     }
     @Override
-    public void update(CommentDto dto) {
+    public IComment update(CommentDto dto) {
         if (dto == null) {
-            return;
+            return null;
         }
+        dto.setUpdateInfo();
+        this.commentMyBatisMapper.update(dto);
+
+        return dto;
 
     }
 
     @Override
     public void delete(Long id) {
-
+        if (id == null) {
+            return;
+        }
+        this.commentMyBatisMapper.delete(id);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface ICommentService {
     // 댓글 상세 조회
     CommentDto findByCommentId(Long id);
     // 댓글 수정
-    void update(CommentDto dto);
+    IComment update(CommentDto dto);
 
     // 댓글 삭제
     void delete(Long id);

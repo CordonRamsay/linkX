@@ -167,6 +167,11 @@ public class BoardFreeController implements IResponseController {
 
             IBoardFree find = this.boardFreeService.findById(id);
 
+
+            //썸머노트로 인한 content HTML 태그 제거
+            String plainTextContent = Jsoup.parse(find.getContent()).text();
+            find.setContent(plainTextContent);
+
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
             BoardFreeDto updateDto = BoardFreeDto.builder().build();
             updateDto.copyFields(find);

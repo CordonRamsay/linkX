@@ -15,7 +15,7 @@
 
     <update id="update" parameterType="CommentDto">
         UPDATE comment_tbl
-        SET comment = #{comment}, updateDt = #{updateDt}, boardId=#{boardId}
+        SET comment = #{comment}, updateDt = #{updateDt}
         WHERE id = #{id}
     </update>
 
