@@ -62,4 +62,16 @@ public class PetitionServiceImpl implements IPetitionService{
     public void addagreeQty(Long id, IUser user) {
 
     }
+    //findAll구현 안돼어 있어서 구현해야 함
+    public List<PetitionDto> findAll(){
+        return petitionMyBatisMapper.findAll();
+    }
+
+
+    // playing 상태 업데이트 메서드
+    public void updatePlaying(Long id, Boolean playing) {
+        petitionMyBatisMapper.updatePlaying(id, playing);
+    }
+
+
 }

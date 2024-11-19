@@ -21,4 +21,7 @@ public interface IPetitionMyBatisMapper {
     void addAgreeQty(Long id);              //동의자 수 증가
 
 
+    List<PetitionDto> findAll();
+
+    void updatePlaying(Long id, Boolean playing);
 }

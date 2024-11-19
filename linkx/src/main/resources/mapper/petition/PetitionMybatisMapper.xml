@@ -72,6 +72,12 @@
         ORDER BY pt.id DESC
     </select>
 
+    <!--전체 가져오기-->
+    <select id="findAll" parameterType="SearchPetiDto" resultType="PetitionDto">
+            SELECT *
+            FROM petition_tbl
+    </select>
+
     <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음
     <select id="countAllByNameContains" parameterType="SearchBoardDto" resultType="Integer">
         SELECT COUNT(*)
@@ -94,8 +100,18 @@
         UPDATE petition_tbl
         SET agreeQty = agreeQty + 1
         WHERE id = #{id}
-        AND playing = false
+        AND playing = true
     </update>
+
+
+
+    <update id="updatePlaying">
+        UPDATE petition_tbl
+        SET playing = #{playing}
+        WHERE id = #{id}
+    </update>
+
+
 
 
 </mapper>
