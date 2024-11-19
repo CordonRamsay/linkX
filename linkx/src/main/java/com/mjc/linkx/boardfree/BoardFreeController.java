@@ -31,6 +31,10 @@ public class BoardFreeController implements IResponseController {
     private final IBoardFreeService boardFreeService;
     private final IBoardLikeService boardLikeService;
 
+    @GetMapping("/test")
+    public  String testList() {
+        return "board/boardlist2";
+    }
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
 
@@ -45,7 +49,7 @@ public class BoardFreeController implements IResponseController {
             // 로그인이 되어있으면 nickname을 화면으로 보내고, 안 되어있으면 로그인 페이지로 리다이렉트
             if (loginUser != null) {
                 model.addAttribute("nickname", loginUser.getNickname());
-            }else{
+            } else {
                 throw new LoginAccessException("로그인을 해주세요");
             }
             model.addAttribute("boardList", list);
