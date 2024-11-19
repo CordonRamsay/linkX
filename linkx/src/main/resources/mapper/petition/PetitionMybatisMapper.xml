@@ -56,21 +56,20 @@
 
     <!-- 게시글 리스트 조회 -->
     <select id="findAllByNameContains" parameterType="SearchPetiDto" resultType="PetitionDto">
-        SELECT pt.id
-             , pt.petiTitle
-             , pt.petiField
-             , pt.petiContent
-             , date_format(pt.createDt,"%Y-%m-%d") as createDt
-             , date_format(pt.endDt,"%Y-%m-%d") as endDt
-             , ut.nickname AS userNickName
-             , pt.agreeQty
-             , pt.playing
+        SELECT pt.id,
+               pt.petiTitle,
+               pt.petiField,
+               pt.petiContent,
+               date_format(pt.createDt,"%Y-%m-%d") as createDt,
+               date_format(pt.endDt,"%Y-%m-%d") as endDt,
+               ut.nickname AS userNickName,
+               pt.agreeQty,
+               pt.playing
         FROM petition_tbl pt
-        LEFT JOIN user_tbl ut ON pt.userId = ut.id
-        WHERE pt.petiField like CONCAT('%', #{petiField}, '%')
-            AND ${searchType} LIKE CONCAT('%', #{searchName}, '%')
-        ORDER BY ${orderByWord}
-
+                 LEFT JOIN user_tbl ut ON pt.userId = ut.id
+        WHERE pt.petiField LIKE CONCAT('%', #{petiField}, '%')
+          AND pt.petiTitle LIKE CONCAT('%', #{searchName}, '%')
+        ORDER BY pt.id DESC
     </select>
 
     <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음

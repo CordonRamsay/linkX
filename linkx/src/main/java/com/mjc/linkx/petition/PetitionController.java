@@ -33,6 +33,11 @@ public class PetitionController{
             if (petiField == null || petiField.trim().isEmpty()) {
                 searchPetiDto.setPetiField(""); // 기본값 설정
             }
+            // searchName 값이 검색 중에도 유지되도록(일단 위에랑 같이 해봄)
+            String searchName = searchPetiDto.getSearchName();
+            if (searchName == null || searchName.trim().isEmpty()) {
+                searchPetiDto.setSearchName("");
+            }
 
             Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
             searchPetiDto.setTotal(total);
