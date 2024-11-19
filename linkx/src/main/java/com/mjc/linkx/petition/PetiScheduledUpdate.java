@@ -13,7 +13,7 @@ public class PetiScheduledUpdate {
     @Autowired
     private PetitionServiceImpl petitionService;
 
-    // 자정마다 실행되도록 스케줄링 설정(임시로 1분마다 변경하도록 수정)
+    // 자정마다 실행되도록 스케줄링 설정(현재는 테스트를 위해 1분마다 변경하도록 수정)
     @Scheduled(cron = "0 0/1 * * * *")
     public void updatePetitonStatuses() {
         LocalDate today = LocalDate.now();
