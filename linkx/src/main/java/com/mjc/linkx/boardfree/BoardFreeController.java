@@ -46,12 +46,8 @@ public class BoardFreeController implements IResponseController {
 
 
             IUser loginUser = (IUser) session.getAttribute("LoginUser");
-            // 로그인이 되어있으면 nickname을 화면으로 보내고, 안 되어있으면 로그인 페이지로 리다이렉트
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            } else {
-                throw new LoginAccessException("로그인을 해주세요");
-            }
+
+
             model.addAttribute("boardList", list);
 
 
