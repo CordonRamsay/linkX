@@ -36,19 +36,8 @@ public class BoardDeptController {
             searchBoardDto.setTotal(total);
             List<BoardDeptDto> list = this.boardDeptService.findAllByNameContains(searchBoardDto);
 
-
-            IUser loginUser = (IUser) session.getAttribute("LoginUser");
-            // 로그인이 되어있으면 nickname을 화면으로 보내고, 안 되어있으면 로그인 페이지로 리다이렉트
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            }else{
-                throw new LoginAccessException("로그인을 해주세요");
-            }
             model.addAttribute("boardList", list);
 
-        } catch (LoginAccessException ex) {
-            log.error(ex.toString());
-            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }

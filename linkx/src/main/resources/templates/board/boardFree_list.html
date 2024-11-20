@@ -4,41 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/board/css/board_list.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>자유 게시판</title>
     {{>layout/links}}
-
 </head>
 <body class="index-page">
 {{>layout/header}}
 <main class="main">
     <section>
-        <div class="board">
-            <h2>자유 게시판</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>NO</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
-                    <th>좋아요</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#boardList}}
-                <tr>
-                    <td>{{id}}</td>
-                    <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
-                    <td>{{createName}}</td>
-                    <td>{{createDt}}</td>
-                    <td>{{viewQty}}</td>
-                    <td>{{likeQty}}</td>
-                </tr>
-                {{/boardList}}
-                <!-- 더 많은 게시글 데이터를 여기에 추가 -->
-                </tbody>
-            </table>
+        <div class="container mx-auto py-16 px-2">
+            <div class="container text-center mb-4 aos-init aos-animate" data-aos="fade-down" data-aos-delay="100">
+                <h1 class="text-4xl font-bold text-gray-700">자유 게시판</h1>
+                <p class="text-gray-500 mb-4">자유롭게 글을 남겨 보세요</p>
+            </div>
+            <div class="board-container bg-white shadow-md rounded-lg p-3">
+                <table class="min-w-full table-auto text-left">
+                    <thead>
+                    <tr class="text-gray-600 bg-gray-100 uppercase text-sm tracking-wider">
+                        <th class="py-2 text-left">NO</th>
+                        <th class="text-right text-center">제목</th>
+                        <th class="text-center">작성자</th>
+                        <th class="text-center">작성일</th>
+                        <th class="text-center">조회수</th>
+                        <th class="text-center">좋아요</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#boardList}}
+                    <tr class="py-4 board-content border-b hover:bg-gray-50 highlight">
+                        <td class="py-4 text-left">{{id}}</td>
+                        <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
+                        <td >{{createName}}</td>
+                        <td >{{createDt}}</td>
+                        <td >{{viewQty}}</td>
+                        <td >{{likeQty}}</td>
+                    </tr>
+                    {{/boardList}}
+                    <!-- 더 많은 게시글 데이터를 여기에 추가 -->
+                    </tbody>
+                </table>
+            </div>
+
 
             <div class="text-gray-600 mt-3">{{searchBoardDto.total}}개의 게시글</div>
 

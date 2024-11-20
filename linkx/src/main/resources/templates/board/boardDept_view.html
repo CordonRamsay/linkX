@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="/board/css/board_list.css">
     <link rel="stylesheet" href="/board/css/board_drop.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-
+    {{>layout/links}}
 </head>
-<body>
+<body class="index-page">
 {{>layout/header}}
 <div id="container">
     <nav>
@@ -87,6 +87,7 @@
         </div>
     </main>
 </div>
+{{>layout/scripts}}
 </body>
 <script>
     // 페이지 로드 후 실행되는 함수

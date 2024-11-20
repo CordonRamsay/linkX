@@ -37,23 +37,12 @@ public class BoardFreeController implements IResponseController {
     }
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
-
-
         try {
             Integer total = this.boardFreeService.countAllByNameContains(searchBoardDto);
             searchBoardDto.setTotal(total);
             List<BoardFreeDto> list = this.boardFreeService.findAllByNameContains(searchBoardDto);
 
-
-            IUser loginUser = (IUser) session.getAttribute("LoginUser");
-
-
             model.addAttribute("boardList", list);
-
-
-        } catch (LoginAccessException ex) {
-            log.error(ex.toString());
-            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
