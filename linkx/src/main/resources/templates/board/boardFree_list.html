@@ -4,111 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/board/css/board_list.css">
-    <link rel="stylesheet" href="/board/css/board_drop.css">
     <title>자유 게시판</title>
+    {{>layout/links}}
+
 </head>
-<body>
+<body class="index-page">
 {{>layout/header}}
-<div class="list-container">
-    <div class="sidebar">
-        <h2>게시판</h2>
-        <ul>
-            <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
-            <li class="dropdown">
-                <a href="#">학과 게시판 ▼</a>
-                <ul class="dropdown-content">
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=1">컴퓨터공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=2">컴퓨터보안공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=3">전자공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=4">정보통신공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=5">기계공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=6">산업경영공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=7">전기공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=8">토목공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=9">지적공간정보학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=10">드론정보공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=11">경영학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=12">세무회계과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=13">사회복지과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=14">부동산경영과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=15">항공서비스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=16">일본어과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=17">유아교육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=18">문예창작과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=19">중국어비즈니스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=20">산업디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=21">커뮤니케이션디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=22">패션리빙디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=23">사회체육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=24">뷰티매니지먼트과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=25">보건의료정보과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=26">실용음악과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=27">연극영상학과</a></li>
+<main class="main">
+    <section>
+        <div class="board">
+            <h2>자유 게시판</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>좋아요</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#boardList}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
+                    <td>{{createName}}</td>
+                    <td>{{createDt}}</td>
+                    <td>{{viewQty}}</td>
+                    <td>{{likeQty}}</td>
+                </tr>
+                {{/boardList}}
+                <!-- 더 많은 게시글 데이터를 여기에 추가 -->
+                </tbody>
+            </table>
 
-                </ul>
-            </li>
-        </ul>
-        <h2>청원하기</h2>
-        <ul>
-            <li><a href="#">청원 진행중</a></li>
-            <li><a href="#">청원 종료</a></li>
-        </ul>
-        <h2>맛집추천</h2>
-    </div>
-
-    <div class="main">
-        <h2>자유 게시판</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>NO</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-                <th>좋아요</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#boardList}}
-            <tr>
-                <td>{{id}}</td>
-                <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
-                <td>{{createName}}</td>
-                <td>{{createDt}}</td>
-                <td>{{viewQty}}</td>
-                <td>{{likeQty}}</td>
-            </tr>
-            {{/boardList}}
-            <!-- 더 많은 게시글 데이터를 여기에 추가 -->
-            </tbody>
-        </table>
-
-        <div class="text-gray-600 mt-3">{{searchBoardDto.total}}개의 게시글</div>
+            <div class="text-gray-600 mt-3">{{searchBoardDto.total}}개의 게시글</div>
 
 
-        <div class="pagination">
-            <button>Prev</button>
-            <button>1</button>
-            <button>2</button>
-            <button>Next</button>
+            <div class="pagination">
+                <button>Prev</button>
+                <button>1</button>
+                <button>2</button>
+                <button>Next</button>
+            </div>
+            <!-- 검색 -->
+            <form id="search-form" class="search-container" method="get" action="/boardFree/board_list">
+                <select id="searchType" name="searchType">
+                    <option value="title">제목</option>
+                    <option value="nickname">작성자</option>
+                    <option value="content">내용</option>
+                </select>
+                <input type="text" id="searchName" name="searchName" value="{{searchBoardDto.searchName}}" placeholder="검색어를 입력해 주세요.">
+                <button type="submit">검색</button>
+            </form>
+
+            <div style="text-align: right;">
+                <button class="login-btn" onclick="location.href='/boardFree/board_add'">글쓰기</button>
+            </div>
         </div>
-        <!-- 검색 -->
-        <form id="search-form" class="search-container" method="get" action="/boardFree/board_list">
-            <select id="searchType" name="searchType">
-                <option value="title">제목</option>
-                <option value="nickname">작성자</option>
-                <option value="content">내용</option>
-            </select>
-            <input type="text" id="searchName" name="searchName" value="{{searchBoardDto.searchName}}" placeholder="검색어를 입력해 주세요.">
-            <button type="submit">검색</button>
-        </form>
+    </section>
+</main>
 
-        <div style="text-align: right;">
-            <button class="login-btn" onclick="location.href='/boardFree/board_add'">글쓰기</button>
-        </div>
-    </div>
-</div>
-
+{{>layout/scripts}}
 </body>
 </html>

@@ -35,20 +35,11 @@ body {
     color: black;
     display: block;
 }
-.main {
+.board {
     width: 80%;
     padding: 10px;
 }
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffccdd;
-    padding: 10px;
-}
-.header h1 {
-    margin: 0;
-}
+
 .add-btn{
     background-color: #ffccdd;
     color: white;

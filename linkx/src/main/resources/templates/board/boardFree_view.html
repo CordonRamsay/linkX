@@ -5,19 +5,16 @@
     <title>자유게시판 상세보기</title>
     <link rel="stylesheet" href="/board/css/board_view.css">
     <link rel="stylesheet" href="/board/css/board_list.css">
-    <link rel="stylesheet" href="/board/css/board_drop.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
-<!--    <link rel="stylesheet" href="/css/default.css">-->
-<!--    <link rel="stylesheet" href="/css/common.css"/>-->
     <link rel="stylesheet" href="/css/content.css" />
     <link rel="stylesheet" href="/css/button.css"/>
+    {{>layout/links}}
 </head>
-<body>
+<body class="index-page">
 {{>layout/header}}  <!-- 헤더 -->
-<div id="container">
-    {{>layout/nav}}   <!-- 메뉴바 -->
-    <main>
+<main class="main">
+    <section >
         <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
         <div class="board-header">
             <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
@@ -27,8 +24,8 @@
             <div class="createInfo">
                 <div class="createName">{{BoardFreeDto.createName}}</div>
                 <div class="createDt-viewQty">
-                <span>{{BoardFreeDto.createDt}}</span>
-                <span>조회 {{BoardFreeDto.viewQty}}</span>
+                    <span>{{BoardFreeDto.createDt}}</span>
+                    <span>조회 {{BoardFreeDto.viewQty}}</span>
                 </div>
             </div>
         </div>
@@ -40,14 +37,14 @@
             <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
             <!-- 수정/삭제 버튼 -->
             <div class="buttons">
-                <button type="button" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
-                <button type="button" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardFreeDto.id}}');">삭제</button>
-                <button type="button" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
+                <button type="button" id="postUpdateBtn" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
+                <button type="button" id="postDeleteBtn" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardFreeDto.id}}');">삭제</button>
+                <button type="button" id="backBtn" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
             </div>
         </div>
 
         <!-- 댓글 영역-->
-        <div class="comments">
+        <div class="comments" style=" border-radius: 8px; border: 1px #D9D9D9 solid">
             <h2>댓글  <span id="commentCount"></span></h2>
             <!-- 댓글리스트 렌더링 영역 -->
             <div id="commentList"></div>
@@ -63,9 +60,8 @@
             </div>
 
         </div>
-    </main>
-</div>
-
+    </section>
+</main>
 <!--/* 댓글 수정 popup */-->
 <div id="commentUpdatePopup" class="popLayer">
     <h3>댓글 수정</h3>
@@ -92,6 +88,7 @@
     </div>
     <button type="button" class="btn_close" onclick="closeCommentUpdatePopup();"><span><i class="far fa-times-circle"></i></span></button>
 </div>
+{{>layout/scripts}}
 </body>
 <script>
 
@@ -105,7 +102,23 @@
 
         // 댓글 조회
         $.getBoardCommentList();
+        // 게시글 수정/삭제 버튼 활성화/비활성화
+        $.checkBtnVisibility();
 
+    };
+
+    // 게시글 수정,삭제 버튼 활성화/비활성화
+    $.checkBtnVisibility = function () {
+        let updateBtn = $("#postUpdateBtn");
+        let deleteBtn = $("#postDeleteBtn");
+
+        let userNickName = "{{nickname}}".trim();
+        let boardCreateName = $(".createName").text().trim();
+
+        if (userNickName !== boardCreateName) {
+            updateBtn.css("visibility","hidden");
+            deleteBtn.css("visibility","hidden");
+        }
 
 
     };
@@ -235,11 +248,12 @@
 
         // 댓글 html 추가
         commentList.forEach(row => {
+
             // 수정 및 삭제 버튼 생성 조건
-            let user = "{{nickname}}"
-            let isCommentWriter = user === row.createName;
+            let userNickname = "{{nickname}}"   // 로그인한 유저의 닉네임
+            let isCommentWriter = userNickname === row.createName;  // 로그인한 유저의 닉네임과 댓글 작성자의 닉네임이 같으면 true 대입
             commentHtml += `
-                        <div class="comment">
+                        <div class="comment" id="${row.id}">
                             <span class="writer_img"><img src="/board/img/user_icon.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
                             <p class="writer">
                                 <em id="commentWriter">${row.createName}</em> |
@@ -248,15 +262,15 @@
                             <div class="cont"><div class="txt_con">${row.comment}</div></div>
                             <p class="func_btns">
                                  <!-- 댓글 수정 버튼 -->
-                    ${isCommentWriter ? `
-                    <button type="button" onclick="$.openCommentUpdatePopup(${row.id});" class="btns">
-                        <span class="icons icon_modify">수정</span>
-                    </button>` : ''}
-                    <!-- 댓글 삭제 버튼 -->
-                    ${isCommentWriter ? `
-                    <button type="button" onclick="$.deleteComment(${row.id});" class="btns">
-                        <span class="icons icon_del">삭제</span>
-                    </button>` : ''}
+                                ${isCommentWriter ? `
+                                <button type="button" onclick="$.openCommentUpdatePopup(${row.id});" class="btns">
+                                    <span class="icons icon_modify">수정</span>
+                                </button>` : ''}
+                                <!-- 댓글 삭제 버튼 -->
+                                ${isCommentWriter ? `
+                                <button type="button" onclick="$.deleteComment(${row.id});" class="btns">
+                                    <span class="icons icon_del">삭제</span>
+                                </button>` : ''}
                             </p>
                         </div>
                     `;
