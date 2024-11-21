@@ -29,9 +29,13 @@ public class BoardDeptController {
 
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
-
-
         try {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }
+
+
             Integer total = this.boardDeptService.countAllByNameContains(searchBoardDto);
             searchBoardDto.setTotal(total);
             List<BoardDeptDto> list = this.boardDeptService.findAllByNameContains(searchBoardDto);
@@ -46,9 +50,17 @@ public class BoardDeptController {
 
     // 게시글 등록 화면 return
     @GetMapping("/board_add")
-    public String boardAdd() {
+    public String boardAdd(Model model, HttpSession session) {
         try {
-
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
+        }catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -57,19 +69,27 @@ public class BoardDeptController {
 
     // 자유게시글 등록 후 목록화면 return
     @PostMapping("/board_insert")
-    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model, @SessionAttribute(name = "userId") Long userId) {
+    public String boardInsert(@ModelAttribute BoardDeptDto dto, Model model,  HttpSession session) {
         try {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }else{
+                throw new LoginAccessException("로그인 필요");
+            }
+            this.boardDeptService.insert(dto, loginUser);
 
-            this.boardDeptService.insert(dto, userId);
-
-        } catch (Exception ex) {
+        }catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }  catch (Exception ex) {
             log.error(ex.toString());
         }
         return "redirect:board_list?page=1&searchName=&majorId=" + dto.getMajorId();
     }
 
-    @GetMapping("/board_view")
-    public String boardView(@RequestParam Long id, Model model, HttpSession session) {
+    @GetMapping("/board_view/{id}")
+    public String boardView(@PathVariable Long id, Model model, HttpSession session) {
         try {
             //유저 가져오기
             IUser loginUser = (IUser)session.getAttribute("LoginUser");
@@ -106,30 +126,16 @@ public class BoardDeptController {
             viewDto.copyFields(find);
 
             model.addAttribute("BoardDeptDto", find);
-        } catch (Exception ex) {
+        }catch(LoginAccessException ex){
+           return "redirect:/session-login/login";
+        }
+        catch (Exception ex) {
             log.error(ex.toString());
         }
         return "board/boardDept_view";
     }
 
-    @GetMapping("/board_delete")
-    public String boardDelete(@RequestParam Long id) {
-        // majorId 를 try - catch 문 바깥부분에 선언 - > return문에서도 사용하기 위함
-        Long majorId = null;
-        try {
-            this.boardDeptService.delete(id);
-            IBoardDept find = this.boardDeptService.findById(id);
-            majorId = find.getMajorId();
-        } catch (Exception ex) {
-            log.error(ex.toString());
-        }
-        // 저장해놓은 majorId 값으로 해당 글 삭제후 원래 위치하고있었던 학과 게시판으로 이동
-        if(majorId != null) {
-            return "redirect:board_list?page=1&searchName=&majorId=" + majorId;
-        }else{
-            return "redirect:board_list?page=1&searchName=";
-        }
-    }
+
 
     @GetMapping("/board_update")
     public String boardUpdate(@RequestParam Long id, Model model) {
@@ -151,6 +157,25 @@ public class BoardDeptController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "redirect:board_view?id="+dto.getId();
+        return "redirect:board_view/" +dto.getId();
+    }
+    // 해당 게시글 삭제 후 해당 학과 게시글 목록화면으로 이동
+    @GetMapping("/board_delete/{id}")
+    public String boardDelete(@PathVariable Long id) {
+        // majorId 를 try - catch 문 바깥부분에 선언 - > return문에서도 사용하기 위함
+        Long majorId = null;
+        try {
+            this.boardDeptService.delete(id);
+            IBoardDept find = this.boardDeptService.findById(id);
+            majorId = find.getMajorId();
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        // 저장해놓은 majorId 값으로 해당 글 삭제후 원래 위치하고있었던 학과 게시판으로 이동
+        if(majorId != null) {
+            return "redirect:board_list?page=1&searchName=&majorId=" + majorId;
+        }else{
+            return "redirect:board_list?page=1&searchName=";
+        }
     }
 }

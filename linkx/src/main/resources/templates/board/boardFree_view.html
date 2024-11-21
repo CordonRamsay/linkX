@@ -5,7 +5,6 @@
     <title>자유게시판 상세보기</title>
     <link rel="stylesheet" href="/board/css/board_view.css">
     <link rel="stylesheet" href="/board/css/board_list.css">
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
     <link rel="stylesheet" href="/css/content.css" />
     <link rel="stylesheet" href="/css/button.css"/>
@@ -15,50 +14,64 @@
 {{>layout/header}}  <!-- 헤더 -->
 <main class="main">
     <section >
-        <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
-        <div class="board-header">
-            <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
-            <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
-            <div class="boardListBtn" onclick="location.href='/boardFree/board_list?page=1&searchName='">자유게시판</div>
-            <div class="board-title">{{BoardFreeDto.title}}</div>
-            <div class="createInfo">
-                <div class="createName">{{BoardFreeDto.createName}}</div>
-                <div class="createDt-viewQty">
-                    <span>{{BoardFreeDto.createDt}}</span>
-                    <span>조회 {{BoardFreeDto.viewQty}}</span>
+        <div class="container mx-auto py-16 px-2">
+            <div class="board-container shadow-md rounded-lg p-10">
+                <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
+                <div class="board-header">
+                    <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
+                    <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
+                    <div class="boardListBtn" onclick="$.goListPage();">자유게시판</div>
+                    <div class="board-title">{{BoardFreeDto.title}}</div>
+                    <div class="createInfo">
+                        <!-- 작성일 & 조회수 -->
+                        <div class="createDt-viewQty">
+                            <span id="createDt">{{BoardFreeDto.createDt}}</span>
+                            <span>조회수 {{BoardFreeDto.viewQty}}</span>
+                        </div>
+                        <div class="creator">
+                            <!-- 작성자 프로필 사진-->
+                            <a href="/"> <img src="/board/img/user_icon.png" width="30px" height="30px"></a>
+                            <!-- 작성자 닉네임 -->
+                            <div class="createName">{{BoardFreeDto.createName}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 게시판 바디 ( 내용, 좋아요 ) -->
+                <div class="board-body">
+                    <p class="board-content">{{BoardFreeDto.content}}</p>
+                    <div class="likeAndButtons">
+                        <div class="board-like">
+                            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem('{{BoardFreeDto.id}}');" width="25px" height="25px">
+                            <span id="likeQty"> {{BoardFreeDto.likeQty}}</span>
+                        </div>
+                        <!-- 수정/삭제 버튼 -->
+                        <div class="buttons">
+                            <button type="button" id="postUpdateBtn" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
+                            <button type="button" id="postDeleteBtn" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardFreeDto.id}}');">삭제</button>
+                            <button type="button" id="backBtn" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 댓글 영역-->
+                <div class="comments">
+                    <h4>댓글  <span id="commentCount"></span></h4>
+                    <!-- 댓글리스트 렌더링 영역 -->
+                    <div id="commentList"></div>
+                    <!-- 댓글 추가 -->
+                    <div class="cm_write">
+                        <fieldset>
+                            <legend class="skipinfo"></legend>
+                            <div class="cm_input">
+                                <div class="nickname">{{nickname}}</div>
+                                <p><textarea id="comment" name="comment" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
+                                <span><button type="button" class="btns" id="addComment" onclick="$.addComment();">등 록</button><i id="counter">0/300자</i></span>
+                            </div>
+                        </fieldset>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 게시판 바디 ( 내용, 좋아요 ) -->
-        <div class="board-container">
-            <p class="board-content">{{BoardFreeDto.content}}</p>
-            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem('{{BoardFreeDto.id}}');" width="25px" height="25px">
-            <span id="likeQty"> {{BoardFreeDto.likeQty}}</span></img>
-            <!-- 수정/삭제 버튼 -->
-            <div class="buttons">
-                <button type="button" id="postUpdateBtn" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardFree/board_update/{{BoardFreeDto.id}}'">수정</button>
-                <button type="button" id="postDeleteBtn" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardFreeDto.id}}');">삭제</button>
-                <button type="button" id="backBtn" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
-            </div>
-        </div>
-
-        <!-- 댓글 영역-->
-        <div class="comments" style=" border-radius: 8px; border: 1px #D9D9D9 solid">
-            <h2>댓글  <span id="commentCount"></span></h2>
-            <!-- 댓글리스트 렌더링 영역 -->
-            <div id="commentList"></div>
-            <!-- 댓글 추가 -->
-            <div class="cm_write">
-                <fieldset>
-                    <legend class="skipinfo"></legend>
-                    <div class="cm_input">
-                        <p><textarea id="comment" name="comment" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
-                        <span><button type="button" class="btns" id="addComment" onclick="$.addComment();">등 록</button><i id="counter">0/300자</i></span>
-                    </div>
-                </fieldset>
-            </div>
-
         </div>
     </section>
 </main>

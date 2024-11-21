@@ -28,8 +28,8 @@ public class SearchBoardDto {
     public Integer getFirstIndex() {
         return (this.page - 1) * this.rowsOnePage;
     }
-    private Integer page;
-    private Integer total;
+    private Integer page;   // 총 페이지 수
+    private Integer total;  //총 게시글의 개수
     private List<?> dataList;
 
     public void settingValues() {

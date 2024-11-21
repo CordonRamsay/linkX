@@ -4,52 +4,69 @@ body {
     padding: 0;
     background-color: #f7f7f7;
 }
-
+/* 게시판 목록 버튼 */
 .boardListBtn{
     cursor: pointer;
-    color: #dc98c6;
-}
-.board-header {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-.board-title{
-    font-size:30px;
-    padding: 10px 0px;
-    font-weight: bold;
-}
-.writer{
-    display: inline-block;
-}
-.post-header h2 {
-    margin: 0;
+    color: #2D88FF;
 }
 
-.createDt-viewQty span{
-    font-size: 15px;
-    color: #787575;
+/*게시판 컨테이너*/
+.board-container{
+    border-radius: 25px;
+    border : 1px lightgray solid ;
+    padding : 25px;
+}
+/* 게시판 헤더*/
+.board-header {
+    margin-bottom: 10px;
+    padding:20px;
+    border-bottom: 1px solid lightgray;
+}
+.board-title{
+    font-size:22px;
+    font-weight: bold;
+}
+#createDt{
+    border-right: 1px solid lightgray;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+.creator{
+    display: flex;
+    justify-content: left;
 }
 .createName{
     font-size:20px;
     font-weight: bold;
-    color:#000;
+    color: #555050;
+    padding : 0px 10px;
+}
+.createDt-viewQty span{
+    font-size: 15px;
+    color: #787575;
 }
 
-.board-container{
 
-    border-bottom: 1px solid #ddd;
+
+/* 게시판 바디 */
+.board-body{
+    border-bottom: 1px solid lightgray;
+    padding: 20px;
 }
+
 .board-content{
-    margin-bottom:50px;
+    margin-bottom:100px;
 }
 
+.likeAndButtons{
+    display: flex;
+    align-items: center;
+
+}
 .buttons {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin: 0 auto;
 }
 
 .buttons button {
@@ -59,12 +76,25 @@ body {
     border: 1px solid #ddd;
     background-color: #f0f0f0;
 }
-
+.comments{
+    padding:20px;
+}
 .comments textarea {
     width: 100%;
     height: 50px;
     margin-top: 10px;
 }
+.cm_input{
+    padding: 20px;
+    border-radius: 25px;
+}
+.nickname{
+    font-weight: bold;
+    font-size: 20px;
+}
 #likeIcon{
     cursor: pointer;
+}
+.writer{
+    display: inline-block;
 }

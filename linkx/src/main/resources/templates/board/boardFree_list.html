@@ -17,12 +17,12 @@
                 <h1 class="text-4xl font-bold text-gray-700">자유 게시판</h1>
                 <p class="text-gray-500 mb-4">자유롭게 글을 남겨 보세요</p>
             </div>
-            <div class="board-container bg-white shadow-md rounded-lg p-3">
+            <div class="board-container shadow-md rounded-lg p-3 ">
                 <table class="min-w-full table-auto text-left">
-                    <thead>
-                    <tr class="text-gray-600 bg-gray-100 uppercase text-sm tracking-wider">
+                    <thead class="bg-pink-200">
+                    <tr class="text-black uppercase text-sm tracking-wider" >
                         <th class="py-2 text-left">NO</th>
-                        <th class="text-right text-center">제목</th>
+                        <th class="title text-center">제목</th>
                         <th class="text-center">작성자</th>
                         <th class="text-center">작성일</th>
                         <th class="text-center">조회수</th>
@@ -33,46 +33,88 @@
                     {{#boardList}}
                     <tr class="py-4 board-content border-b hover:bg-gray-50 highlight">
                         <td class="py-4 text-left">{{id}}</td>
-                        <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
-                        <td >{{createName}}</td>
-                        <td >{{createDt}}</td>
-                        <td >{{viewQty}}</td>
-                        <td >{{likeQty}}</td>
+                        <td class="title text-center" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
+                        <td class="text-center">{{createName}}</td>
+                        <td class="text-center">{{createDt}}</td>
+                        <td class="text-center">{{viewQty}}</td>
+                        <td class="text-center">{{likeQty}}</td>
                     </tr>
                     {{/boardList}}
-                    <!-- 더 많은 게시글 데이터를 여기에 추가 -->
                     </tbody>
                 </table>
+                <div class="flex items-center justify-between mt-3">
+                    <div class="text-gray-800 mt-3">
+                        <span class="font-bold">{{searchBoardDto.total}}</span> 개의 게시글
+                    </div>
+                    <div style="text-align: right;">
+                        <button class="btn btn-outline-danger" onclick="location.href='/boardFree/board_add'">글쓰기</button>
+                    </div>
+                </div>
             </div>
-
-
-            <div class="text-gray-600 mt-3">{{searchBoardDto.total}}개의 게시글</div>
-
-
-            <div class="pagination">
-                <button>Prev</button>
-                <button>1</button>
-                <button>2</button>
-                <button>Next</button>
-            </div>
-            <!-- 검색 -->
-            <form id="search-form" class="search-container" method="get" action="/boardFree/board_list">
-                <select id="searchType" name="searchType">
-                    <option value="title">제목</option>
-                    <option value="nickname">작성자</option>
-                    <option value="content">내용</option>
-                </select>
-                <input type="text" id="searchName" name="searchName" value="{{searchBoardDto.searchName}}" placeholder="검색어를 입력해 주세요.">
-                <button type="submit">검색</button>
-            </form>
-
-            <div style="text-align: right;">
-                <button class="login-btn" onclick="location.href='/boardFree/board_add'">글쓰기</button>
+            <div>
+                <!-- 페이징 처리 및 검색 -->
+                <div id="page-and-search" class="board-content mt-8 justify-between items-center">
+                    <!-- 페이징 -->
+                    <div id="pagination" class="flex justify-center space-x-2"></div> <!-- JavaScript에서 동적으로 페이징 처리 -->
+                    <!-- 검색 -->
+                    <form id="search-form" class="flex items-center justify-center items-center space-x-2" method="get"
+                          action="/boardFree/board_list">
+                        <select id="searchType" name="searchType" class="border rounded px-2 py-1 text-gray-600">
+                            <option value="title">제목</option>
+                            <option value="nickname">작성자</option>
+                            <option value="content">내용</option>
+                        </select>
+                        <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력해주세요"
+                               class="border rounded px-2 py-1 " value="{{searchBoardDto.searchName}}">
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">검색
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 </main>
-
 {{>layout/scripts}}
 </body>
+<script>
+    $(function(){
+        let totPage = Math.ceil(("{{searchBoardDto.total}}" * 1) / 10);
+        let page = "{{searchBoardDto.page}}" * 1;
+        let startPage = getStartPage(page);
+        let endPage = getEndPage(startPage);
+        let searchName = '{{searchBoardDto.searchName}}';
+        let prev = (page-1) < 1 ? 1 : page-1;
+        let next = (page+1) >= totPage ? totPage : page+1;
+
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "'><img src='/board/img/pageLeft.png'></a>");
+
+        for (let i = startPage; i <= endPage; i++) {
+            let sClass = "px-3 py-2 text-gray-700";
+            // 현재 페이지일 경우 테두리 추가
+            if (page == i) {
+                sClass += " border border-blue-500 rounded"; // 테두리 추가
+            }
+
+            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName + "'>" + i + "</a>");
+        }
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName + "'><img src='/board/img/pageRight.png'></a>");
+    });
+
+    function getStartPage(page) {
+        let one = 1;
+        let ten = ~~((page - 1) / 10) * 10;
+        let startPage = ten + one;
+        return ~~(startPage);
+    }
+
+
+    function getEndPage(startPage) {
+        let totPage = ~~((("{{searchBoardDto.total}}" * 1) + 9) / 10);
+        let tPage = startPage + 9;
+        if ( tPage < totPage ) {
+            return ~~(tPage);
+        }
+        return ~~(totPage);
+    }
+</script>
 </html>

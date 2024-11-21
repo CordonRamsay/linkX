@@ -38,6 +38,12 @@ public class BoardFreeController implements IResponseController {
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
         try {
+            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+            }
+
+
             Integer total = this.boardFreeService.countAllByNameContains(searchBoardDto);
             searchBoardDto.setTotal(total);
             List<BoardFreeDto> list = this.boardFreeService.findAllByNameContains(searchBoardDto);
@@ -73,7 +79,6 @@ public class BoardFreeController implements IResponseController {
     @PostMapping("/board_insert")
     public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model, HttpSession session) {
         try {
-
             IUser loginUser = (IUser)session.getAttribute("LoginUser");
             if (loginUser != null) {
                 model.addAttribute("nickname", loginUser.getNickname());
@@ -132,7 +137,6 @@ public class BoardFreeController implements IResponseController {
 
             // Model에 데이터 추가
             model.addAttribute("BoardFreeDto", viewDto);
-            model.addAttribute("User", loginUser);
 
         } catch (LoginAccessException ex) {
             log.error(ex.toString());

@@ -66,7 +66,8 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')  <!-- select : searchType을 선택하고 input type="text" : searchName을 입력 -->
-        ORDER BY bt.id DESC
+        ORDER BY ${orderByWord}
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 
     <!-- 게시글 카운트 -->

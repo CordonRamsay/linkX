@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/boarddept")
+@RequestMapping("/api/v1/boardDept")
 public class BoardDeptRestController implements IResponseController {
 
     @Autowired
@@ -50,6 +50,7 @@ public class BoardDeptRestController implements IResponseController {
             this.boardDeptService.addLikeQty(id,CUInfoDto.getLoginUser());
             // 좋아요 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
             IBoardDept result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
+
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
