@@ -43,6 +43,12 @@ public class PetitionController{
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);
 
+            //D-Day값을 모델에 추가
+            list.forEach(petition -> {
+                long daysLeft = petition.getDaysLeft();
+                model.addAttribute("daysLeft_" + petition.getId(), daysLeft);
+            });
+
             IUser loginUser =(IUser) session.getAttribute("LoginUser");
             model.addAttribute("nickname",loginUser.getNickname());
             model.addAttribute("petitionList",list);

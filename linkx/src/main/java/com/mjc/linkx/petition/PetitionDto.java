@@ -9,6 +9,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -35,4 +39,17 @@ public class PetitionDto implements IPetition{
     public String getBoardType() {
         return "petition";
     }       //현재 게시판이 어떤 게시판인지 알려주기 위한 코드, 일단 코드를 따라 적었으며 return을 통해 청원 게시판임을 알림
+
+    //D-day 계산 메서드 추가
+    public long getDaysLeft(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDate endDate; // 종료일에 시간이 포함되어 있는지 확인하고 적절한 형식으로 변환
+         if (this.endDt.length() == 10) {
+             endDate = LocalDate.parse(this.endDt, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+         } else {
+             endDate = LocalDate.parse(this.endDt, formatter);
+         }
+         LocalDate today = LocalDate.now();
+         return ChronoUnit.DAYS.between(today, endDate);
+    }
 }
