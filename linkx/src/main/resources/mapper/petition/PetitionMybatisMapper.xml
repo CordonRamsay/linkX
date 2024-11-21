@@ -69,6 +69,7 @@
                  LEFT JOIN user_tbl ut ON pt.userId = ut.id
         WHERE pt.petiField LIKE CONCAT('%', #{petiField}, '%')
           AND pt.petiTitle LIKE CONCAT('%', #{searchName}, '%')
+          and playing = true
         ORDER BY pt.id DESC
     </select>
 

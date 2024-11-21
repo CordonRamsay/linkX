@@ -36,13 +36,9 @@
       cursor: pointer;
     }
     .sidebar {
-      position: fixed;
-      right: 0;
-      top: 0;
-      width: 25%;
-      height: 100%;
-      background-color: #fff;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      float: left;
+      width: 200px;
+      background-color: #ffc0cb;
       padding: 20px;
       box-sizing: border-box;
     }
@@ -54,6 +50,20 @@
       padding: 10px 0;
       font-weight: bold;
     }
+    .fixed-box {
+      position: fixed;
+      top: 50%; right: 20px;
+      transform: translateY(-50%);
+      width: 300px; background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px; box-sizing: border-box;
+      border: 1px solid #ddd; background-color: #f9f9f9;
+    }
+    .fixed-box h3 { margin-top: 0; }
+    .fixed-box ul { list-style-type: none; padding-left: 0; }
+    .fixed-box li { margin-bottom: 10px; }
+    .fixed-box li a { text-decoration: none; color: #333; }
+    .fixed-box li a:hover { text-decoration: underline; }
     .content {
       margin-left: 220px;
       padding: 20px;
@@ -207,8 +217,8 @@
       </table>
     </div>
 
-    <div class="sidebar">
-        <div class="top-agreed">
+
+        <div class="fixed-box">
             <h3>인기 청원</h3>
             <ul>
                 {{#topAgreedPetitions}}
@@ -220,7 +230,7 @@
                 {{/topAgreedPetitions}}
             </ul>
         </div>
-    </div>
+
 
     <div class="pagination">
       <span>게시글 수: 10</span>
