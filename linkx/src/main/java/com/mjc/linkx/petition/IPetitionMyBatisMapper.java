@@ -24,4 +24,7 @@ public interface IPetitionMyBatisMapper {
     List<PetitionDto> findAll();
 
     void updatePlaying(Long id, Boolean playing);
+
+
+    List<PetitionDto> findTopAgreedPetitions();
 }

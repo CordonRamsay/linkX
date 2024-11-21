@@ -39,6 +39,10 @@ public class PetitionController{
                 searchPetiDto.setSearchName("");
             }
 
+            //동의자 수 상위 5개 청원 가져오기
+            List<PetitionDto> topAgreedPetitions = this.petitionService.findTopAgreedPetitions();
+            model.addAttribute("topAgreedPetitions", topAgreedPetitions);
+
             Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);

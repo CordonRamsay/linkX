@@ -74,4 +74,9 @@ public class PetitionServiceImpl implements IPetitionService{
     }
 
 
+
+    public List<PetitionDto> findTopAgreedPetitions(){
+        return petitionMyBatisMapper.findTopAgreedPetitions();
+    }
+
 }

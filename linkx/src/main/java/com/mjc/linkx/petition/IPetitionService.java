@@ -21,5 +21,5 @@ public interface IPetitionService {
     void addagreeQty(Long id, IUser user);
 
 
-
+    List<PetitionDto> findTopAgreedPetitions();
 }

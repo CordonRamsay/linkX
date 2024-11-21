@@ -111,6 +111,16 @@
         WHERE id = #{id}
     </update>
 
+    <!--동의자 수 상위 5개의 글을 가져오는 sql문-->
+    <select id="findTopAgreedPetitions" resultType="PetitionDto">
+        SELECT id,petiField,petiTitle
+        FROM petition_tbl
+        WHERE playing = true
+        order by agreeQty DESC
+        LIMIT 5
+
+    </select>
+
 
 
 

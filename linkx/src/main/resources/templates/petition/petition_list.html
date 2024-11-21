@@ -36,9 +36,13 @@
       cursor: pointer;
     }
     .sidebar {
-      float: left;
-      width: 200px;
-      background-color: #ffc0cb;
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
       padding: 20px;
       box-sizing: border-box;
     }
@@ -201,6 +205,21 @@
         <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
         </tbody>
       </table>
+    </div>
+
+    <div class="sidebar">
+        <div class="top-agreed">
+            <h3>인기 청원</h3>
+            <ul>
+                {{#topAgreedPetitions}}
+                <li>
+                    <a href="/petition/petition_view?id={{id}}">
+                      {{petiField}} - {{petiTitle}}
+                    </a>
+                </li>
+                {{/topAgreedPetitions}}
+            </ul>
+        </div>
     </div>
 
     <div class="pagination">
