@@ -96,13 +96,7 @@
         AND id = #{id}
     </update>
         -->
-    <!--동의자수 증가-->
-    <update id="addAgreeQty">
-        UPDATE petition_tbl
-        SET agreeQty = agreeQty + 1
-        WHERE id = #{id}
-        AND playing = true
-    </update>
+
 
 
 
@@ -122,7 +116,28 @@
 
     </select>
 
+    <!--청원에 동의 기록을 추가 -->
+    <insert id ="insertSignature" parameterType="SignatureDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO signatures_tbl (petiId, userId)
+        VALUES (#{petiId}, #{userId})
+    </insert>
 
+    <!-- 특정 사용자가 이미 동의 했는지 확인 -->
+    <select id="hasUserAgreed" parameterType="SignatureDto" resultType="boolean">
+        SELECT EXISTS(
+            SELECT 1
+            FROM signatures_tbl
+            WHERE petiId = #{petiId} AND userId = #{userId}
+        )
+    </select>
+
+    <!--동의자수 증가-->
+    <update id="addAgreeQty">
+        UPDATE petition_tbl
+        SET agreeQty = agreeQty + 1
+        WHERE id = #{id}
+          AND playing = true
+    </update>
 
 
 </mapper>

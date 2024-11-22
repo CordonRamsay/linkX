@@ -58,10 +58,7 @@ public class PetitionServiceImpl implements IPetitionService{
         return 0;
     }
 
-    @Override
-    public void addagreeQty(Long id, IUser user) {
 
-    }
     //findAll구현 안돼어 있어서 구현해야 함
     public List<PetitionDto> findAll(){
         return petitionMyBatisMapper.findAll();
@@ -77,6 +74,25 @@ public class PetitionServiceImpl implements IPetitionService{
 
     public List<PetitionDto> findTopAgreedPetitions(){
         return petitionMyBatisMapper.findTopAgreedPetitions();
+    }
+
+    @Override
+    public boolean hasUserAgreed(Long petiId, Long userId) {
+        SignatureDto signature = SignatureDto.builder()
+                .petiId(petiId)
+                .userId(userId)
+                .build();
+        return petitionMyBatisMapper.hasUserAgreed(signature);
+    }
+
+    @Override
+    public void addSignature(SignatureDto signature){
+        petitionMyBatisMapper.insertSignature(signature);
+    }
+
+    @Override
+    public void addagreeQty(Long petiId) {
+        petitionMyBatisMapper.addAgreeQty(petiId);
     }
 
 }

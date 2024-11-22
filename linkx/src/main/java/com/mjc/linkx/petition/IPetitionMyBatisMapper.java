@@ -27,4 +27,8 @@ public interface IPetitionMyBatisMapper {
 
 
     List<PetitionDto> findTopAgreedPetitions();
+
+    void insertSignature(SignatureDto signature);
+
+    boolean hasUserAgreed(SignatureDto signature);
 }
