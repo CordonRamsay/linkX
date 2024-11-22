@@ -55,12 +55,13 @@ public class PetitionDto implements IPetition{
     }
 
 
-    public void setisSig(boolean issig) {
-        this.isSig = issig;
+    @Override
+    public Boolean getisSig() {
+        return this.isSig;
     }
 
     @Override
-    public boolean getisSig() {
-        return isSig;
+    public void setisSig(Boolean isSig) {
+        this.isSig = isSig;
     }
 }

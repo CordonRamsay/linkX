@@ -132,7 +132,7 @@
             <tr>
                 <td>{{PetitionDto.petiField}}</td>
                 <td>{{PetitionDto.createDt}}</td>
-                <td>{{PetitionDto.agreeQty}}</td>
+                <td id="agreeQty">{{PetitionDto.agreeQty}}</td>
                 <td>{{PetitionDto.endDt}}</td>
             </tr>
         </table>
@@ -171,17 +171,16 @@
             console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
             if (status === "success") {
 
-                let isSig = data.isSig;
-                console.log("데이터를 받아왔을때 이미 sig_tbl에 있는지"+issig)
-
-
-                if (isSig === true) {
+                $("#agreeQty").text(data.responseData.agreeQty);
+                let aleadySig = data.responseData.isSig;
+                alert(aleadySig);
+                /*if () {
                     alert("이미 동의한 청원입니다");
 
                 } else {
                     alert("청원에 동의했습니다");
 
-                }
+                }*/
             }
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);

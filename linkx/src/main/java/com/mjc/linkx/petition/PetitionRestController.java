@@ -44,14 +44,11 @@ public class PetitionRestController implements IResponseController {
             // 세션에서 User 가져옴
             IUser user = (IUser) session.getAttribute("LoginUser");
             CUInfoDto CUInfoDto = makeResponseCheckLogin(user);
+            Boolean TorN;
+            TorN = this.petitionService.hasUserAgreed(id, user.getId());
 
-
-            // 좋아요 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
-            IPetition result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
-            /*if(result.getisSig() != true) {
-                this.petitionService.addagreeQty(id);
-            }*/
-            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", "result");
+                IPetition result = this.insertSig(id, CUInfoDto.getLoginUser(),TorN);
+                return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", "result");
 
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -63,41 +60,13 @@ public class PetitionRestController implements IResponseController {
             log.error(ex.toString());
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
+
     }
 
-    /*@GetMapping("/unlike/{id}")
-    public ResponseEntity<ResponseDto> subLikeQty(HttpSession session, @Validated @PathVariable Long id) {
-        try {
-            if (id == null || id <= 0) {
-                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
-            }
 
-            // 세션에서 User 가져옴
-            IUser user = (IUser) session.getAttribute("LoginUser");
-            CUInfoDto CUInfoDto = makeResponseCheckLogin(user);
-
-            // 좋아요 취소 서비스 메소드 호출
-            this.boardFreeService.subLikeQty(id,CUInfoDto.getLoginUser());
-            // 좋아요 취소 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
-            IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
-
-
-
-            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK, "성공", result);
-        } catch (LoginAccessException ex) {
-            log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.FORBIDDEN,  ex.getMessage(), null);
-        } catch (IdNotFoundException ex) {
-            log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
-        } catch (Exception ex) {
-            log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
-        }
-    }*/
     
     
-    private IPetition getBoardAndLike(Long id, IUser loginUser) {
+    private IPetition insertSig(Long id, IUser loginUser, Boolean TorN) {
         IPetition result = this.petitionService.findById(id);
         
         // SingatureDto 생성
@@ -105,12 +74,12 @@ public class PetitionRestController implements IResponseController {
                 .petiId(id)
                 .userId(loginUser.getId())
                 .build();
-        
-        // 좋아요상태 -> 1 / 좋아요 x 상태 -> 0 리턴 하는 메소드 호출
-        boolean issig = this.petitionService.hasUserAgreed(id,loginUser.getId());
-        
-        // BoardFreeDto의 update 필드에  0 / 1 대입
-        result.setisSig(issig);
+        if(!TorN) {
+            this.petitionService.addSignature(signature);
+            this.petitionService.addagreeQty(id);
+        }
+        result.setisSig(TorN);
+
         return result;
     }
 }
