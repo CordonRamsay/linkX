@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/boardDept")
+@RequestMapping("/api/v1/boarddept")
 public class BoardDeptRestController implements IResponseController {
 
     @Autowired
@@ -48,9 +48,8 @@ public class BoardDeptRestController implements IResponseController {
 
             // 좋아요 서비스 메소드 호출
             this.boardDeptService.addLikeQty(id,CUInfoDto.getLoginUser());
-            // 좋아요 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
+            // 좋아요 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
             IBoardDept result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
-
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -77,7 +76,7 @@ public class BoardDeptRestController implements IResponseController {
 
             // 좋아요 취소 서비스 메소드 호출
             this.boardDeptService.subLikeQty(id,CUInfoDto.getLoginUser());
-            // 좋아요 취소 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
+            // 좋아요 취소 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
             IBoardDept result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
 
 
@@ -109,11 +108,7 @@ public class BoardDeptRestController implements IResponseController {
         Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
         
         // BoardFreeDto의 update 필드에  0 / 1 대입
-        if (likeCount == 1) {
-            result.setLikeYn(true);
-        } else {
-            result.setLikeYn(false);
-        }
+        result.setUpdateDt(likeCount.toString());
         return result;
     }
 }

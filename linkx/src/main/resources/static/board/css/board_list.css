@@ -1,16 +1,54 @@
-
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
 .list-container {
     display: flex;
     max-width: 1200px;
     margin: 20px auto;
     border: 1px solid black;
 }
-
-.board {
+.sidebar {
+    width: 20%;
+    background-color: white;
+    border-right: 2px solid black;
+}
+.sidebar h2 {
+    background-color: #ffccdd;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar li {
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+.sidebar li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+.main {
     width: 80%;
     padding: 10px;
 }
-
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffccdd;
+    padding: 10px;
+}
+.header h1 {
+    margin: 0;
+}
 .add-btn{
     background-color: #ffccdd;
     color: white;
@@ -30,7 +68,19 @@
     padding: 10px;
     cursor: pointer;
 }
-
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+th, td {
+    border: 1px solid gray;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #cccccc;
+}
 .title{
     cursor: pointer;
     text-decoration-line: underline;
@@ -43,7 +93,14 @@
     justify-content: center;
     margin: 10px 0;
 }
-
+.pagination button {
+    background-color: #006699;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    cursor: pointer;
+}
 .search-container {
     display: flex;
     justify-content: center;
@@ -55,8 +112,3 @@
     margin: 0 5px;
     padding: 5px;
 }
-
-#countComment{
-    color:red;
-}
-

@@ -24,7 +24,7 @@ public interface IResponseController {
     }
 
     // session 에서 "LoginUser" 키를 가진 로그인 유저 객체 가져옴
-    default CUInfoDto makeResponseCheckLogin(HttpSession session) {
+    default CUInfoDto makeResponseCheckLoginAdmin(HttpSession session) {
         IUser loginUser = (IUser) session.getAttribute("LoginUser");
         if (loginUser == null) {
             throw new LoginAccessException("로그인 필요");

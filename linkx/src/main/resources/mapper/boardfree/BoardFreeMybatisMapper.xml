@@ -54,11 +54,6 @@
     <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="BoardFreeDto">
         SELECT bt.id
              , bt.title
-             , (SELECT count(*)
-                FROM comment_tbl
-                WHERE boardType = 'free'
-                AND boardId = bt.id
-                AND deleteYn = false) AS countComment
              , bt.content
              , bt.viewQty
              , bt.likeQty
@@ -71,8 +66,7 @@
         LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')  <!-- select : searchType을 선택하고 input type="text" : searchName을 입력 -->
-        ORDER BY ${orderByWord}
-        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+        ORDER BY bt.id DESC
     </select>
 
     <!-- 게시글 카운트 -->

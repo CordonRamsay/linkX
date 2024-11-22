@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>{{pageName}}</title>
+    <meta charset="UTF-8">
+    <title>{{pageName}}</title>
 </head>
 <body>
 <div>
-  <h1><a href="/">메인 화면 입니다.</a></h1>
-  <hr/>
+    <h1><a href="/">메인 화면 입니다.</a></h1>
+    <hr/>
 
-  {{^nickname}} <!-- nickname이 null인 경우 -->
-  <h3>로그인 되어있지 않습니다!</h3>
-  <button onclick="location.href='/{{loginType}}/join'">회원 가입</button> <br/><br/>
-  <button onclick="location.href='/{{loginType}}/login'">로그인</button>
-  {{/nickname}}
+    {{^nickname}} <!-- nickname이 null인 경우 -->
+    <h3>로그인 되어있지 않습니다!</h3>
+    <button onclick="location.href='/{{loginType}}/join'">회원 가입</button> <br/><br/>
+    <button onclick="location.href='/{{loginType}}/login'">로그인</button>
+    {{/nickname}}
 
-  {{#nickname}} <!-- nickname이 존재하는 경우 -->
-  <h3>{{nickname}}님 환영합니다!</h3>
-  <button onclick="location.href='/{{loginType}}/info'">유저 정보</button> <br/><br/>
-  <button onclick="location.href='/{{loginType}}/admin'">관리자 페이지</button> <br/><br/>
-  <button onclick="location.href='/{{loginType}}/logout'">로그아웃</button><br/><br/>
-  <button onclick="location.href='/boardFree/board_list?page=1&searchName='">자유게시판</button><br/><br/>
-  <button onclick="location.href='/boardDept/board_list?page=1&searchName=&majorId=1'">학과게시판</button><br/><br/>
-  <button onclick="location.href=''">청원</button><br><br>
-  <button onclick="location.href='/taste'">맛집 api</button>
-  <button onclick="location.href='/boardFree/test'">게시판 화면 테스트</button>
-  {{/nickname}}
+    {{#nickname}} <!-- nickname이 존재하는 경우 -->
+    <h3>{{nickname}}님 환영합니다!</h3>
+    <button onclick="location.href='/{{loginType}}/info'">유저 정보</button> <br/><br/>
+    <button onclick="location.href='/{{loginType}}/admin'">관리자 페이지</button> <br/><br/>
+    <button onclick="location.href='/{{loginType}}/logout'">로그아웃</button><br/><br/>
+    <button onclick="location.href='/boardFree/board_list?page=1&searchName='">자유게시판</button><br/><br/>
+    <button onclick="location.href='/boardDept/board_list?page=1&searchName=&majorId=1'">학과게시판</button><br/><br/>
+    <button onclick="location.href='/petition/petition_list?petiField=&searchName='">청원</button><br><br>
+    <button onclick="location.href='/rest'">맛집 api</button>
+    {{/nickname}}
 </div>
 </body>
 </html>

@@ -79,15 +79,4 @@ public class TasteServiceImpl implements TasteService {
     public List<TasteRestDto> getTasteList() {
         return tasteRestMapper.getTasteList();
     }
-
-    @Override
-    public List<TasteReviewDto> getReviewsByRestaurantId(Long restId) {
-        return tasteRestMapper.getReviewsByRestaurantId(restId);
-    }
-
-    @Override
-    public void addReview(TasteReviewDto reviewDto) {
-        tasteRestMapper.insertReview(reviewDto);
-    }
-
 }

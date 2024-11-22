@@ -15,7 +15,7 @@
 
     <update id="update" parameterType="CommentDto">
         UPDATE comment_tbl
-        SET comment = #{comment}, updateDt = #{updateDt}
+        SET comment = #{comment}, updateDt = #{updateDt}, boardId=#{boardId}
         WHERE id = #{id}
     </update>
 
@@ -25,10 +25,16 @@
         WHERE id = #{id}
     </delete>
 
-    <select id="findByCommentId" resultType="CommentDto">
+    <select id="findById" resultType="CommentDto">
         SELECT id, comment, likeQty, boardId, createDt, createId, updateDt, deleteYn
         FROM comment_tbl
         WHERE id = #{id} AND deleteYn = false
+    </select>
+
+    <select id="countAllByBoardId" parameterType="SearchDto" resultType="Integer">
+        SELECT count(*)
+        FROM comment_tbl
+        WHERE boardId = #{boardId} AND deleteYn = false
     </select>
 
     <update id="addLikeQty">
@@ -59,8 +65,8 @@
         FROM comment_tbl ct
                  LEFT JOIN user_tbl ut ON ct.createId = ut.id
                  LEFT JOIN comment_like_tbl clt ON ct.id = clt.commentId AND clt.createId = #{createId}
-        WHERE ct.boardType = #{boardType}
-          AND ct.boardId = #{boardId}
+        WHERE ct.boardId = #{boardId}
+          AND ct.boardType = #{boardType}
           AND ct.deleteYn = false
         ORDER BY ${orderByWord}
             LIMIT #{rowsOnePage} OFFSET #{firstIndex}

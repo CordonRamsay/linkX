@@ -33,10 +33,6 @@ public interface IBoardBase {
     Boolean getDeleteYn();
     void setDeleteYn(Boolean deleteYn);
 
-    // 좋아요 여부
-    Boolean getLikeYn();
-    void setLikeYn(Boolean likeYn);
-
     // 테이블 종류
     String getBoardType();
     void setBoardType(String BoardType);

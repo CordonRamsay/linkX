@@ -24,12 +24,12 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
 
   
     @Override
-    public IBoardDept insert(BoardDeptDto dto,IUser user) {
+    public IBoardDept insert(BoardDeptDto dto,Long id) {
         if (dto == null) {
             return null;
         }
 
-        dto.setCreateId(user.getId());
+        dto.setCreateId(id);  // 임시 -> 나중에 로그인정보받아온 IUser의 id 넣어주기
         this.boardMyBatisMapper.insert(dto);
 
         return dto;
@@ -115,11 +115,6 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
                 .boardType(new BoardDeptDto().getBoardType())
                 .boardId(id)
                 .build();
-        Integer count = this.boardLikeMyBatisMapper.countByTypeAndIdAndUser(boardLikeDto);
-        if (count > 0) {
-            return;
-        }
-
         // 좋아요 테이블에 데이터 삽입
         this.boardLikeMyBatisMapper.insert(boardLikeDto);
         // 자유 게시판 테이블에 좋아요 수 증가

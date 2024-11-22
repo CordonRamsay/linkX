@@ -11,7 +11,7 @@ import java.util.List;
 public interface IBoardDeptService {
 
 
-    IBoardDept insert(BoardDeptDto dto,IUser user);
+    IBoardDept insert(BoardDeptDto dto,Long id);
 
     IBoardDept update(BoardDeptDto dto);
 
