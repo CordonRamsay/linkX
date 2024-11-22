@@ -2,97 +2,146 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>자유게시판 상세보기</title>
+    <title>학과게시판 상세보기</title>
     <link rel="stylesheet" href="/board/css/board_view.css">
     <link rel="stylesheet" href="/board/css/board_list.css">
-    <link rel="stylesheet" href="/board/css/board_drop.css">
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
+    <link rel="stylesheet" href="/css/content.css" />
+    <link rel="stylesheet" href="/css/button.css"/>
+    {{>layout/links}}
 </head>
-<body>
+<body class="index-page">
 {{>layout/header}}
-<div id="container">
-    <nav>
-        <ul>
-            <li><strong>게시판</strong></li>
-            <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
-            <li class="dropdown">
-                <a href="#">학과 게시판 ▼</a>
-                <ul class="dropdown-content">
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=1">컴퓨터공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=2">컴퓨터보안공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=3">전자공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=4">정보통신공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=5">기계공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=6">산업경영공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=7">전기공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=8">토목공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=9">지적공간정보학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=10">드론정보공학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=11">경영학과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=12">세무회계과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=13">사회복지과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=14">부동산경영과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=15">항공서비스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=16">일본어과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=17">유아교육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=18">문예창작과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=19">중국어비즈니스과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=20">산업디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=21">커뮤니케이션디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=22">패션리빙디자인과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=23">사회체육과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=24">뷰티매니지먼트과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=25">보건의료정보과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=26">실용음악과</a></li>
-                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=27">연극영상학과</a></li>
+<main class="main">
+    <section >
+        <div class="container mx-auto py-16 px-2">
+            <div class="board-container shadow-md rounded-lg p-10">
+                <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
+                <div class="board-header">
+                    <input type="hidden" id="boardType" name="boardType" value="{{BoardDeptDto.boardType}}">
+                    <input type="hidden" id="id" name="boardType" value="{{BoardDeptDto.id}}">
+                    <div class="boardListBtn" onclick="$.goListPage();">학과게시판</div>
+                    <div class="board-title">{{BoardDeptDto.title}}</div>
+                    <div class="createInfo">
+                        <!-- 작성일 & 조회수 -->
+                        <div class="createDt-viewQty">
+                            <span id="createDt">{{BoardDeptDto.createDt}}</span>
+                            <span>조회수 {{BoardDeptDto.viewQty}}</span>
+                        </div>
+                        <div class="creator">
+                            <!-- 작성자 프로필 사진-->
+                            <a href="/"> <img src="/board/img/user_icon.png" width="30px" height="30px"></a>
+                            <!-- 작성자 닉네임 -->
+                            <div class="createName">{{BoardDeptDto.createName}}</div>
+                        </div>
+                    </div>
+                </div>
 
-                </ul>
-            </li>
-            <li><strong>청원하기</strong></li>
-            <li><a href="#">청원 진행중</a></li>
-            <li><a href="#">청원 종료</a></li>
-            <li><strong>맛집추천</strong></li>
-        </ul>
-    </nav>
+                <!-- 게시판 바디 ( 내용, 좋아요 ) -->
+                <div class="board-body">
+                    <p class="board-content">{{BoardDeptDto.content}}</p>
+                    <div class="likeAndButtons">
+                        <div class="board-like">
+                            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem('{{BoardDeptDto.id}}');" width="25px" height="25px">
+                            <span id="likeQty"> {{BoardDeptDto.likeQty}}</span>
+                        </div>
+                        <!-- 수정/삭제 버튼 -->
+                        <div class="buttons">
+                            <button type="button" id="postUpdateBtn" class="btns btn_bdr4 btn_mid" onclick="location.href='/boardDept/board_update/{{BoardDeptDto.id}}'">수정</button>
+                            <button type="button" id="postDeleteBtn" class="btns btn_bdr1 btn_mid" onclick="$.boardDelete('{{BoardDeptDto.id}}');">삭제</button>
+                            <button type="button" id="backBtn" class="btns btn_bdr3 btn_mid" onclick="$.goListPage();">뒤로</button>
+                        </div>
+                    </div>
+                </div>
 
-    <main>
-        <div class="board-header">
-            <div class="boardListBtn" onclick="location.href='/boardDept/board_list?page=1&searchName=&majorId='+{{BoardDeptDto.majorId}}">후기게시판</div>
-            <div class="board-title">{{BoardDeptDto.title}}</div>
-            <div class="createInfo">
-                <div class="createName">{{BoardDeptDto.createName}}</div>
-                <div class="createDt-viewQty">
-                    <span>{{BoardDeptDto.createDt}}</span>
-                    <span>조회 {{BoardDeptDto.viewQty}}</span>
+                <!-- 댓글 영역-->
+                <div class="comments">
+                    <div id="commentTitle">댓글  <span id="commentCount"></span></div>
+                    <!-- 댓글리스트 렌더링 영역 -->
+                    <div id="commentList"></div>
+                    <!-- 댓글 추가 -->
+                    <div class="cm_write">
+                        <fieldset>
+                            <legend class="skipinfo"></legend>
+                            <div class="cm_input">
+                                <div class="nickname">{{nickname}}</div>
+                                <p><textarea id="comment" name="comment" onkeyup="countingLength(this);" cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
+                                <span><button type="button" class="btns" id="addComment" onclick="$.addComment();">등 록</button><i id="counter">0/300자</i></span>
+                            </div>
+                        </fieldset>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="board-container">
-            <p class="board-content">{{BoardDeptDto.content}}</p>
-            <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem({{BoardDeptDto.id}});"width="25px" height="25px">
-            <span id="likeQty"> {{BoardDeptDto.likeQty}}</span></img>
-            <div class="buttons">
-                <button onclick="location.href='/boardDept/board_update?id={{BoardDeptDto.id}}'">수정</button>
-                <button onclick="$.boardDelete({{BoardDeptDto.id}});">삭제</button>
-            </div>
-        </div>
-
-        <div class="comments">
-
-            <p><strong>박영희</strong>: 확인했습니다~ 참가 꼭 할게요</p>
-            <textarea placeholder="댓글 추가"></textarea>
-            <button>댓글 추가</button>
-        </div>
-    </main>
+    </section>
+</main>
+<!--/* 댓글 수정 popup */-->
+<div id="commentUpdatePopup" class="popLayer">
+    <h3>댓글 수정</h3>
+    <div class="pop_container">
+        <table class="tb tb_row tl">
+            <colgroup>
+                <col style="width:30%;" /><col style="width:70%;" />
+            </colgroup>
+            <tbody>
+            <tr>
+                <th scope="row">작성자</th>
+                <td><input type="text" id="modalWriter" name="modalWriter" value="{{nickname}}" readonly/></td>
+            </tr>
+            <tr>
+                <th scope="row">내용<span class="es">필수 입력</span></th>
+                <td><textarea id="modalContent" name="modalContent" cols="90" rows="10" placeholder="수정할 내용을 입력해 주세요."></textarea></td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="btn_set">
+            <button type="button" id="commentUpdateBtn" onclick="$.updateComment();" class="btns btn_st2">수정</button>
+            <button type="button" class="btns btn_bdr2" onclick="$.closeCommentUpdatePopup();">취소</button>
+        </p>
+    </div>
+    <button type="button" class="btn_close" onclick="closeCommentUpdatePopup();"><span><i class="far fa-times-circle"></i></span></button>
 </div>
+{{>layout/scripts}}
 </body>
 <script>
+    // 페이지 로드 후 실행되는 함수
+    window.onload = function () {
+        // mustahce로 받아온 값은 문자열 이기때문에 boolean형으로 변경해준다.
+        let like = "{{BoardDeptDto.likeYn}}" === "true";
+        var unlikeIcon = "/board/img/unlikeIcon.png";
+        var likeIcon = "/board/img/likeIcon.png";
+        $("#likeIcon").attr("src", (like > 0 ? likeIcon : unlikeIcon));
+
+        $.getBoardCommentList();
+        // 게시글 수정/삭제 버튼 활성화/비활성화
+        $.checkBtnVisibility();
+    };
+
+    // 게시글 수정,삭제 버튼 활성화/비활성화
+    $.checkBtnVisibility = function () {
+        let updateBtn = $("#postUpdateBtn");
+        let deleteBtn = $("#postDeleteBtn");
+
+        let userNickName = "{{nickname}}".trim();
+        let boardCreateName = $(".createName").text().trim();
+
+        if (userNickName !== boardCreateName) {
+            updateBtn.css("visibility","hidden");
+            deleteBtn.css("visibility","hidden");
+        }
+    };
+
+    // 게시글 목록 페이지로 이동
+    $.goListPage = function () {
+
+        window.location.href = '/boardDept/board_list?page=1&searchName=&majorId='+"{{BoardDeptDto.majorId}}";
+    };
+
+    // 게시글 삭제
     $.boardDelete = function (id) {
         let alert = confirm("해당 게시글을 삭제하시겠습니까?");
         if (alert) {
-            window.location.href="/boardDept/board_delete?id="+id;
+            window.location.href="/boardDept/board_delete/"+id;
         }
     };
 
@@ -104,16 +153,19 @@
         // src 속성 안에 "unlike" 문자열이 있는지 확인
         let check = src.includes("unlike");
         // src 속성값에 "unlike"가 포함되어 있다면 좋아요 요청 / 없다면 좋아요 취소 요청
-        let url = check ? "/api/v1/boarddept" +
-            "" +
-            "/like/" + id : "/api/v1/boarddept/unlike/" + id;
+        let url = check ? "/api/v1/boardDept/like/" + id : "/api/v1/boardDept/unlike/" + id;
 
+
+        // ajax를 이용한 비동기 통신
         $.ajax({
             url: url,
             type: "GET",
-            datatype: "JSON",
-            contentType: "application/json; charset=UTF-8",
+            datatype: "JSON",   // 응답 데이터 타입
+            contentType: "application/json; charset=UTF-8", // 전달하는 데이터 타입 : JSON , 인코딩 : UTF-8
         }).done(function (data, status, xhr) {
+            // data : ResponseEntity.body
+            // status : JQuery 상태 문자열 성공시 success
+            // xhr : HTTP 상태코드, 응답 헤더 포함
             console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
             if (status === "success") {
 
@@ -121,7 +173,7 @@
                 $("#likeQty").text(data.responseData.likeQty);
 
                 // 좋아요 상태에 따른 아이콘 업데이트
-                let count = data.responseData.updateDt * 1;
+                let count = data.responseData.likeYn * 1;
                 if (count > 0) {
                     likeIcon.attr("src", "/board/img/likeIcon.png");
                 } else {
@@ -131,6 +183,214 @@
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
             alert("실패 했습니다. " + jqXHR.responseJSON.message);
+        });
+    }
+
+    // 댓글 추가
+    $.addComment= function() {
+        let type = $("#boardType").val();
+        let boardId = $("#id").val();
+        let comment = $("#comment").val();
+
+        let url = "/api/v1";
+
+        if (comment === "") {
+            alert("댓글 내용을 입력해 주세요!");
+            return;
+        }
+        if (!confirm("댓글을 추가하시겠습니까?")) {
+            return;
+        }
+
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({"boardType": type, "boardId": boardId, "comment": comment})
+        }).done(function (data, status, xhr) {
+            console.log("data :", data, ",status : ", +status, ",xhr : ", xhr);
+            $("#comment").val("");
+            $.getBoardCommentList();
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
+            let message = getErrorMessage(jqXHR.responseJSON);
+            alert("댓글 추가를 실패했습니다. " + message);
+        });
+    }
+
+    // 댓글 조회 -> 로드 후 / 좋아요 할 때마다 호출 해줘야함
+    $.getBoardCommentList = function () {
+        let id = $("#id").val();
+        let type = $("#boardType").val();
+
+        $.ajax({
+            url: `/api/v1/board/${type}/${id}/comments`,
+            type: "GET",
+            datatype: "JSON",
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                let commentCount = data.responseData.length;
+                $("#commentCount").text(`${commentCount}`);
+
+                // 댓글조회 성공 시 댓글 리스트 조회
+                $.showBoardCommentList(data.responseData);
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON);
+        });
+    }
+    // 댓글 표시
+    $.showBoardCommentList = function (commentList) {
+        // 조회된 댓글이 없을 경우
+        if (!commentList.length) {
+            $("#commentList").html('<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>');
+            return false;
+        }
+
+        // 렌더링할 html 변수
+        let commentHtml = '';
+
+        // 댓글 html 추가
+        commentList.forEach(row => {
+
+            // 수정 및 삭제 버튼 생성 조건
+            let userNickname = "{{nickname}}"   // 로그인한 유저의 닉네임
+            let isCommentWriter = userNickname === row.createName;  // 로그인한 유저의 닉네임과 댓글 작성자의 닉네임이 같으면 true 대입
+            commentHtml += `
+                        <div class="comment" id="${row.id}">
+                            <span class="writer_img"><img src="/board/img/user_icon.png" width="30" height="30" alt="기본 프로필 이미지"/></span>
+                            <p class="writer">
+                                <em id="commentWriter">${row.createName}</em> |
+                                <span class="date">${dayjs(row.createDt).format('YYYY-MM-DD HH:mm')}</span>
+                            </p>
+                            <div class="cont"><div class="txt_con">${row.comment}</div></div>
+                            <p class="func_btns">
+                                 <!-- 댓글 수정 버튼 -->
+                                ${isCommentWriter ? `
+                                <button type="button" onclick="$.openCommentUpdatePopup(${row.id});" class="btns">
+                                    <span class="icons icon_modify">수정</span>
+                                </button>` : ''}
+                                <!-- 댓글 삭제 버튼 -->
+                                ${isCommentWriter ? `
+                                <button type="button" onclick="$.deleteComment(${row.id});" class="btns">
+                                    <span class="icons icon_del">삭제</span>
+                                </button>` : ''}
+                            </p>
+                        </div>
+                    `;
+        })
+
+
+        $("#commentList").html(commentHtml);
+    };
+
+    // 댓글 수정 팝업 open
+    $.openCommentUpdatePopup = function(id) {
+
+        let boardId = $("#id").val();
+        let boardType = $("#boardType").val();
+
+        $.ajax({
+            url: `/api/v1/board/${boardType}/${boardId}/comments/${id}`,
+            type: 'get',
+            dataType: 'json',
+            async: false,
+
+            error: function (request, status, error) {
+                console.log(error)
+            }
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                $('#commentUpdateBtn').attr('onclick', `$.updateComment(${id})`);
+                $.layerPop('commentUpdatePopup');
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
+            let message = getErrorMessage(jqXHR.responseJSON);
+            alert("댓글 수정을 실패했습니다. " + message);
+        });
+    }
+    // 댓글 수정
+    $.updateComment = function(id) {
+
+        let comment = $("#modalContent").val();
+        let boardType = $("#boardType").val();
+        let boardId = $("#id").val();
+
+        let url = `/api/v1/board/${boardType}/${boardId}/comments/${id}`;
+
+        //댓글id, 댓글
+        const params = {
+            id : id,
+            comment : comment,
+        }
+
+        $.ajax({
+            url: url,
+            type: 'patch',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(params),
+            async: false,
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                alert('수정되었습니다.');
+                $.closeCommentUpdatePopup();
+                $.getBoardCommentList();
+            }
+        });
+    }
+    // 댓글 수정 팝업 close
+    $.closeCommentUpdatePopup = function() {
+        document.getElementById('commentUpdateBtn').removeAttribute('onclick');
+        $.layerPopClose('commentUpdatePopup');
+    }
+    // 레이어 팝업(기본)
+    $.layerPop = function(popName){
+        var $layer = $("#"+ popName);
+        $layer.fadeIn(500).css('display', 'inline-block').wrap( '<div class="overlay_t"></div>');
+        $('body').css('overflow','hidden');
+    }
+    $.layerPopClose = function(){
+        $(".popLayer").hide().unwrap( '');
+        $('body').css('overflow','auto');
+        $(".popLayer video").each(function() { this.pause(); this.load(); });
+    }
+
+
+
+
+    // 댓글 삭제
+    $.deleteComment= function(id) {
+        let boardType = $("#boardType").val();
+        let boardId = $("#id").val();
+
+        let url = `/api/v1/board/${boardType}/${boardId}/comments/${id}`;
+
+        if (!confirm("댓글을 삭제하시겠습니까?")) {
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: "DELETE",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({"id": id})
+        }).done(function (data, status, xhr) {
+            console.log("data :", data, ",status : ", +status, ",xhr : ", xhr);
+            $.getBoardCommentList();
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("fail: jqXHR=", jqXHR, ", status=", status, ", errorThrown=", errorThrown);
+            let message = getErrorMessage(jqXHR.responseJSON);
+            alert("댓글 삭제를 실패했습니다. " + message);
         });
     }
 </script>

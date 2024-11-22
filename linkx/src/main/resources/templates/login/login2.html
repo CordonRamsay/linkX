@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-login {
+            background-color: #ff6b6b;
+            color: #fff;
+        }
+        .btn-login:hover {
+            background-color: #ff5252;
+        }
+        .btn-kakao {
+            background-color: #ffeb3b;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-kakao img {
+            margin-right: 8px;
+            height: 20px;
+        }
+        .divider {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+        .divider::before {
+            margin-right: 10px;
+        }
+        .divider::after {
+            margin-left: 10px;
+        }
+        .signup {
+            font-size: 14px;
+        }
+        .signup a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .signup a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>로그인</h1>
+    <form>
+        <input type="email" placeholder="이메일을 입력해주세요." required />
+        <input type="password" placeholder="비밀번호를 입력해주세요." required />
+        <button type="submit" class="btn-login">로그인</button>
+        <button type="button" class="btn-kakao">
+            <img src="kakao-icon.png" alt="Kakao Icon" /> 카카오로 로그인
+        </button>
+    </form>
+    <div class="divider">or</div>
+    <div class="signup">
+        아직 회원이 아니신가요? <a href="#">회원가입</a>
+    </div>
+</div>
+</body>
+</html>

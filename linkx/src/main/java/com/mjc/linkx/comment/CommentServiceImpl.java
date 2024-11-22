@@ -30,28 +30,48 @@ public class CommentServiceImpl implements ICommentService{
         return dto;
     }
 
+
     @Override
-    public Integer countAllByBoardId(SearchBoardDto dto) {
-        return 0;
+    public List<CommentDto> findAllByBoardTypeId(SearchCommentDto dto,IUser user) {
+        if (dto == null) {
+            return null;
+        }
+        dto.settingValues();
+        dto.setFirstIndex(dto.getFirstIndex());
+        List<CommentDto> list = this.commentMyBatisMapper.findAllByBoardTypeId(dto);
+        return list;
     }
 
     @Override
-    public List<CommentDto> findAllByBoardTypeId(SearchBoardDto dto,IUser user) {
-        return List.of();
+    public CommentDto findByCommentId(Long id){
+        if (id == null) {
+            return null;
+        }
+        CommentDto find = this.commentMyBatisMapper.findByCommentId(id);
+        return find;
     }
-
     @Override
-    public void update(CommentDto dto) {
+    public IComment update(CommentDto dto) {
+        if (dto == null) {
+            return null;
+        }
+        dto.setUpdateInfo();
+        this.commentMyBatisMapper.update(dto);
+
+        return dto;
 
     }
 
     @Override
     public void delete(Long id) {
-
+        if (id == null) {
+            return;
+        }
+        this.commentMyBatisMapper.delete(id);
     }
 
     @Override
-    public void addLikeQty(Long id) {
+    public void addLikeQty(Long id,IUser user) {
 
     }
 
