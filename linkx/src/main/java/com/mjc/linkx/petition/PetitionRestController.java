@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -44,11 +45,10 @@ public class PetitionRestController implements IResponseController {
             // 세션에서 User 가져옴
             IUser user = (IUser) session.getAttribute("LoginUser");
             CUInfoDto CUInfoDto = makeResponseCheckLogin(user);
-            Boolean TorN;
-            TorN = this.petitionService.hasUserAgreed(id, user.getId());
 
-                IPetition result = this.insertSig(id, CUInfoDto.getLoginUser(),TorN);
-                return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", "result");
+
+                IPetition result = this.insertSig(id, CUInfoDto.getLoginUser());
+                return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
 
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -66,9 +66,10 @@ public class PetitionRestController implements IResponseController {
 
     
     
-    private IPetition insertSig(Long id, IUser loginUser, Boolean TorN) {
+    private IPetition insertSig(Long id, IUser loginUser) {
         IPetition result = this.petitionService.findById(id);
-        
+        Boolean TorN;
+        TorN = this.petitionService.hasUserAgreed(id, loginUser.getId());
         // SingatureDto 생성
         SignatureDto signature = SignatureDto.builder()
                 .petiId(id)
@@ -76,8 +77,10 @@ public class PetitionRestController implements IResponseController {
                 .build();
         if(!TorN) {
             this.petitionService.addSignature(signature);
-            this.petitionService.addagreeQty(id);
+            //this.petitionService.addagreeQty(id);
         }
+        //테스트를 위해 값이 증가하는 메소드를 if밖으로 꺼냄
+        this.petitionService.addagreeQty(id);
         result.setisSig(TorN);
 
         return result;

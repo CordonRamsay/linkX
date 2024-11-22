@@ -171,16 +171,15 @@
             console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
             if (status === "success") {
 
-                $("#agreeQty").text(data.responseData.agreeQty);
+
                 let aleadySig = data.responseData.isSig;
-                alert(aleadySig);
-                /*if () {
+                if (aleadySig) {
                     alert("이미 동의한 청원입니다");
 
                 } else {
                     alert("청원에 동의했습니다");
-
-                }*/
+                    $("#agreeQty").text(data.responseData.agreeQty);
+                }
             }
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
