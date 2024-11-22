@@ -1,6 +1,7 @@
 package com.mjc.linkx.petition;
 
 
+import com.mjc.linkx.common.dto.SearchDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface IPetitionMyBatisMapper {
 
     List<PetitionDto> findAllByNameContains(SearchPetiDto dto);     //검색어 포함 게시글 모두 찾기
 
-    Integer countAllByContains(SearchPetiDto dto);//검색어 포함 게시글 개수 구하기
+    Integer countAllByContains(SearchDto dto);//검색어 포함 게시글 개수 구하기
 
     void addAgreeQty(Long id);              //동의자 수 증가
 
@@ -31,4 +32,6 @@ public interface IPetitionMyBatisMapper {
     void insertSignature(SignatureDto signature);
 
     boolean hasUserAgreed(SignatureDto signature);
+
+
 }

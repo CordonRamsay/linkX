@@ -30,8 +30,6 @@ public class PetitionController implements IResponseController {
     @GetMapping("/petition_list")               //청원글 리스트 조회
     public String petitionList(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model, HttpSession session) {
         try{
-
-
             IUser loginUser =(IUser) session.getAttribute("LoginUser");
             if(loginUser != null) {
                 model.addAttribute("nickname",loginUser.getNickname());
@@ -51,7 +49,7 @@ public class PetitionController implements IResponseController {
             List<PetitionDto> topAgreedPetitions = this.petitionService.findTopAgreedPetitions();
             model.addAttribute("topAgreedPetitions", topAgreedPetitions);
 
-            Integer total = this.petitionService.countAllByNameContains(searchPetiDto);
+            Integer total = this.petitionService.countAllByContains(searchPetiDto);
             searchPetiDto.setTotal(total);
             List<PetitionDto> list = this.petitionService.findAllByNameContains(searchPetiDto);
 

@@ -1,6 +1,7 @@
 package com.mjc.linkx.petition;
 
 
+import com.mjc.linkx.common.dto.SearchDto;
 import com.mjc.linkx.user.IUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,8 +55,13 @@ public class PetitionServiceImpl implements IPetitionService{
 
 
     @Override
-    public Integer countAllByNameContains(SearchPetiDto dto) {
-        return 0;
+    public Integer countAllByContains(SearchPetiDto dto) {
+        if(dto == null){
+            return null;
+        }
+        dto.settingValues();
+        Integer count = this.petitionMyBatisMapper.countAllByContains(dto);
+        return count;
     }
 
 

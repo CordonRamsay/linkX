@@ -16,7 +16,7 @@ public interface IPetitionService {
 
     List<PetitionDto> findAllByNameContains(SearchPetiDto dto);
 
-    Integer countAllByNameContains(SearchPetiDto dto);
+    Integer countAllByContains(SearchPetiDto dto);
 
 
 
