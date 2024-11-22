@@ -71,7 +71,7 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
-    public void addLikeQty(Long id) {
+    public void addLikeQty(Long id,IUser user) {
 
     }
 

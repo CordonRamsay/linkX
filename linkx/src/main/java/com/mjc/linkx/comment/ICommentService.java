@@ -22,7 +22,7 @@ public interface ICommentService {
     void delete(Long id);
 
     // 좋아요
-    void addLikeQty(Long id);
+    void addLikeQty(Long id,IUser user);
 
     // 좋아요 취소
     void subLikeQty(Long id);

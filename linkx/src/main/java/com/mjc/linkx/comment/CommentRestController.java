@@ -1,6 +1,7 @@
 package com.mjc.linkx.comment;
 
 
+import com.mjc.linkx.commentlike.CommentLikeDto;
 import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.dto.CUInfoDto;
 import com.mjc.linkx.common.dto.ResponseCode;
@@ -184,5 +185,60 @@ public class CommentRestController implements IResponseController {
             log.error(ex.toString());
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
+    }
+    @GetMapping("/board/{boardType}/{boardId}/comments/like/{id}")
+    public ResponseEntity<ResponseDto> addLikeQty(Model model, @Validated @PathVariable Long id,HttpSession session) {
+        try {
+            if (id == null || id <= 0) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
+            }
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            IUser user = cuInfoDto.getLoginUser();
+
+            this.commentService.addLikeQty(id,user);
+            IComment result = this.getCommentAndLike(user, id);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.toString(), null);
+        } catch (IdNotFoundException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.toString(), null);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+        }
+    }
+
+    @GetMapping("/board/{boardType}/{boardId}/comments/unlike/{id}")
+    public ResponseEntity<ResponseDto> subLikeQty(Model model, @Validated @PathVariable Long id) {
+        try {
+            if (id == null || id <= 0) {
+                return makeResponseEntity(HttpStatus.BAD_REQUEST, ResponseCode.R000051, "입력 매개변수 에러", null);
+            }
+            IUser loginUser = (IUser) model.getAttribute(SecurityConfig.LOGINUSER);
+            this.commentService.subLikeQty(loginUser, id);
+            IBoardComment result = this.getCommentAndLike(loginUser, id);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+        } catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.getMessage(), null);
+        } catch (IdNotFoundException ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.getMessage(), null);
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
+        }
+    }
+    private IBoardComment getCommentAndLike(IUser loginUser, Long id) {
+        IBoardComment result = this.commentService.findById(id);
+        CommentLikeDto boardLikeDto = CommentLikeDto.builder()
+                .createId(loginUser.getId())
+                .commentId(id)
+                .build();
+        Integer likeCount = this.commentLikeService.countByCommentTableUserBoard(boardLikeDto);
+        result.setUpdateDt(likeCount.toString());
+        return result;
     }
 }
