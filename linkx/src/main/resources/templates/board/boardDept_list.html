@@ -33,7 +33,7 @@
                     {{#boardList}}
                     <tr class="py-4 board-content border-b hover:bg-gray-50 highlight">
                         <td class="py-4 text-left">{{id}}</td>
-                        <td class="title text-center" onclick="location.href='/boardDept/board_view/{{id}}'">{{title}}</td>
+                        <td class="title text-center" onclick="location.href='/boardDept/board_view/{{id}}'">{{title}} <span class="countComment">[{{countComment}}]</span></td>
                         <td class="text-center">{{createName}}</td>
                         <td class="text-center">{{createDt}}</td>
                         <td class="text-center">{{viewQty}}</td>
@@ -88,17 +88,33 @@
         // id가 majorName인 span 태그 값 안에 학과 이름 삽입
         $("#majorName").text(majorName);
 
-        // 페이징
+        $.showCountComment();
+        $.paging();
+    });
+
+    // 댓글 개수  표시
+    $.showCountComment = function () {
+        let countComment = $(".countComment");
+        countComment.each(function () {
+            if ($(this).text() === "[0]") {
+                $(this).text(""); // 댓글 개수가 0이면 공백으로 설정
+            }else{
+                $(this).css('color','red'); //텍스트 빨간색 표시
+            }
+        });
+    };
+
+    // 페이징
+    $.paging = function(){
         let totPage = Math.ceil(("{{searchBoardDto.total}}" * 1) / 10);
         let page = "{{searchBoardDto.page}}" * 1;
         let startPage = getStartPage(page);
         let endPage = getEndPage(startPage);
         let searchName = '{{searchBoardDto.searchName}}';
-
         let prev = (page-1) < 1 ? 1 : page-1;
         let next = (page+1) >= totPage ? totPage : page+1;
 
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "&majorId=" + majorId+ "'><img src='/board/img/pageLeft.png'></a>");
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "'><img src='/board/img/pageLeft.png'></a>");
 
         for (let i = startPage; i <= endPage; i++) {
             let sClass = "px-3 py-2 text-gray-700";
@@ -107,10 +123,10 @@
                 sClass += " border border-blue-500 rounded"; // 테두리 추가
             }
 
-            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName + "&majorId=" + majorId+ "'>" + i + "</a>");
+            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName + "'>" + i + "</a>");
         }
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName + "&majorId=" + majorId+ "'><img src='/board/img/pageRight.png'></a>");
-    });
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName + "'><img src='/board/img/pageRight.png'></a>");
+    }
 
     function getStartPage(page) {
         let one = 1;

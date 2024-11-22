@@ -54,6 +54,11 @@
     <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="BoardFreeDto">
         SELECT bt.id
              , bt.title
+             , (SELECT count(*)
+                FROM comment_tbl
+                WHERE boardType = 'free'
+                AND boardId = bt.id
+                AND deleteYn = false) AS countComment
              , bt.content
              , bt.viewQty
              , bt.likeQty
