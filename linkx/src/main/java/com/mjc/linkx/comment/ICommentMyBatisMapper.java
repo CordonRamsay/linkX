@@ -24,10 +24,10 @@ public interface ICommentMyBatisMapper {
     // 댓글 삭제
     void delete(Long id);
 
-    // 좋아요
+    // 댓글 좋아요 수 증가
     void addLikeQty(Long id);
     
-    // 좋아요 취소
+    // 댓글 좋아요 수 감소
     void subLikeQty(Long id);
     
     

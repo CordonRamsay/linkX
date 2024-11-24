@@ -137,7 +137,7 @@ body {
 .comment_date{
     font-size : 10px;
 }
-.comment_like_icon{
+.commentLikeIcon{
     cursor: pointer;
 }
 .comment_like{

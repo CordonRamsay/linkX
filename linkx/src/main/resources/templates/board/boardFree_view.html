@@ -19,7 +19,7 @@
                 <!-- 게시판 헤더 ( 제목,닉네임, 작성일, 조회수 ) -->
                 <div class="board-header">
                     <input type="hidden" id="boardType" name="boardType" value="{{BoardFreeDto.boardType}}">
-                    <input type="hidden" id="id" name="boardType" value="{{BoardFreeDto.id}}">
+                    <input type="hidden" id="boardId" name="boardId" value="{{BoardFreeDto.id}}">
                     <div class="boardListBtn" onclick="$.goListPage();">자유게시판</div>
                     <div class="board-title">{{BoardFreeDto.title}}</div>
                     <div class="createInfo">
@@ -107,7 +107,7 @@
 
     // 페이지 로드 후 실행되는 함수
     window.onload = function () {
-        // mustahce로 받아온 값은 문자열 이기때문에 boolean형으로 변경해준다.
+        // mustache로 받아온 값은 문자열 이기때문에 boolean형으로 변경해준다.
         let like = "{{BoardFreeDto.likeYn}}" === "true";
         var unlikeIcon = "/board/img/unlikeIcon.png";
         var likeIcon = "/board/img/likeIcon.png";
@@ -193,7 +193,7 @@
     // 댓글 추가
     $.addComment= function() {
         let type = $("#boardType").val();
-        let boardId = $("#id").val();
+        let boardId = $("#boardId").val();
         let comment = $("#comment").val();
 
         let url = "/api/v1";
@@ -226,7 +226,7 @@
 
     // 댓글 조회 -> 로드 후 / 좋아요 할 때마다 호출 해줘야함
     $.getBoardCommentList = function () {
-        let id = $("#id").val();
+        let id = $("#boardId").val();
         let type = $("#boardType").val();
 
         $.ajax({
@@ -256,6 +256,7 @@
             return false;
         }
 
+        console.log(commentList);
         // 렌더링할 html 변수
         let commentHtml = '';
 
@@ -275,7 +276,7 @@
                             <div class="comment_footer">
                                 <span class="comment_date">${dayjs(row.createDt).format('YYYY-MM-DD HH:mm')}</span>
                                 <span class="comment_like">
-                                    <img class="comment_like_icon" src="/board/img/unlikeIcon.png" width="20px" onClick='$.likeComment(${id}, this);'>
+                                    <img class="commentLikeIcon" src="/board/img/unlikeIcon.png" width="20px" onClick='$.likeComment(${row.id},this);'>
                                     <span class="comment_like_count">&nbsp;${row.likeQty}</span>
                                 </span>
                             </div>
@@ -298,11 +299,53 @@
 
         $("#commentList").html(commentHtml);
     };
+    // 댓글 좋아요
+    $.likeComment = (id,icon) => {
+        if (id <= 0) {
+            return;
+        }
+
+
+        let boardType = $("#boardType").val();
+        let boardId = $("#boardId").val();
+
+        // 댓글 좋아요 아이콘
+        let commentLikeIcon = $(icon);
+        // 좋아요 수
+        let likeCountElement = commentLikeIcon.siblings(".comment_like_count");
+        // commentLikeIcon src 속성 가져오기
+        let src = commentLikeIcon.attr("src");
+        let isLike = src.includes("unlike");
+        let url = isLike ?  `/api/v1/board/${boardType}/${boardId}/comments/like/${id}`
+                        : `/api/v1/board/${boardType}/${boardId}/comments/unlike/${id}`;
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    let likeYn = data.responseData.likeYn; // 좋아요 여부
+                    let likeQty = data.responseData.likeQty; // 좋아요 수
+
+                    // 좋아요 수 업데이트
+                    likeCountElement.text(likeQty);
+                    // 이미지 업데이트
+                    commentLikeIcon.attr("src",likeYn ? "/board/img/likeIcon.png" : "/board/img/unlikeIcon.png");
+
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("Like 실패 했습니다. " + jqXHR.responseJSON.message);
+            });
+    }
 
     // 댓글 수정 팝업 open
     $.openCommentUpdatePopup = function(id) {
 
-        let boardId = $("#id").val();
+        let boardId = $("#boardId").val();
         let boardType = $("#boardType").val();
 
         $.ajax({
@@ -331,7 +374,7 @@
 
         let comment = $("#modalContent").val();
         let boardType = $("#boardType").val();
-        let boardId = $("#id").val();
+        let boardId = $("#boardId").val();
 
         let url = `/api/v1/board/${boardType}/${boardId}/comments/${id}`;
 
@@ -380,7 +423,7 @@
     // 댓글 삭제
     $.deleteComment= function(id) {
         let boardType = $("#boardType").val();
-        let boardId = $("#id").val();
+        let boardId = $("#boardId").val();
 
         let url = `/api/v1/board/${boardType}/${boardId}/comments/${id}`;
 
@@ -404,49 +447,6 @@
         });
     }
 
-    // 댓글 좋아요
-    $.likeComment = (id) => {
-        if (id <= 0) {
-            return;
-        }
 
-        let heartIcon = $("#heartIcon_" + id);
-        let currentIconSrc = heartIcon.attr("src");
-
-        if (currentIconSrc.includes("heartOff.svg")) {
-            $.ajax({
-                url: "/api/v1/comment/like/" + id,
-                type: "GET",
-                datatype: "JSON",
-                contentType: "application/json; charset=UTF-8",
-            }).done(function (data, status, xhr) {
-                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-                if (status === "success") {
-                    heartIcon.attr("src", "/svg/heartOn.svg");
-                    // 좋아요 성공하면 댓글 리스트 다시 조회
-                    $.getBoardCommentList(data.responseData);
-                }
-            }).fail(function (jqXHR, status, errorThrown) {
-                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("Like 실패 했습니다. " + jqXHR.responseJSON.message);
-            });
-        } else {
-            $.ajax({
-                url: "/api/v1/comment/unlike/" + id,
-                type: "GET",
-                datatype: "JSON",
-                contentType: "application/json; charset=UTF-8",
-            }).done(function (data, status, xhr) {
-                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-                if (status === "success") {
-                    heartIcon.attr("src", "/svg/heartOff.svg");
-                    $.getBoardCommentList(data.responseData);
-                }
-            }).fail(function (jqXHR, status, errorThrown) {
-                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("UnLike 실패 했습니다. " + jqXHR.responseJSON.message);
-            });
-        }
-    }
 </script>
 </html>

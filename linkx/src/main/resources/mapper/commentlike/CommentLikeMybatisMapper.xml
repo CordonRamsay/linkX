@@ -10,16 +10,16 @@
                , #{commentId})
     </insert>
 
-    <delete id="deleteByCommentTableUserBoard" parameterType="CommentLikeDto">
+    <delete id="delete" parameterType="CommentLikeDto">
         DELETE FROM comment_like_tbl
         WHERE createId = #{createId}
           AND commentId = #{commentId}
     </delete>
 
-    <select id="countByCommentTableUserBoard" resultType="Integer" parameterType="CommentLikeDto">
+    <select id="countByCommentIdAndUser" resultType="Integer" parameterType="CommentLikeDto">
         SELECT count(*)
         FROM comment_like_tbl
-        WHERE createId = #{createId}
-          AND commentId = #{commentId}
+        WHERE commentId = #{commentId}
+          AND createId = #{createId}
     </select>
 </mapper>

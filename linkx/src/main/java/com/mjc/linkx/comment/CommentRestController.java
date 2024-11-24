@@ -1,7 +1,11 @@
 package com.mjc.linkx.comment;
 
 
+import com.mjc.linkx.boardfree.BoardFreeDto;
+import com.mjc.linkx.boardfree.IBoardFree;
+import com.mjc.linkx.boardlike.BoardLikeDto;
 import com.mjc.linkx.commentlike.CommentLikeDto;
+import com.mjc.linkx.commentlike.ICommentLikeService;
 import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.dto.CUInfoDto;
 import com.mjc.linkx.common.dto.ResponseCode;
@@ -25,7 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class CommentRestController implements IResponseController {
-    private final CommentServiceImpl commentService;
+    private final ICommentService commentService;
+
+    private final ICommentLikeService commentLikeService;
 
 
     // 댓글 추가
@@ -186,8 +192,10 @@ public class CommentRestController implements IResponseController {
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
+    
+    // 댓글 좋아요
     @GetMapping("/board/{boardType}/{boardId}/comments/like/{id}")
-    public ResponseEntity<ResponseDto> addLikeQty(Model model, @Validated @PathVariable Long id,HttpSession session) {
+    public ResponseEntity<ResponseDto> commentLike(Model model, @Validated @PathVariable Long id,HttpSession session) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
@@ -195,50 +203,67 @@ public class CommentRestController implements IResponseController {
             CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
             IUser user = cuInfoDto.getLoginUser();
 
-            this.commentService.addLikeQty(id,user);
+            // 댓글좋아요 테이블에 행삽입 / 댓글 테이블 좋아요 수 증가
+            this.commentService.commentLike(id,user);
+            // CommentDto에 좋아요가 되있다면 likeYn : 1 / 안 되있다면 likeYn : 0 값 삽입
             IComment result = this.getCommentAndLike(user, id);
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
         } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
 
+    // 댓글 좋아요 취소
     @GetMapping("/board/{boardType}/{boardId}/comments/unlike/{id}")
-    public ResponseEntity<ResponseDto> subLikeQty(Model model, @Validated @PathVariable Long id) {
+    public ResponseEntity<ResponseDto> commentSubLike(Model model, @Validated @PathVariable Long id,HttpSession session) {
         try {
             if (id == null || id <= 0) {
-                return makeResponseEntity(HttpStatus.BAD_REQUEST, ResponseCode.R000051, "입력 매개변수 에러", null);
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
-            IUser loginUser = (IUser) model.getAttribute(SecurityConfig.LOGINUSER);
-            this.commentService.subLikeQty(loginUser, id);
-            IBoardComment result = this.getCommentAndLike(loginUser, id);
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            IUser user = cuInfoDto.getLoginUser();
+
+            // 댓글좋아요 테이블에 행 삭제 / 댓글 테이블 좋아요 수 감소
+            this.commentService.commentSubLike(id,user);
+            // CommentDto에 좋아요가 되있다면 likeYn : 1 / 안 되있다면 likeYn : 0 값 삽입
+            IComment result = this.getCommentAndLike(user, id);
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN, ex.toString(), null);
         } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         }
     }
-    private IBoardComment getCommentAndLike(IUser loginUser, Long id) {
-        IBoardComment result = this.commentService.findById(id);
+    
+    // 댓글에 좋아요가 됐는지 안됐는지 체크
+    private IComment getCommentAndLike(IUser loginUser, Long id) {
+        IComment result = this.commentService.findByCommentId(id);
         CommentLikeDto boardLikeDto = CommentLikeDto.builder()
                 .createId(loginUser.getId())
                 .commentId(id)
                 .build();
-        Integer likeCount = this.commentLikeService.countByCommentTableUserBoard(boardLikeDto);
-        result.setUpdateDt(likeCount.toString());
+        Integer likeCount = this.commentLikeService.countByCommentIdAndUser(boardLikeDto);
+
+        // Comment likeYn 필드에  0 / 1 대입
+        if (likeCount >= 1) {
+            result.setLikeYn(true);
+        } else {
+            result.setLikeYn(false);
+        }
         return result;
     }
+    
 }

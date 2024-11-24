@@ -2,6 +2,9 @@ package com.mjc.linkx.comment;
 
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
+import com.mjc.linkx.commentlike.CommentLikeDto;
+import com.mjc.linkx.commentlike.ICommentLikeMybatisMapper;
+import com.mjc.linkx.commentlike.ICommentLikeService;
 import com.mjc.linkx.user.IUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.util.List;
 public class CommentServiceImpl implements ICommentService{
 
     private final ICommentMyBatisMapper commentMyBatisMapper;
+    private final ICommentLikeMybatisMapper commentLikeMybatisMapper;
 
     @Override
     public IComment insert(IUser user,CommentDto dto) {
@@ -71,12 +75,32 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
-    public void addLikeQty(Long id,IUser user) {
-
+    public void commentLike(Long id,IUser user) {
+        if (id == null) {
+            return;
+        }
+        CommentLikeDto commentLikeDto = CommentLikeDto.builder()
+                .commentId(id)
+                .createId(user.getId())
+                .build();
+        // 댓글 좋아요 행 삽입
+        this.commentLikeMybatisMapper.insert(commentLikeDto);
+        // 댓글 게시판 좋아요 수 증가
+        this.commentMyBatisMapper.addLikeQty(id);
     }
 
     @Override
-    public void subLikeQty(Long id) {
-
+    public void commentSubLike(Long id,IUser user) {
+        if (id == null) {
+            return;
+        }
+        CommentLikeDto commentLikeDto = CommentLikeDto.builder()
+                .commentId(id)
+                .createId(user.getId())
+                .build();
+        // 댓글 좋아요 행 삭제
+        this.commentLikeMybatisMapper.delete(commentLikeDto);
+        // 댓글 게시판 좋아요 수 감소
+        this.commentMyBatisMapper.subLikeQty(id);
     }
 }

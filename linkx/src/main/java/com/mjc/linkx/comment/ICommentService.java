@@ -22,8 +22,8 @@ public interface ICommentService {
     void delete(Long id);
 
     // 좋아요
-    void addLikeQty(Long id,IUser user);
+    void commentLike(Long id,IUser user);
 
     // 좋아요 취소
-    void subLikeQty(Long id);
+    void commentSubLike(Long id,IUser user);
 }
