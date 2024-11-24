@@ -4,136 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/board/css/board_list.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/board/css/board_drop.css">
     <title>자유 게시판</title>
-    {{>layout/links}}
 </head>
-<body class="index-page">
+<body>
 {{>layout/header}}
-<main class="main">
-    <section>
-        <div class="container mx-auto py-4 px-2">
+<div class="list-container">
+    <div class="sidebar">
+        <h2>게시판</h2>
+        <ul>
+            <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
+            <li class="dropdown">
+                <a href="#">학과 게시판 ▼</a>
+                <ul class="dropdown-content">
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=1">컴퓨터공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=2">컴퓨터보안공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=3">전자공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=4">정보통신공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=5">기계공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=6">산업경영공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=7">전기공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=8">토목공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=9">지적공간정보학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=10">드론정보공학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=11">경영학과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=12">세무회계과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=13">사회복지과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=14">부동산경영과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=15">항공서비스과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=16">일본어과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=17">유아교육과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=18">문예창작과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=19">중국어비즈니스과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=20">산업디자인과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=21">커뮤니케이션디자인과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=22">패션리빙디자인과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=23">사회체육과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=24">뷰티매니지먼트과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=25">보건의료정보과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=26">실용음악과</a></li>
+                    <li><a href="/boardDept/board_list?page=1&searchName=&majorId=27">연극영상학과</a></li>
 
-            <div class="container text-center mb-4 aos-init aos-animate" data-aos="fade-down" data-aos-delay="100">
-                <h1 class="text-4xl font-bold text-gray-700">자유 게시판</h1>
-                <p class="text-gray-500 mb-4">자유롭게 글을 남겨 보세요</p>
-            </div>
-            <div class="board-container shadow-md rounded-lg p-3 ">
-                <table class="min-w-full table-auto text-left">
-                    <thead class="bg-pink-200">
-                    <tr class="text-black uppercase text-sm tracking-wider" >
-                        <th class="py-2 text-left">NO</th>
-                        <th class="title text-center">제목</th>
-                        <th class="text-center">작성자</th>
-                        <th class="text-center">작성일</th>
-                        <th class="text-center">조회수</th>
-                        <th class="text-center">좋아요</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{#boardList}}
-                    <tr class="py-4 board-content border-b hover:bg-gray-50 highlight">
-                        <td class="py-4 text-left">{{id}}</td>
-                        <td class="title text-center" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}} <span class="countComment">[{{countComment}}]</span></td>
-                        <td class="text-center">{{createName}}</td>
-                        <td class="text-center">{{createDt}}</td>
-                        <td class="text-center">{{viewQty}}</td>
-                        <td class="text-center">{{likeQty}}</td>
-                    </tr>
-                    {{/boardList}}
-                    </tbody>
-                </table>
-                <div class="flex items-center justify-between mt-3">
-                    <div class="text-gray-800 mt-3">
-                        <span class="font-bold">{{searchBoardDto.total}}</span> 개의 게시글
-                    </div>
-                    <div style="text-align: right;">
-                        <button class="btn btn-outline-danger" onclick="location.href='/boardFree/board_add'">글쓰기</button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <!-- 페이징 처리 및 검색 -->
-                <div id="page-and-search" class="board-content mt-8 justify-between items-center">
-                    <!-- 페이징 -->
-                    <div id="pagination" class="flex justify-center space-x-2"></div> <!-- JavaScript에서 동적으로 페이징 처리 -->
-                    <!-- 검색 -->
-                    <form id="search-form" class="flex items-center justify-center items-center space-x-2" method="get"
-                          action="/boardFree/board_list">
-                        <select id="searchType" name="searchType" class="border rounded px-2 py-1 text-gray-600">
-                            <option value="title">제목</option>
-                            <option value="nickname">작성자</option>
-                            <option value="content">내용</option>
-                        </select>
-                        <input type="text" id="searchName" name="searchName" placeholder="검색어를 입력해주세요"
-                               class="border rounded px-2 py-1 " value="{{searchBoardDto.searchName}}">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">검색
-                        </button>
-                    </form>
-                </div>
-            </div>
+                </ul>
+            </li>
+        </ul>
+        <h2>청원하기</h2>
+        <ul>
+            <li><a href="#">청원 진행중</a></li>
+            <li><a href="#">청원 종료</a></li>
+        </ul>
+        <h2>맛집추천</h2>
+    </div>
+
+    <div class="main">
+        <h2>자유 게시판</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>NO</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>좋아요</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#boardList}}
+            <tr>
+                <td>{{id}}</td>
+                <td class="title" onclick="location.href='/boardFree/board_view/{{id}}'">{{title}}</td>
+                <td>{{createName}}</td>
+                <td>{{createDt}}</td>
+                <td>{{viewQty}}</td>
+                <td>{{likeQty}}</td>
+            </tr>
+            {{/boardList}}
+            <!-- 더 많은 게시글 데이터를 여기에 추가 -->
+            </tbody>
+        </table>
+
+        <div class="text-gray-600 mt-3">{{searchBoardDto.total}}개의 게시글</div>
+
+        <div class="pagination">
+            <button>Prev</button>
+            <button>1</button>
+            <button>2</button>
+            <button>Next</button>
         </div>
-    </section>
-</main>
-{{>layout/scripts}}
+        <!-- 검색 -->
+        <form id="search-form" class="search-container" method="get" action="/boardFree/board_list">
+            <select id="searchType" name="searchType">
+                <option value="title">제목</option>
+                <option value="nickname">작성자</option>
+                <option value="content">내용</option>
+            </select>
+            <input type="text" id="searchName" name="searchName" value="{{searchBoardDto.searchName}}" placeholder="검색어를 입력해 주세요.">
+            <button type="submit">검색</button>
+        </form>
+
+        <div style="text-align: right;">
+            <button class="login-btn" onclick="location.href='/boardFree/board_add'">글쓰기</button>
+        </div>
+    </div>
+</div>
+
 </body>
-<script>
-    $(function(){
-
-        $.showCountComment();
-        $.paging();
-
-    });
-    // 댓글 개수  표시
-    $.showCountComment = function () {
-        let countComment = $(".countComment");
-        countComment.each(function () {
-            if ($(this).text() === "[0]") {
-                $(this).text(""); // 댓글 개수가 0이면 공백으로 설정
-            }else{
-                $(this).css('color','red'); //텍스트 빨간색 표시
-            }
-        });
-    };
-
-    // 페이징
-    $.paging = function(){
-        let totPage = Math.ceil(("{{searchBoardDto.total}}" * 1) / 10);
-        let page = "{{searchBoardDto.page}}" * 1;
-        let startPage = getStartPage(page);
-        let endPage = getEndPage(startPage);
-        let searchName = '{{searchBoardDto.searchName}}';
-        let prev = (page-1) < 1 ? 1 : page-1;
-        let next = (page+1) >= totPage ? totPage : page+1;
-
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "'><img src='/board/img/pageLeft.png'></a>");
-
-        for (let i = startPage; i <= endPage; i++) {
-            let sClass = "px-3 py-2 text-gray-700";
-            // 현재 페이지일 경우 테두리 추가
-            if (page == i) {
-                sClass += " border border-blue-500 rounded"; // 테두리 추가
-            }
-
-            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName + "'>" + i + "</a>");
-        }
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName + "'><img src='/board/img/pageRight.png'></a>");
-    }
-    function getStartPage(page) {
-        let one = 1;
-        let ten = ~~((page - 1) / 10) * 10;
-        let startPage = ten + one;
-        return ~~(startPage);
-    }
-
-
-    function getEndPage(startPage) {
-        let totPage = ~~((("{{searchBoardDto.total}}" * 1) + 9) / 10);
-        let tPage = startPage + 9;
-        if ( tPage < totPage ) {
-            return ~~(tPage);
-        }
-        return ~~(totPage);
-    }
-</script>
 </html>

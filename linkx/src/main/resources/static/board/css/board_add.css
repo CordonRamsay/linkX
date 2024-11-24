@@ -1,9 +1,8 @@
-
-
-.btnBar{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+/* 배경 */
+#background {
+    background-image: url('/assets/img/pexels-photo-869258.jpeg');
+    background-size: cover;
+    background-position: center;
 }
 .footer {
     width: 100%;

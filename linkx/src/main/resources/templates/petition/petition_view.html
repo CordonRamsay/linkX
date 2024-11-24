@@ -95,7 +95,7 @@
 
 <div class="container">
     {{>layout/header}}
-
+    <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
 
     <div class="sidebar">
         <div class="section">
@@ -132,7 +132,7 @@
             <tr>
                 <td>{{PetitionDto.petiField}}</td>
                 <td>{{PetitionDto.createDt}}</td>
-                <td>{{PetitionDto.agreeQty}}</td>
+                <td id="agreeQty">{{PetitionDto.agreeQty}}</td>
                 <td>{{PetitionDto.endDt}}</td>
             </tr>
         </table>
@@ -145,20 +145,52 @@
         </div>
         <div class="buttons">
             <button type="button" onclick="goBackList()" >목록</button>
-            <button>동의하기</button>
+                <button onclick="$.petiAgree();">동의하기</button>
         </div>
     </div>
 </div>
 </body>
 <script>
     function goBackList(){
-        if(document.referrer){
-            window.history.back();
-        }
-        else{
             location.href='/petition/petition_list?petiField='
-        }
     }
+
+
+
+    $.petiAgree = function () {
+        let id = $("#id").val();
+        let url = "/api/v1/petition/sig/"+id;
+        $.ajax({ type : "GET",
+            url : url,
+            dataType : "json",
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            // data : ResponseEntity.body
+            // status : JQuery 상태 문자열 성공시 success
+            // xhr : HTTP 상태코드, 응답 헤더 포함
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+
+
+                let aleadySig = data.responseData.isSig;
+                console.log(data.responseData.agreeQty);
+
+                if (aleadySig) {
+                    alert("이미 동의한 청원입니다");
+
+                } else {
+                    alert("청원에 동의했습니다");
+
+                }
+                $("#agreeQty").text(data.responseData.agreeQty);
+                // 그냥 임시로 새로고침 처리
+                window.location.reload();
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("실패 했습니다. " + jqXHR.responseJSON.message);
+        });
+    };
 
 
 </script>

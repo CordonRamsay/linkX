@@ -32,7 +32,5 @@ public class BoardBaseDto implements IBoardBase{
     private Integer viewQty;
     //좋아요 수
     private Integer likeQty;
-    // 좋아요 여부
-    Boolean likeYn;
 
 }

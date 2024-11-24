@@ -44,9 +44,8 @@ public class BoardFreeRestController implements IResponseController {
 
             // 좋아요 서비스 메소드 호출
             this.boardFreeService.addLikeQty(id,CUInfoDto.getLoginUser());
-            // 좋아요 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
+            // 좋아요 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
             IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
-
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -73,8 +72,9 @@ public class BoardFreeRestController implements IResponseController {
 
             // 좋아요 취소 서비스 메소드 호출
             this.boardFreeService.subLikeQty(id,CUInfoDto.getLoginUser());
-            // 좋아요 취소 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
+            // 좋아요 취소 후 이미지를 바꿔주기 위해 update필드에 값을 받아옴
             IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
+
 
 
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK, "성공", result);
@@ -104,12 +104,8 @@ public class BoardFreeRestController implements IResponseController {
         // 좋아요상태 -> 1 / 좋아요 x 상태 -> 0 리턴 하는 메소드 호출
         Integer likeCount = this.boardLikeService.countByTypeAndIdAndUser(boardLikeDto);
         
-        // BoardFreeDto의 likeYn 필드에  0 / 1 대입
-        if (likeCount == 1) {
-            result.setLikeYn(true);
-        } else {
-            result.setLikeYn(false);
-        }
+        // BoardFreeDto의 update 필드에  0 / 1 대입
+        result.setUpdateDt(likeCount.toString());
         return result;
     }
 }

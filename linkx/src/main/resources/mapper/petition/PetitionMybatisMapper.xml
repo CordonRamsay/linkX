@@ -62,13 +62,24 @@
                pt.petiContent,
                date_format(pt.createDt,"%Y-%m-%d") as createDt,
                date_format(pt.endDt,"%Y-%m-%d") as endDt,
-               ut.nickname AS userNickName,
+               ut.name AS userNickName,
                pt.agreeQty,
                pt.playing
         FROM petition_tbl pt
-                 LEFT JOIN user_tbl ut ON pt.userId = ut.id
+        LEFT JOIN user_tbl ut ON pt.userId = ut.id
         WHERE pt.petiField LIKE CONCAT('%', #{petiField}, '%')
-          AND pt.petiTitle LIKE CONCAT('%', #{searchName}, '%')
+        <if test="searchField != null and searchName != null and !searchName.isEmpty()">
+            AND
+            <choose>
+                <when test="searchField == 'petiTitle'">
+                    pt.petiTitle LIKE CONCAT('%', #{searchName}, '%')
+                </when>
+                <when test="searchField == 'petiContent'">
+                    pt.petiContent LIKE CONCAT('%', #{searchName}, '%')
+                </when>
+            </choose>
+        </if>
+        AND playing = true
         ORDER BY pt.id DESC
     </select>
 
@@ -78,15 +89,26 @@
             FROM petition_tbl
     </select>
 
-    <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음
-    <select id="countAllByNameContains" parameterType="SearchBoardDto" resultType="Integer">
+    <!-- 게시글 카운트 (아마 작성자를 기준으로 작성글을 찾는것 같음-->
+    <select id="countAllByContains" parameterType="SearchPetiDto" resultType="Integer">
         SELECT COUNT(*)
         FROM petition_tbl pt
         LEFT JOIN user_tbl ut ON pt.userId = ut.id
-        WHERE pt.playing = false
-        AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
+        WHERE pt.petiField LIKE CONCAT('%', #{petiField}, '%')
+        <if test="searchField != null and searchName != null and !searchName.isEmpty()">
+            AND
+            <choose>
+                <when test="searchField == 'petiTitle'">
+                    pt.petiTitle LIKE CONCAT('%', #{searchName}, '%')
+                </when>
+                <when test="searchField == 'petiContent'">
+                    pt.petiContent LIKE CONCAT('%', #{searchName}, '%')
+                </when>
+            </choose>
+        </if>
+        AND playing = true
     </select>
-    -->
+
 <!--조회수 증가(조회수 항목이 없으니 비활성화)
     <update id="addViewQty" parameterType="Long">
         UPDATE board_free_tbl
@@ -95,13 +117,7 @@
         AND id = #{id}
     </update>
         -->
-    <!--동의자수 증가-->
-    <update id="addAgreeQty">
-        UPDATE petition_tbl
-        SET agreeQty = agreeQty + 1
-        WHERE id = #{id}
-        AND playing = true
-    </update>
+
 
 
 
@@ -111,7 +127,38 @@
         WHERE id = #{id}
     </update>
 
+    <!--동의자 수 상위 5개의 글을 가져오는 sql문-->
+    <select id="findTopAgreedPetitions" resultType="PetitionDto">
+        SELECT id,petiField,petiTitle
+        FROM petition_tbl
+        WHERE playing = true
+        order by agreeQty DESC
+        LIMIT 5
 
+    </select>
+
+    <!--청원에 동의 기록을 추가 -->
+    <insert id ="insertSignature" parameterType="SignatureDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO signatures_tbl (petiId, userId)
+        VALUES (#{petiId}, #{userId})
+    </insert>
+
+    <!-- 특정 사용자가 이미 동의 했는지 확인 -->
+    <select id="hasUserAgreed" parameterType="SignatureDto" resultType="boolean">
+        SELECT EXISTS(
+            SELECT 1
+            FROM signatures_tbl
+            WHERE petiId = #{petiId} AND userId = #{userId}
+        )
+    </select>
+
+    <!--동의자수 증가-->
+    <update id="addAgreeQty">
+        UPDATE petition_tbl
+        SET agreeQty = agreeQty + 1
+        WHERE id = #{id}
+          AND playing = true
+    </update>
 
 
 </mapper>

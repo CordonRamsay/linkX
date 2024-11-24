@@ -4,57 +4,6 @@
   <meta charset="UTF-8">
   <title>맛집 지도</title>
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j5sii37kyv&submodules=geocoder"></script>
-  <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-  <style>
-    .restaurant-item {
-      border: 1px solid #ccc;
-      margin: 10px 0;
-      padding: 10px;
-      cursor: pointer;
-    }
-    .review-item {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 10px 0;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      width: 400px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .modal-content h2 {
-      margin-top: 0;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 18px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-    }
-    .button-group {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-  </style>
 </head>
 <body>
 <h1>맛집 지도</h1>
@@ -63,197 +12,82 @@
   <div id="map" style="width:100%;height:400px;"></div>
 
   <script>
-    $(document).ready(function () {
-      const mapOptions = {
-        center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997),
+    document.addEventListener('DOMContentLoaded', function() {
+      // 지도 초기 설정
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997), // 임시 중심
         zoom: 17
       };
-      const map = new naver.maps.Map('map', mapOptions);
+      var map = new naver.maps.Map('map', mapOptions);
 
+      // 맛집 데이터 로드 함수
       function loadRestaurants() {
-        $.ajax({
-          url: '/taste/data/list',
-          type: 'GET',
-          dataType: 'json',
-          success: function (restaurants) {
-            const restaurantList = $('#restaurant-list');
-            restaurantList.empty();
+        fetch('/taste/data/list')
+                .then(response => response.json())
+                .then(restaurants => {
+                  // 각 맛집에 대해 마커 추가
+                  restaurants.forEach(function(restaurant) {
+                    var lat = parseFloat(restaurant.mapY) / 1e7;
+                    var lng = parseFloat(restaurant.mapX) / 1e7;
+                    var latLng = new naver.maps.LatLng(lat, lng);
 
-            restaurants.forEach(function (restaurant) {
-              const lat = parseFloat(restaurant.mapY) / 1e7;
-              const lng = parseFloat(restaurant.mapX) / 1e7;
-              const latLng = new naver.maps.LatLng(lat, lng);
+                    // 마커 생성
+                    var marker = new naver.maps.Marker({
+                      position: latLng,
+                      map: map,
+                      title: restaurant.title
+                    });
 
-              const marker = new naver.maps.Marker({
-                position: latLng,
-                map: map,
-                title: restaurant.title
-              });
+                    // 정보 창 생성
+                    var infoWindow = new naver.maps.InfoWindow({
+                      content: `<div style="padding:5px;">${restaurant.title}</div>`
+                    });
 
-              const infoWindow = new naver.maps.InfoWindow({
-                content: `<div style="padding:5px;">${restaurant.title}</div>`
-              });
-
-              naver.maps.Event.addListener(marker, 'click', function () {
-                infoWindow.open(map, marker);
-              });
-
-              const restaurantItem = $(`
-                <div class="restaurant-item" data-rest-id="${restaurant.id}">
-                  <div>
-                    <strong>${restaurant.title}</strong>
-                    <p>${restaurant.addr}</p>
-                    <p>${restaurant.roadAddr}</p>
-                  </div>
-                </div>
-              `);
-
-              const reviewContainer = $('<div style="margin-top: 10px; padding-left: 20px; display: none;"></div>');
-              const reviewList = $('<div class="review-list" style="margin-top: 10px;"></div>');
-              reviewContainer.append(reviewList);
-
-              const reviewFormButton = $('<button style="margin-top: 10px;">리뷰 작성</button>');
-              reviewFormButton.on('click', function (event) {
-                event.stopPropagation();
-                openReviewModal(restaurant.id, restaurant.title);
-              });
-              reviewContainer.append(reviewFormButton);
-
-              restaurantItem.on('click', function () {
-                if (reviewContainer.is(':visible')) {
-                  reviewContainer.hide();
-                  reviewList.empty();
-                } else {
-                  reviewContainer.show();
-                  loadReviews(restaurant.id, reviewList);
-                }
-              });
-
-              restaurantList.append(restaurantItem).append(reviewContainer);
-            });
-          },
-          error: function (xhr) {
-            console.error('Error fetching restaurant list:', xhr.responseText);
-          }
-        });
+                    // 마커 클릭 시 정보 창 표시
+                    naver.maps.Event.addListener(marker, "click", function() {
+                      infoWindow.open(map, marker);
+                    });
+                  });
+                })
+                .catch(error => console.error('Error fetching restaurant data:', error));
       }
 
-      function loadReviews(restId, reviewList) {
-        $.ajax({
-          url: `/taste/data/reviews/${restId}`,
-          type: 'GET',
-          dataType: 'json',
-          success: function (reviews) {
-            reviewList.empty();
-            if (reviews.length === 0) {
-              reviewList.append('<p>등록된 리뷰가 없습니다.</p>');
-              return;
-            }
-            reviews.forEach(function (review) {
-              const reviewItem = $(`
-                <div class="review-item">
-                  <div>
-                    <h4>${review.reviewTitle}</h4>
-                    <p>${review.reviewContent}</p>
-                    <p>별점: ${'⭐'.repeat(review.reviewStar)}</p>
-                    <p>작성일: ${new Date(review.reviewDate).toLocaleDateString()}</p>
-                  </div>
-                </div>
-              `);
-              reviewList.append(reviewItem);
-            });
-          },
-          error: function (xhr) {
-            console.error('Error fetching reviews:', xhr.responseText);
-          }
-        });
-      }
-
+      // 로드 시 맛집 데이터를 불러와 지도에 표시
       loadRestaurants();
     });
-
-    function openReviewModal(restId, restaurantTitle) {
-      const modal = $('#review-modal');
-      modal.show().data('restId', restId);
-      $('#restaurant-name').text(restaurantTitle.replace(/<[^>]*>?/g, ''));
-    }
-
-    function closeReviewModal() {
-      $('#review-modal').hide();
-    }
-
-    function submitReview() {
-      const modal = $('#review-modal');
-      const restId = modal.data('restId');
-      const reviewTitle = $('#review-title').val().trim();
-      const reviewContent = $('#review-content').val().trim();
-      const reviewStar = parseInt($('#review-star').val(), 10);
-
-      if (!reviewTitle || !reviewContent || isNaN(reviewStar) || reviewStar < 1 || reviewStar > 5) {
-        alert('모든 필드를 올바르게 입력하세요. 별점은 1~5 사이의 숫자여야 합니다.');
-        return;
-      }
-
-      const reviewData = { restId, reviewTitle, reviewContent, reviewStar };
-
-      $.ajax({
-        url: '/taste/data/reviews',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(reviewData),
-        success: function (newReview) {
-          alert('리뷰 작성 완료!');
-          const reviewList = $(`.restaurant-item[data-rest-id="${restId}"]`).next().find('.review-list');
-          if (reviewList.length) {
-            const reviewItem = $(`
-              <div class="review-item">
-                <div>
-                  <h4>${newReview.reviewTitle || reviewTitle}</h4>
-                  <p>${newReview.reviewContent || reviewContent}</p>
-                  <p>별점: ${'⭐'.repeat(newReview.reviewStar || reviewStar)}</p>
-                </div>
-              </div>
-            `);
-            reviewList.append(reviewItem);
-          } else {
-            console.warn(`리뷰 리스트를 찾을 수 없습니다. restId: ${restId}`);
-          }
-          closeReviewModal();
-        },
-        error: function (xhr) {
-          console.error('Error adding review:', xhr.responseText);
-          alert('리뷰 작성 중 오류가 발생했습니다.');
-        }
-      });
-    }
   </script>
 </div>
 <div>
   <h2>REVIEW</h2>
-  <div id="restaurant-list"></div>
-</div>
+  <script>
+    // 리뷰 리스트를 로드하여 표시하는 함수
+    //  function loadReviews() {
+    //   fetch('/taste/data/list/details')
+    //           .then(response => response.json())
+    //           .then(restaurants => {
+    //             const reviewContainer = document.getElementById('review-list');
+    //             reviewContainer.innerHTML = ''; // 기존 내용을 비웁니다.
+    //
+    //             restaurants.forEach(restaurant => {
+    //               // 각 음식점 정보를 담을 div 생성
+    //               const reviewItem = document.createElement('div');
+    //               reviewItem.classList.add('review-item');
+    //               reviewItem.innerHTML = `
+    //           <div>
+    //             <strong>${restaurant.title}</strong>
+    //           </div>
+    //           <div>${restaurant.addr}</div>
+    //           <div>${restaurant.roadAddr}</div>
+    //           <div>리뷰 개수: ${restaurant.reviewCount || 0}</div>
+    //           <div>좋아요 수: ${restaurant.likeCount || 0}</div>
+    //         `;
+    //               reviewContainer.appendChild(reviewItem);
+    //             });
+    //           })
+    //           .catch(error => console.error('Error fetching review data:', error));
+    // }
 
-<div id="review-modal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeReviewModal()">×</button>
-    <h2>리뷰 작성: <span id="restaurant-name"></span></h2>
-    <div>
-      <label for="review-title">제목</label>
-      <input type="text" id="review-title" placeholder="리뷰 제목" style="width: 100%; margin-bottom: 10px;">
-    </div>
-    <div>
-      <label for="review-content">내용</label>
-      <textarea id="review-content" rows="3" placeholder="리뷰 내용을 입력하세요" style="width: 100%; margin-bottom: 10px;"></textarea>
-    </div>
-    <div>
-      <label for="review-star">별점 (1~5)</label>
-      <input type="number" id="review-star" min="1" max="5" style="width: 100%; margin-bottom: 10px;">
-    </div>
-    <div class="button-group">
-      <button onclick="closeReviewModal()">취소</button>
-      <button onclick="submitReview()">작성</button>
-    </div>
-  </div>
+  </script>
 </div>
 </body>
 </html>

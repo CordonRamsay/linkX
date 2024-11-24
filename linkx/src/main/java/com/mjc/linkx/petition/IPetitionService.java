@@ -16,10 +16,18 @@ public interface IPetitionService {
 
     List<PetitionDto> findAllByNameContains(SearchPetiDto dto);
 
-    Integer countAllByNameContains(SearchPetiDto dto);
+    Integer countAllByContains(SearchPetiDto dto);
 
-    void addagreeQty(Long id, IUser user);
 
+
+
+    List<PetitionDto> findTopAgreedPetitions();
+
+    boolean hasUserAgreed(Long petiId, Long userId);
+
+    void addSignature(SignatureDto signature);
+
+    void addagreeQty(Long petiId);
 
 
 }

@@ -53,11 +53,6 @@
     <select id="findAllByNameContains" parameterType="SearchBoardDto" resultType="BoardDeptDto">
         SELECT bt.id
              , bt.title
-             ,(SELECT count(*)
-               FROM comment_tbl
-               WHERE boardType = 'free'
-                 AND boardId = bt.id
-                 AND deleteYn = false) AS countComment
              , bt.content
              , bt.viewQty
              , bt.likeQty
@@ -71,8 +66,7 @@
         WHERE bt.deleteYn = false
           AND ${searchType} LIKE CONCAT('%',#{searchName},'%')
           AND bt.majorId = #{majorId}
-        ORDER BY ${orderByWord}
-        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+        ORDER BY bt.id DESC
 
     </select>
 

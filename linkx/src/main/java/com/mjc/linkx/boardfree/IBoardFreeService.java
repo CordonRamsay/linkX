@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IBoardFreeService {
 
-    IBoardFree insert(BoardFreeDto dto,IUser user);
+    IBoardFree insert(BoardFreeDto dto,Long id);
 
     IBoardFree findById(Long id);
 
