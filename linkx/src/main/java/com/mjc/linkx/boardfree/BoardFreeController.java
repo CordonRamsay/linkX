@@ -31,10 +31,7 @@ public class BoardFreeController implements IResponseController {
     private final IBoardFreeService boardFreeService;
     private final IBoardLikeService boardLikeService;
 
-    @GetMapping("/test")
-    public  String testList() {
-        return "board/boardlist2";
-    }
+
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
         try {
