@@ -43,6 +43,16 @@ public class CommentServiceImpl implements ICommentService{
         dto.settingValues();
         dto.setFirstIndex(dto.getFirstIndex());
         List<CommentDto> list = this.commentMyBatisMapper.findAllByBoardTypeId(dto);
+
+        // 좋아요 여부 설정
+        list.forEach(comment -> {
+            CommentLikeDto searchDto = CommentLikeDto.builder()
+                    .commentId(comment.getId())
+                    .createId(user.getId())
+                    .build();
+            Integer count = commentLikeMybatisMapper.countByCommentIdAndUser(searchDto);
+            comment.setLikeYn(count > 0); // CommentDto에 likeYn 값 설정
+        });
         return list;
     }
 

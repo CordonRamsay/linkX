@@ -266,6 +266,7 @@
             // 수정 및 삭제 버튼 생성 조건
             let userNickname = "{{nickname}}"   // 로그인한 유저의 닉네임
             let isCommentWriter = userNickname === row.createName;  // 로그인한 유저의 닉네임과 댓글 작성자의 닉네임이 같으면 true 대입
+            let likeIcon = row.likeYn ? "/board/img/likeIcon.png" : "/board/img/unlikeIcon.png"; // 좋아요 여부에 따른 아이콘 설정
             commentHtml += `
                         <div class="comment" id="${row.id}">
                             <div class="writer">
@@ -276,7 +277,7 @@
                             <div class="comment_footer">
                                 <span class="comment_date">${dayjs(row.createDt).format('YYYY-MM-DD HH:mm')}</span>
                                 <span class="comment_like">
-                                    <img class="commentLikeIcon" src="/board/img/unlikeIcon.png" width="20px" onClick='$.likeComment(${row.id},this);'>
+                                    <img class="commentLikeIcon" src="${likeIcon}" width="20px" onClick='$.likeComment(${row.id},this);'>
                                     <span class="comment_like_count">&nbsp;${row.likeQty}</span>
                                 </span>
                             </div>
@@ -315,7 +316,10 @@
         let likeCountElement = commentLikeIcon.siblings(".comment_like_count");
         // commentLikeIcon src 속성 가져오기
         let src = commentLikeIcon.attr("src");
+        // 빈 이미지 아이콘이면 true
         let isLike = src.includes("unlike");
+
+
         let url = isLike ?  `/api/v1/board/${boardType}/${boardId}/comments/like/${id}`
                         : `/api/v1/board/${boardType}/${boardId}/comments/unlike/${id}`;
 
@@ -331,7 +335,7 @@
                     let likeQty = data.responseData.likeQty; // 좋아요 수
 
                     // 좋아요 수 업데이트
-                    likeCountElement.text(likeQty);
+                    likeCountElement.text( likeQty);
                     // 이미지 업데이트
                     commentLikeIcon.attr("src",likeYn ? "/board/img/likeIcon.png" : "/board/img/unlikeIcon.png");
 

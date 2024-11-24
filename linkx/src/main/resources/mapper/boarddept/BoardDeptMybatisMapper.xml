@@ -55,7 +55,7 @@
              , bt.title
              ,(SELECT count(*)
                FROM comment_tbl
-               WHERE boardType = 'free'
+               WHERE boardType = 'dept'
                  AND boardId = bt.id
                  AND deleteYn = false) AS countComment
              , bt.content

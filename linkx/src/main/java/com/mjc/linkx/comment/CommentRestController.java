@@ -195,7 +195,7 @@ public class CommentRestController implements IResponseController {
     
     // 댓글 좋아요
     @GetMapping("/board/{boardType}/{boardId}/comments/like/{id}")
-    public ResponseEntity<ResponseDto> commentLike(Model model, @Validated @PathVariable Long id,HttpSession session) {
+    public ResponseEntity<ResponseDto> commentLike(@Validated @PathVariable Long id,HttpSession session) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
@@ -222,7 +222,7 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 좋아요 취소
     @GetMapping("/board/{boardType}/{boardId}/comments/unlike/{id}")
-    public ResponseEntity<ResponseDto> commentSubLike(Model model, @Validated @PathVariable Long id,HttpSession session) {
+    public ResponseEntity<ResponseDto> commentSubLike(@Validated @PathVariable Long id,HttpSession session) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);

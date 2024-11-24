@@ -11,7 +11,7 @@
 <body class="index-page">
 {{>layout/header}}
 <main class="main">
-    <section>
+    <section class="section">
         <div class="container mx-auto py-4 px-2">
             <div class="container text-center mb-4 aos-init aos-animate" data-aos="fade-down" data-aos-delay="100">
                 <h1 class="text-4xl font-bold text-gray-700">학과 게시판  <span id="majorName"></span></h1>
@@ -113,8 +113,9 @@
         let searchName = '{{searchBoardDto.searchName}}';
         let prev = (page-1) < 1 ? 1 : page-1;
         let next = (page+1) >= totPage ? totPage : page+1;
+        let majorId = "{{searchBoardDto.majorId}}" * 1;
 
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "'><img src='/board/img/pageLeft.png'></a>");
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + prev + "&searchName=" + searchName + "&majorId="+ majorId+"'><img src='/board/img/pageLeft.png'></a>");
 
         for (let i = startPage; i <= endPage; i++) {
             let sClass = "px-3 py-2 text-gray-700";
@@ -123,9 +124,9 @@
                 sClass += " border border-blue-500 rounded"; // 테두리 추가
             }
 
-            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName + "'>" + i + "</a>");
+            $("#pagination").append("<a class='" + sClass + "' href='board_list?page=" + i + "&searchName=" + searchName +"&majorId="+ majorId+ "'>" + i + "</a>");
         }
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName + "'><img src='/board/img/pageRight.png'></a>");
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='board_list?page=" + next + "&searchName=" + searchName +"&majorId="+ majorId+ "'><img src='/board/img/pageRight.png'></a>");
     }
 
     function getStartPage(page) {
