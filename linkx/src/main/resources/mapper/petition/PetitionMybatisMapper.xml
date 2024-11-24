@@ -62,7 +62,7 @@
                pt.petiContent,
                date_format(pt.createDt,"%Y-%m-%d") as createDt,
                date_format(pt.endDt,"%Y-%m-%d") as endDt,
-               ut.nickname AS userNickName,
+               ut.name AS userNickName,
                pt.agreeQty,
                pt.playing
         FROM petition_tbl pt

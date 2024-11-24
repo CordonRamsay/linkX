@@ -53,6 +53,29 @@ public class PetitionDto implements IPetition{
          LocalDate today = LocalDate.now();
          return ChronoUnit.DAYS.between(today, endDate);
     }
+    //마스킹 된 이름 반환
+    public String getMaskedUserNickName() {
+        return maskName(userNickName);
+    }
+    //이름 마스킹
+    private String maskName(String name) {
+        if(name == null || name.length() < 2){
+            return name;
+        }
+        if(name.length() == 2){
+            return name.charAt(0) + "*";
+        }
+        else{
+            StringBuilder maskedName = new StringBuilder();
+            maskedName.append(name.charAt(0));
+            for(int i = 1; i < name.length()-1; i++){
+                maskedName.append("*");
+            }
+            maskedName.append(name.charAt(name.length()-1));
+            return maskedName.toString();
+        }
+    }
+
 
 
     @Override
