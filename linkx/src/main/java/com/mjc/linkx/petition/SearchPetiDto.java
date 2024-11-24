@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @SuperBuilder
 public class SearchPetiDto extends SearchDto {
-    private Integer total;
+
     private String searchField;                   //검색할때 참조할 청원 분야
     private String petiField;
     private Boolean playing;

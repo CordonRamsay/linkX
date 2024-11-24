@@ -37,9 +37,6 @@ public interface IPetition {
     Boolean getPlaying();
     void setPlaying(Boolean playing);
 
-    Boolean getisSig();
-    void setisSig(Boolean isSig);
-
     default void copyFields(IPetition from){
         if(from == null){
             return;
@@ -78,6 +75,5 @@ public interface IPetition {
             this.setPlaying(from.getPlaying());
         }
     }
-
 
 }
