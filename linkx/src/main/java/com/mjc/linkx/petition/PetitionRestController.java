@@ -77,10 +77,10 @@ public class PetitionRestController implements IResponseController {
                 .build();
         if(!TorN) {
             this.petitionService.addSignature(signature);
-            //this.petitionService.addagreeQty(id);
+            this.petitionService.addagreeQty(id);
         }
         //테스트를 위해 값이 증가하는 메소드를 if밖으로 꺼냄
-        this.petitionService.addagreeQty(id);
+        //this.petitionService.addagreeQty(id);
         result.setisSig(TorN);
 
         return result;

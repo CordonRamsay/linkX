@@ -173,13 +173,18 @@
 
 
                 let aleadySig = data.responseData.isSig;
+                console.log(data.responseData.agreeQty);
+
                 if (aleadySig) {
                     alert("이미 동의한 청원입니다");
 
                 } else {
                     alert("청원에 동의했습니다");
-                    $("#agreeQty").text(data.responseData.agreeQty);
+
                 }
+                $("#agreeQty").text(data.responseData.agreeQty);
+                // 그냥 임시로 새로고침 처리
+                window.location.reload();
             }
         }).fail(function (jqXHR, status, errorThrown) {
             console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
