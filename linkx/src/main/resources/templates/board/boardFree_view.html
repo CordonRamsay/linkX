@@ -278,7 +278,7 @@
                                 <span class="comment_date">${dayjs(row.createDt).format('YYYY-MM-DD HH:mm')}</span>
                                 <span class="comment_like">
                                     <img class="commentLikeIcon" src="${likeIcon}" width="20px" onClick='$.likeComment(${row.id},this);'>
-                                    <span class="comment_like_count">&nbsp;${row.likeQty}</span>
+                                    <span class="comment_like_count">${row.likeQty}</span>
                                 </span>
                             </div>
                             <p class="func_btns">

@@ -23,6 +23,7 @@
         <div class="container mx-auto py-16 px-2">
             <div class="board-container bg-white shadow-md rounded-lg p-3">
                 <h1 class="add-title">게시글 작성</h1>
+
                 <form id="postForm"  name="postForm" method="post"
                       onsubmit="handleSubmit(event)" class="p-4 bg-white no-border rounded">
                     <!-- 게시판 선택 -->
@@ -32,8 +33,6 @@
                         <option id="free" value="free">자유게시판</option>
                         <option id="dept" value="dept">학과게시판</option>
                     </select>
-
-
                     <!-- 학과 게시판 선택시 활성화 : 학과 선택 -->
                         <select id="majorId" name="majorId"
                                 class="full-width mb-4 p-4 border border-gray-300 rounded hidden">
@@ -69,12 +68,9 @@
 
                     <!-- 제목 -->
                     <input type="text" id="title" name="title" class="mb-4 full-width p-4 border border-gray-300 rounded" placeholder="제목을 입력하세요" required>
-
-
-
                     <!-- 내용 -->
                     <div class="post-form">
-	                    <textarea class="summernote" name="content">
+	                    <textarea class="summernote" name="content" placeholder="내용을 입력하세요" required>
 	                    </textarea>
                     </div>
                     <input type="hidden" id="hiddenContent" name="content">
@@ -165,7 +161,6 @@
     }
 
     $('.summernote').summernote({
-
         // 에디터 크기 설정
         height: 800,
         // 에디터 한글 설정

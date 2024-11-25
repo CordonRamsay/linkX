@@ -33,19 +33,18 @@ public class BoardFreeRestController implements IResponseController {
     private IBoardLikeService boardLikeService;
 
     @GetMapping("/like/{id}")
-    public ResponseEntity<ResponseDto> addLikeQty(HttpSession session, @Validated @PathVariable Long id) {
+    public ResponseEntity<ResponseDto> addLikeQty(HttpSession session,Model model, @Validated @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
             // 세션에서 User 가져옴
-            IUser user = (IUser) session.getAttribute("LoginUser");
-            CUInfoDto CUInfoDto = makeResponseCheckLogin(user);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             // 좋아요 서비스 메소드 호출
-            this.boardFreeService.addLikeQty(id,CUInfoDto.getLoginUser());
+            this.boardFreeService.addLikeQty(id,cuInfoDto.getLoginUser());
             // 좋아요 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
-            IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
+            IBoardFree result = this.getBoardAndLike(id, cuInfoDto.getLoginUser());
 
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"성공", result);
         } catch (LoginAccessException ex) {
@@ -61,20 +60,19 @@ public class BoardFreeRestController implements IResponseController {
     }
 
     @GetMapping("/unlike/{id}")
-    public ResponseEntity<ResponseDto> subLikeQty(HttpSession session, @Validated @PathVariable Long id) {
+    public ResponseEntity<ResponseDto> subLikeQty(HttpSession session,Model model, @Validated @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
 
             // 세션에서 User 가져옴
-            IUser user = (IUser) session.getAttribute("LoginUser");
-            CUInfoDto CUInfoDto = makeResponseCheckLogin(user);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             // 좋아요 취소 서비스 메소드 호출
-            this.boardFreeService.subLikeQty(id,CUInfoDto.getLoginUser());
+            this.boardFreeService.subLikeQty(id,cuInfoDto.getLoginUser());
             // 좋아요 취소 후 이미지를 바꿔주기 위해 likeYn 값을 받아옴
-            IBoardFree result = this.getBoardAndLike(id, CUInfoDto.getLoginUser());
+            IBoardFree result = this.getBoardAndLike(id, cuInfoDto.getLoginUser());
 
 
             return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK, "성공", result);

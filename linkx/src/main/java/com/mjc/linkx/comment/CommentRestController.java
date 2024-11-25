@@ -36,13 +36,13 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 추가
     @PostMapping
-    public ResponseEntity<ResponseDto> insert(@RequestBody CommentDto dto, HttpSession session) {
+    public ResponseEntity<ResponseDto> insert(@RequestBody CommentDto dto, HttpSession session,Model model) {
         try {
             if (dto == null) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
 
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
             IComment result = this.commentService.insert(user, dto);
@@ -61,9 +61,9 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 가져오기
     @GetMapping("/board/{boardType}/{boardId}/comments")
-    public ResponseEntity<ResponseDto> findAllComments(@PathVariable String boardType, @PathVariable Long boardId, HttpSession session) {
+    public ResponseEntity<ResponseDto> findAllComments(@PathVariable String boardType, @PathVariable Long boardId, HttpSession session,Model model) {
         try {
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
             if (boardType == null) {
@@ -95,9 +95,9 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 상세정보 조회
     @GetMapping("/board/{boardType}/{boardId}/comments/{id}")
-    public ResponseEntity<ResponseDto> findCommentById(@PathVariable String boardType, @PathVariable Long boardId, @PathVariable Long id, HttpSession session) {
+    public ResponseEntity<ResponseDto> findCommentById(@PathVariable String boardType, @PathVariable Long boardId, @PathVariable Long id, HttpSession session,Model model) {
         try {
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
             if (boardType == null) {
@@ -128,9 +128,10 @@ public class CommentRestController implements IResponseController {
     @PatchMapping("/board/{boardType}/{boardId}/comments/{id}")
     public ResponseEntity<ResponseDto> updateComment(@PathVariable String boardType,
                                                      @PathVariable Long boardId, @PathVariable Long id,
-                                                     @RequestBody CommentDto dto, HttpSession session) {
+                                                     @RequestBody CommentDto dto, HttpSession session
+                                                                ,Model model) {
         try {
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
 
@@ -164,9 +165,9 @@ public class CommentRestController implements IResponseController {
     @DeleteMapping("/board/{boardType}/{boardId}/comments/{id}")
     public ResponseEntity<ResponseDto> deleteComment(@PathVariable String boardType,
                                                      @PathVariable Long boardId, @PathVariable Long id,
-                                                     HttpSession session) {
+                                                     HttpSession session,Model model) {
         try {
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
 
@@ -195,12 +196,12 @@ public class CommentRestController implements IResponseController {
     
     // 댓글 좋아요
     @GetMapping("/board/{boardType}/{boardId}/comments/like/{id}")
-    public ResponseEntity<ResponseDto> commentLike(@Validated @PathVariable Long id,HttpSession session) {
+    public ResponseEntity<ResponseDto> commentLike(@Validated @PathVariable Long id,HttpSession session,Model model) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
             // 댓글좋아요 테이블에 행삽입 / 댓글 테이블 좋아요 수 증가
@@ -222,13 +223,13 @@ public class CommentRestController implements IResponseController {
 
     // 댓글 좋아요 취소
     @GetMapping("/board/{boardType}/{boardId}/comments/unlike/{id}")
-    public ResponseEntity<ResponseDto> commentSubLike(@Validated @PathVariable Long id,HttpSession session) {
+    public ResponseEntity<ResponseDto> commentSubLike(@Validated @PathVariable Long id,HttpSession session,Model model) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
             }
 
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session);
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session,model);
             IUser user = cuInfoDto.getLoginUser();
 
             // 댓글좋아요 테이블에 행 삭제 / 댓글 테이블 좋아요 수 감소

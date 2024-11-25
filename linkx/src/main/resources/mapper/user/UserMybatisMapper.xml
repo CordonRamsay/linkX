@@ -57,6 +57,9 @@
              ,phone
              ,univ
              ,majorId
+             ,(SELECT majorName
+               FROM major_tbl
+               WHERE id = majorId )AS majorName
              ,stuNum
              ,email
              ,nickname
@@ -73,6 +76,9 @@
              ,phone
              ,univ
              ,majorId
+             ,(SELECT majorName
+               FROM major_tbl
+               WHERE id = majorId )AS majorName
              ,stuNum
              ,email
              ,nickname
@@ -102,6 +108,9 @@
              ,phone
              ,univ
              ,majorId
+             ,(SELECT majorName
+               FROM major_tbl
+               WHERE id = majorId )AS majorName
              ,stuNum
              ,email
              ,nickname
@@ -118,6 +127,9 @@
              ,phone
              ,univ
              ,majorId
+             ,(SELECT majorName
+               FROM major_tbl
+               WHERE id = majorId )AS majorName
              ,stuNum
              ,email
              ,nickname

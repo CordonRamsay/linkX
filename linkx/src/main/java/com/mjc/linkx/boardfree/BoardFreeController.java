@@ -6,6 +6,7 @@ import com.mjc.linkx.boardcommon.SearchBoardDto;
 import com.mjc.linkx.boardlike.BoardLikeDto;
 import com.mjc.linkx.boardlike.IBoardLikeService;
 import com.mjc.linkx.common.IResponseController;
+import com.mjc.linkx.common.dto.CUInfoDto;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
@@ -35,11 +36,12 @@ public class BoardFreeController implements IResponseController {
     @GetMapping("/board_list")
     public String boardList(@ModelAttribute("searchBoardDto") SearchBoardDto searchBoardDto, Model model, HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
+            // 로그인 유저가 있으면 Model에 닉네임과 학과 추가
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
             if (loginUser != null) {
                 model.addAttribute("nickname", loginUser.getNickname());
+                model.addAttribute("major", loginUser.getMajorName());
             }
-
 
             Integer total = this.boardFreeService.countAllByNameContains(searchBoardDto);
             searchBoardDto.setTotal(total);
@@ -56,12 +58,8 @@ public class BoardFreeController implements IResponseController {
     @GetMapping("/board_add")
     public String boardAdd(Model model, HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            }else{
-                throw new LoginAccessException("로그인 필요");
-            }
+            // 세션에서 로그인 정보 갖고 옴
+            makeResponseCheckLogin(session, model);
 
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -76,13 +74,9 @@ public class BoardFreeController implements IResponseController {
     @PostMapping("/board_insert")
     public String boardInsert(@ModelAttribute BoardFreeDto dto, Model model, HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            }else{
-                throw new LoginAccessException("로그인 필요");
-            }
-            this.boardFreeService.insert(dto, loginUser);
+            // 세션에서 로그인 정보 갖고 옴
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
+            this.boardFreeService.insert(dto, cuInfoDto.getLoginUser());
 
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -97,15 +91,11 @@ public class BoardFreeController implements IResponseController {
     @GetMapping("/board_view/{id}")
     public String boardView(@PathVariable Long id, Model model,HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            }else{
-                throw new LoginAccessException("로그인 필요");
-            }
+            // 세션에서 로그인 정보 갖고 옴
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             // 조회수 증가
-            this.boardFreeService.addViewQty(id, loginUser);
+            this.boardFreeService.addViewQty(id, cuInfoDto.getLoginUser());
             // 게시글 조회
             IBoardFree find = this.boardFreeService.findById(id);
 
@@ -116,7 +106,7 @@ public class BoardFreeController implements IResponseController {
             // 게시글에 좋아요를 했는지 안했는지 체크 ( 페이지 로드 시 이미지를 선택하여 보여주기 위함)
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                     .boardType(find.getBoardType())
-                    .createId(loginUser.getId())
+                    .createId(cuInfoDto.getLoginUser().getId())
                     .boardId(id)
                     .build();
             
@@ -146,17 +136,13 @@ public class BoardFreeController implements IResponseController {
 
     // 자유게시글 수정 화면 return / 해당 글의 객체 전달
     @GetMapping("/board_update/{id}")
-    public String boardModify(@PathVariable Long id, Model model,HttpSession session) {
+    public String boardUpdate(@PathVariable Long id, Model model,HttpSession session) {
         try {
-            IUser loginUser = (IUser)session.getAttribute("LoginUser");
-            if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
-            }else{
-                throw new LoginAccessException("로그인 필요");
-            }
+
+            // 세션에서 로그인 정보 갖고 옴
+            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             IBoardFree find = this.boardFreeService.findById(id);
-
 
             //썸머노트로 인한 content HTML 태그 제거
             String plainTextContent = Jsoup.parse(find.getContent()).text();
@@ -179,11 +165,14 @@ public class BoardFreeController implements IResponseController {
 
     // 자유게시글 수정 후 다시 view 화면으로 redirect
     @PostMapping("/board_update")
-    public String boardUpdate(@ModelAttribute BoardFreeDto dto) {
+    public String boardUpdate(@ModelAttribute BoardFreeDto dto, Model model,HttpSession session) {
         try {
             this.boardFreeService.update(dto);
 
-        } catch (Exception ex) {
+        }catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }  catch (Exception ex) {
             log.error(ex.toString());
         }
         return "redirect:board_view/" + dto.getId();
@@ -191,10 +180,14 @@ public class BoardFreeController implements IResponseController {
 
     // 해당 게시글 삭제 후 list 화면으로 redirect
     @GetMapping("/board_delete/{id}")
-    public String boardDelete(@PathVariable Long id) {
+    public String boardDelete(@PathVariable Long id, Model model,HttpSession session) {
         try {
+
             this.boardFreeService.delete(id);
-        } catch (Exception ex) {
+        }catch (LoginAccessException ex) {
+            log.error(ex.toString());
+            return "redirect:/session-login/login";
+        }  catch (Exception ex) {
             log.error(ex.toString());
         }
         return "redirect:/boardFree/board_list?page=1&searchName=";

@@ -32,6 +32,7 @@ public class IndexController {
 
         if (user != null) {
             model.addAttribute("nickname", user.getNickname());
+            model.addAttribute("major",user.getMajorName());
         }
 
         return "index";

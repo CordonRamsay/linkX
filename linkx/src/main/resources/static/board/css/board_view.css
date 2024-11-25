@@ -139,6 +139,7 @@ body {
 }
 .commentLikeIcon{
     cursor: pointer;
+    margin-right : 2px;
 }
 .comment_like{
     display: flex;
