@@ -34,6 +34,6 @@ public class IndexController {
             model.addAttribute("nickname", user.getNickname());
         }
 
-        return "index2";
+        return "index";
     }
 }
