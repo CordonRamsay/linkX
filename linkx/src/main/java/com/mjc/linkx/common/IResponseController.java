@@ -31,6 +31,7 @@ public interface IResponseController {
         }else{
             model.addAttribute("nickname", loginUser.getNickname());
             model.addAttribute("major",loginUser.getMajorName());
+            model.addAttribute("majorId",loginUser.getMajorId());
         }
         return new CUInfoDto(loginUser);
     }

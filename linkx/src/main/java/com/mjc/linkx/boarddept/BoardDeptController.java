@@ -58,7 +58,7 @@ public class BoardDeptController implements IResponseController {
     public String boardAdd(Model model, HttpSession session) {
         try {
             // 세션에서 로그인 정보 갖고 옴
-            CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
+            makeResponseCheckLogin(session, model);
 
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
@@ -75,6 +75,7 @@ public class BoardDeptController implements IResponseController {
         try {
             // 세션에서 로그인 정보 갖고 옴
             CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
+
 
             this.boardDeptService.insert(dto, cuInfoDto.getLoginUser());
 
@@ -97,10 +98,6 @@ public class BoardDeptController implements IResponseController {
             this.boardDeptService.addViewQty(id, cuInfoDto.getLoginUser());
             // 게시글 조회
             IBoardDept find = this.boardDeptService.findById(id);
-
-            //썸머노트로 인한 content HTML 태그 제거
-            String plainTextContent = Jsoup.parse(find.getContent()).text();
-            find.setContent(plainTextContent);
 
             // 게시글에 좋아요를 했는지 안했는지 체크 ( 페이지 로드 시 이미지를 선택하여 보여주기 위함 )
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
@@ -138,10 +135,6 @@ public class BoardDeptController implements IResponseController {
             CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             IBoardDept find = this.boardDeptService.findById(id);
-
-            //썸머노트로 인한 content HTML 태그 제거
-            String plainTextContent = Jsoup.parse(find.getContent()).text();
-            find.setContent(plainTextContent);
 
             BoardDeptDto dto = BoardDeptDto.builder().build();
             dto.copyFields(find);

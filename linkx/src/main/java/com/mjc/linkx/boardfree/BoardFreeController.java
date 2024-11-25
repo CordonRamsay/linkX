@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -99,10 +100,6 @@ public class BoardFreeController implements IResponseController {
             // 게시글 조회
             IBoardFree find = this.boardFreeService.findById(id);
 
-            //썸머노트로 인한 content HTML 태그 제거
-            String plainTextContent = Jsoup.parse(find.getContent()).text();
-            find.setContent(plainTextContent);
-
             // 게시글에 좋아요를 했는지 안했는지 체크 ( 페이지 로드 시 이미지를 선택하여 보여주기 위함)
             BoardLikeDto boardLikeDto = BoardLikeDto.builder()
                     .boardType(find.getBoardType())
@@ -143,10 +140,6 @@ public class BoardFreeController implements IResponseController {
             CUInfoDto cuInfoDto = makeResponseCheckLogin(session, model);
 
             IBoardFree find = this.boardFreeService.findById(id);
-
-            //썸머노트로 인한 content HTML 태그 제거
-            String plainTextContent = Jsoup.parse(find.getContent()).text();
-            find.setContent(plainTextContent);
 
             // IBoardFree 타입인 find의 데이터를 BoardFreeDto 타입의 dto에 복사
             BoardFreeDto updateDto = BoardFreeDto.builder().build();

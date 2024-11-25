@@ -65,7 +65,8 @@
                             <option value="26" id="music">실용음악과</option>
                             <option value="27" id="theater">연극영상학과</option>
                         </select>
-
+                    <!-- 유저의 학과코드 -->
+                    <input type="hidden" id="user_majorId" name="user_majorId" value="{{majorId}}">
                     <!-- 제목 -->
                     <input type="text" id="title" name="title" class="mb-4 full-width p-4 border border-gray-300 rounded" placeholder="제목을 입력하세요" required>
                     <!-- 내용 -->
@@ -73,8 +74,6 @@
 	                    <textarea class="summernote" name="content" placeholder="내용을 입력하세요" required>
 	                    </textarea>
                     </div>
-                    <input type="hidden" id="hiddenContent" name="content">
-
                     <!-- 하단 바 -->
                     <div>
                         <!-- 취소 및 추가 버튼 -->
@@ -128,6 +127,7 @@
         let title = document.getElementById("title").value;
         let content = $('.summernote').summernote('code').trim();
         let majorId = document.getElementById("majorId").value;
+        let userMajor = document.getElementById("user_majorId").value;
 
         // 게시판 선택에 따라 action 설정
         if (selectedBoard === "free") {
@@ -144,6 +144,11 @@
             alert("학과를 선택해 주세요.");
             return;
         }
+        // 학과 검사
+        if (selectedBoard === "dept" && majorId !== userMajor) {
+            alert("본인 학과에만 글을 작성할 수 있습니다.");
+            return;
+        }
 
         if (title.length < titleMinLength || title.length > titleMaxLength) {
             alert("제목은 " + titleMinLength + "자에서 " + titleMaxLength + "자 사이로 입력해 주세요.");
@@ -154,8 +159,7 @@
             alert("내용은 " + contentMinLength + "자에서 " + contentMaxLength + "자 사이로 입력해 주세요.");
             return false;
         }
-        // 숨겨진 input에 content 설정
-        document.getElementById("hiddenContent").value = content;
+
 
         form.submit();
     }

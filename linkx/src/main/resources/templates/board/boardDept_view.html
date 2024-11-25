@@ -39,7 +39,7 @@
 
                 <!-- 게시판 바디 ( 내용, 좋아요 ) -->
                 <div class="board-body">
-                    <p class="board-content">{{BoardDeptDto.content}}</p>
+                    <p class="board-content">{{{BoardDeptDto.content}}}</p>
                     <div class="likeAndButtons">
                         <div class="board-like">
                             <img id="likeIcon" src="/board/img/unlikeIcon.png" class="board-like" onclick="$.likeItem('{{BoardDeptDto.id}}');" width="25px" height="25px">
