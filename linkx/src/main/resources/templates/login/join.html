@@ -11,6 +11,7 @@
             border-color: red;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div>
@@ -24,6 +25,7 @@
             <input type="text" id="loginId" name="loginId"
                    class="{{#errors.loginId}}error-input{{/errors.loginId}}"
                   />
+            <button class="loginIdCheckButton" type="button" >중복 확인</button>
             {{#errors.loginId}}
             <div class="error-class">{{.}}</div>
             {{/errors.loginId}}
@@ -62,6 +64,7 @@
             <label for="name">닉네임 :</label>
             <input type="text" id="nickname" name="nickname"
                    class="{{#errors.nickname}}error-input{{/errors.nickname}}"/>
+            <button class="nicknameCheckButton" type="button" >중복 확인</button>
             {{#errors.nickname}}
             <div class="error-class">{{.}}</div>
             {{/errors.nickname}}
@@ -70,6 +73,7 @@
             <label for="phone">전화번호 :</label>
             <input type="text" id="phone" name="phone"
                    class="{{#errors.phone}}error-input{{/errors.phone}}"/>
+            <button class="phoneCheckButton" type="button" >중복 확인</button>
             {{#errors.phone}}
             <div class="error-class">{{.}}</div>
             {{/errors.phone}}
@@ -78,6 +82,7 @@
             <label for="name">이메일 :</label>
             <input type="text" id="email" name="email"
                    class="{{#errors.email}}error-input{{/errors.email}}"/>
+            <button class="emailCheckButton" type="button" >중복 확인</button>
             {{#errors.email}}
             <div class="error-class">{{.}}</div>
             {{/errors.email}}
@@ -121,20 +126,115 @@
                 <option value="26" id="music">실용음악과</option>
                 <option value="27" id="theater">연극영상학과</option>
             </select>
+            {{#errors.majorId}}
+            <div class="error-class">{{.}}</div>
+            {{/errors.majorId}}
         </div>
 
         <div>
             <label for="univ">학번 :</label>
             <input type="text" id="stuNum" name="stuNum"
                    class="{{#errors.stuNum}}error-input{{/errors.stuNum}}"/>
+            <button class="stuNumCheckButton" type="button" >중복 확인</button>
             {{#errors.stuNum}}
             <div class="error-class">{{.}}</div>
             {{/errors.stuNum}}
         </div>
         <br/>
 
-        <button type="submit">회원 가입</button>
+        <button type="button" onclick="$.signup();">회원 가입</button>
     </form>
 </div>
 </body>
+<script>
+    $.signup = function () {
+        const formData = {
+            loginId: $("#loginId").val(),
+            password: $("#password").val(),
+            passwordCheck: $("#passwordCheck").val(),
+            name: $("#name").val(),
+            nickname: $("#nickname").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val(),
+            univ: $("#univ").val(),
+            majorId: $("#majorId").val(),
+            stuNum: $("#stuNum").val()
+        };
+
+        // 초기화: 모든 오류 메시지와 오류 스타일 제거
+        $(".error-class").remove();
+        $("input").removeClass("error-input");
+
+        $.ajax({
+            url: '/api/vi/user/signup', // 회원가입 컨트롤러 엔드포인트
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),  // js객체를 json형식으로 변환
+
+            success: function (response) {
+                // response(code, httpStatus, message, responseData)
+                if (response.code === 200) {
+                    alert("회원가입이 완료되었습니다.");
+                    window.location.href = '/'; // 성공 시 메인 화면으로 이동
+                } else {
+                    alert("회원가입 중 오류가 발생했습니다: " + response.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    const errorMessages = JSON.parse(xhr.responseText).message.split(", ");
+                    // 오류 메시지를 각 필드에 맞게 표시
+                    errorMessages.forEach(error => {
+                        const [field, message] = error.split(": ");
+                        const errorField = field.replace(/'/g, ""); // 필드 이름에서 작은따옴표 제거
+
+                        // 해당 필드에만 오류 스타일 적용
+                        $(`#${errorField}`).addClass("error-input");
+                        $(`#${errorField}`).after(`<div class="error-class">${message}</div>`);
+                    });
+                } else {
+                    alert("예기치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                }
+            }
+        });
+    };
+
+    $.idCheck = function () {
+
+
+        $.ajax({
+            url: '/api/vi/user/signup', // 회원가입 컨트롤러 엔드포인트
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),  // js객체를 json형식으로 변환
+
+            success: function (response) {
+                // response(code, httpStatus, message, responseData)
+                if (response.responseData === true) {
+                    alert("아이디가 중복되었습니다.");
+                    window.location.href = '/'; // 성공 시 메인 화면으로 이동
+                } else {
+                    alert("사용가능한 아이디입니다");
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    const errorMessages = JSON.parse(xhr.responseText).message.split(", ");
+                    // 오류 메시지를 각 필드에 맞게 표시
+                    errorMessages.forEach(error => {
+                        const [field, message] = error.split(": ");
+                        const errorField = field.replace(/'/g, ""); // 필드 이름에서 작은따옴표 제거
+
+                        // 해당 필드에만 오류 스타일 적용
+                        $(`#${errorField}`).addClass("error-input");
+                        $(`#${errorField}`).after(`<div class="error-class">${message}</div>`);
+                    });
+                } else {
+                    alert("예기치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                }
+            }
+        });
+    };
+
+</script>
 </html>

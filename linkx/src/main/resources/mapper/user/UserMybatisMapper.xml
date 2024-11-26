@@ -24,6 +24,13 @@
         )
     </select>
 
+    <!-- 학번으로 사용자 존재 여부 확인 -->
+    <select id="existByStuNum" resultType="boolean" parameterType="string">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tbl WHERE stuNum = #{stuNum}
+        )
+    </select>
+
     <!--회원가입 -->
     <insert id="insert" parameterType="UserDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_tbl ( loginId

@@ -1,48 +1,57 @@
 package com.mjc.linkx.security.dto;
 
 
+import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 
-public class JoinRequest {
+public class JoinRequest implements IUser {
 
-    @NotBlank(message = "로그인 아이디가 비어있습니다.")
+    private Long id;
+
+    @NotEmpty(message = "아이디를 입력해주세요")
     private String loginId;
 
-    @NotBlank(message = "비밀번호가 비어있습니다.")
+    @NotEmpty(message = "비밀번호를 입력해주세요")
     private String password;
+    @NotEmpty(message = "비밀번호를 입력해주세요")
     private String passwordCheck;
-
-    @NotBlank(message = "이름이 비어있습니다.")
+    @NotEmpty(message = "회원 이름을 입력해주세요")
     private String name;
-
-    @NotBlank(message = "닉네임이 비어있습니다.")
+    @NotEmpty(message = "닉네임을 입력해주세요")
     private String nickname;
-
-    @NotBlank(message = "전화번호가 비어있습니다.")
+    @NotEmpty(message = "전화번호를 입력해주세요")
     private String phone;
-
-    @NotBlank(message = "이메일이 비어있습니다.")
+    @NotEmpty(message = "이메일을 입력해주세요")
+    @Email(message = "이메일 형식이 올바르지 않습니다")
     private String email;
-
-    @NotBlank(message = "학교명이 비어있습니다.")
+    @NotEmpty(message = "학교명을 입력해주세요")
     private String univ;
-
-    @NotNull
+    @Size(min = 10, max = 10, message = "학번은 10자여야 합니다")
+    @NotEmpty(message = "학번을 입력해주세요")
+    private String stuNum;
+    @NotNull(message = "전공을 선택해주세요")
     private Long majorId;
 
-    @NotBlank(message = "학번이 비어있습니다.")
-    private String stuNum;
+
+
+    private String majorName;
+
+    private Boolean active;
+
+    private UserRole role;
+
 
     // 비밀번호 암호화 X
     public UserDto toUser() {
