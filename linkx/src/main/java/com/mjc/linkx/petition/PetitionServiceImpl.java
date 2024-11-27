@@ -1,6 +1,7 @@
 package com.mjc.linkx.petition;
 
 
+import com.mjc.linkx.common.dto.SearchDto;
 import com.mjc.linkx.user.IUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,15 +55,17 @@ public class PetitionServiceImpl implements IPetitionService{
 
 
     @Override
-    public Integer countAllByNameContains(SearchPetiDto dto) {
-        return 0;
+    public Integer countAllByContains(SearchPetiDto dto) {
+        if(dto == null){
+            return null;
+        }
+        dto.settingValues();
+        Integer count = this.petitionMyBatisMapper.countAllByContains(dto);
+        return count;
     }
 
-    @Override
-    public void addagreeQty(Long id, IUser user) {
 
-    }
-    //findAll구현 안돼어 있어서 구현해야 함
+
     public List<PetitionDto> findAll(){
         return petitionMyBatisMapper.findAll();
     }
@@ -73,5 +76,37 @@ public class PetitionServiceImpl implements IPetitionService{
         petitionMyBatisMapper.updatePlaying(id, playing);
     }
 
+
+
+    public List<PetitionDto> findTopAgreedPetitions(){
+        return petitionMyBatisMapper.findTopAgreedPetitions();
+    }
+
+    @Override
+    public boolean hasUserAgreed(SignatureDto dto) {
+
+        return petitionMyBatisMapper.hasUserAgreed(dto);
+    }
+
+
+
+    @Override
+    public void addagreeQty(Long petiId,IUser user) {
+        SignatureDto signature = SignatureDto.builder()
+                .userId(user.getId())
+                .petiId(petiId)
+                .build();
+
+        boolean check = this.petitionMyBatisMapper.hasUserAgreed(signature);
+        // 이미 동의 되있다면 리턴
+        if (check) {
+            return;
+        }
+        // 동의테이블 삽입
+        petitionMyBatisMapper.insertSignature(signature);
+        // 동의수 증가
+        petitionMyBatisMapper.addAgreeQty(petiId);
+        
+    }
 
 }

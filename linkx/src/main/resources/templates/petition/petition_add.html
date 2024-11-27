@@ -195,6 +195,15 @@
     }
 
     $.insertPeti = function(){
+        var title = $("#petiTitle").val().trim();
+        var field = $("#petiField").val().trim();
+        var content = $("#petiContent").val().trim();
+
+        if(title === "" || field === "" || content === ""){
+            alert("모든 필드를 채워주세요");
+            return;
+        }
+
         $("#modal").css("display", "none");
         $("#petition").submit();
         alert("청원이 등록되었습니다.");

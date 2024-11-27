@@ -50,6 +50,20 @@
       padding: 10px 0;
       font-weight: bold;
     }
+    .fixed-box {
+      position: fixed;
+      top: 50%; right: 20px;
+      transform: translateY(-50%);
+      width: 300px; background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px; box-sizing: border-box;
+      border: 1px solid #ddd; background-color: #f9f9f9;
+    }
+    .fixed-box h3 { margin-top: 0; }
+    .fixed-box ul { list-style-type: none; padding-left: 0; }
+    .fixed-box li { margin-bottom: 10px; }
+    .fixed-box li a { text-decoration: none; color: #333; }
+    .fixed-box li a:hover { text-decoration: underline; }
     .content {
       margin-left: 220px;
       padding: 20px;
@@ -96,107 +110,217 @@
       color: white;
       cursor: pointer;
     }
+    .pagination a {
+      display: inline-block;
+      padding: 8px 16px;
+      margin: 4px;
+      text-decoration: none;
+      color: #007bff;
+      background-color: #ffffff;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .pagination a:hover {
+      background-color: #007bff;
+      color: #ffffff;
+    }
+    .pagination a.active {
+      background-color: #007bff;
+      color: #ffffff;
+      border: 1px solid #007bff;
+    }
   </style>
   <link rel="stylesheet" href="/board/css/board_list.css">
   <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-  {{>layout/links}}
 </head>
-<body class="index-page">
-{{>layout/header}}
-<main class="main">
-  <section>
-    <div class="container">
-      <div class="content">
-        <h3>청원목록 - <span id="petiField">전체</span></h3>
-        <div class="category-buttons">
-          <button onclick="location.href='/petition/petition_list?petiField=&searchName='">전체</button>
-          <button onclick="location.href='/petition/petition_list?petiField=수리&searchName='">수리</button>
-          <button onclick="location.href='/petition/petition_list?petiField=교내행사&searchName='">교내행사</button>
-          <button onclick="location.href='/petition/petition_list?petiField=강의&searchName='">강의</button>
-          <button onclick="location.href='/petition/petition_list?petiField=홈페이지&searchName='">홈페이지</button>
-          <button onclick="location.href='/petition/petition_list?petiField=급식&searchName='">급식</button>
-          <button onclick="location.href='/petition/petition_list?petiField=기숙사&searchName='">기숙사</button>
-          <button onclick="location.href='/petition/petition_list?petiField=학생회&searchName='">학생회</button>
-          <button onclick="location.href='/petition/petition_list?petiField=기타&searchName='">기타</button>
-        </div>
+<body>
+<div class="container">
+  {{>layout/header}}
 
-        <div class="search-bar">
-          <div>
-            <label>정렬:</label>
-            <select>
-              <option value="date">최신순</option>
-              <option value="popularity">인기순</option>
-            </select>
-            <label>순서:</label>
-            <select>
-              <option value="asc">오름차순</option>
-              <option value="desc">내림차순</option>
-            </select>
-          </div>
-
-
-          <!-- 검색 -->
-          <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
-            <!-- Hidden input to keep petiField in search -->
-            <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
-
-            <select id="searchField" name="searchField">
-              <option value="petiTitle">청원명</option>
-              <option value="petiContent">내용</option>
-            </select>
-            <input type="text" placeholder="검색어를 입력해 주세요" name="searchName" value="{{searchPetiDto.searchName}}">
-            <button type="submit">검색</button>
-          </form>
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-            <tr>
-              <th>NO</th>
-              <th>분야</th>
-              <th>청원명</th>
-              <th>청원인</th>
-              <th>청원 시작일</th>
-              <th>참여자수</th>
-              <th>마감일</th>
-            </tr>
-            </thead>
-            <!--db에서 값을 가져와 리스트 출력(반복)-->
-            <tbody>
-            {{#petitionList}}
-            <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">
-              <td>{{id}}</td>
-              <td>{{petiField}}</td>
-              <td>{{petiTitle}}</td>
-              <td>{{userNickName}}</td>
-              <td>{{createDt}}</td>
-              <td>{{agreeQty}}</td>
-              <td>{{endDt}}</td>
-            </tr>
-            {{/petitionList}}
-            <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="pagination">
-          <span>게시글 수: 10</span>
-          <div>
-            <button>Prev</button>
-            <button>1</button>
-            <button>2</button>
-            <button>Next</button>
-          </div>
-          <button onclick="location.href='/petition/petition_add'">청원하기</button>
-        </div>
-      </div>
+  <div class="sidebar">
+    <div class="section">
+      <h3>Link X</h3>
     </div>
-  </section>
-</main>
-{{>layout/scripts}}
+    <div class="section">
+      <h3>게시판</h3>
+      <ul>
+        <li>자유 게시판</li>
+        <li>학과 게시판</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>청원하기</h3>
+      <ul>
+        <li>청원 진행중</li>
+        <li>청원 종료</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>맛집추천</h3>
+    </div>
+  </div>
+
+  <div class="content">
+    <h3>청원목록 - <span id="petiField">전체</span></h3>
+    <div class="category-buttons">
+      <button onclick="location.href='/petition/petition_list?petiField=&searchName='">전체</button>
+      <button onclick="location.href='/petition/petition_list?petiField=수리&searchName='">수리</button>
+      <button onclick="location.href='/petition/petition_list?petiField=교내행사&searchName='">교내행사</button>
+      <button onclick="location.href='/petition/petition_list?petiField=강의&searchName='">강의</button>
+      <button onclick="location.href='/petition/petition_list?petiField=홈페이지&searchName='">홈페이지</button>
+      <button onclick="location.href='/petition/petition_list?petiField=급식&searchName='">급식</button>
+      <button onclick="location.href='/petition/petition_list?petiField=기숙사&searchName='">기숙사</button>
+      <button onclick="location.href='/petition/petition_list?petiField=학생회&searchName='">학생회</button>
+      <button onclick="location.href='/petition/petition_list?petiField=기타&searchName='">기타</button>
+    </div>
+
+    <div class="search-bar">
+      <div>
+        <label>정렬:</label>
+        <select>
+          <option value="date">최신순</option>
+          <option value="popularity">인기순</option>
+        </select>
+        <label>순서:</label>
+        <select>
+          <option value="asc">오름차순</option>
+          <option value="desc">내림차순</option>
+        </select>
+      </div>
+
+
+      <!-- 검색 -->
+      <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
+        <!-- Hidden input to keep petiField in search -->
+        <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
+
+        <select id="searchField" name="searchField">
+          <option value="petiTitle">청원명</option>
+          <option value="petiContent">내용</option>
+        </select>
+        <input type="text" placeholder="검색어를 입력해 주세요" name="searchName" value="{{searchPetiDto.searchName}}">
+        <button type="submit">검색</button>
+      </form>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>NO</th>
+          <th>분야</th>
+          <th>청원명</th>
+          <th>청원인</th>
+          <th>청원 시작일</th>
+          <th>참여자수</th>
+          <th>마감일</th>
+          <th>D-DAY</th>
+        </tr>
+        </thead>
+        <!--db에서 값을 가져와 리스트 출력(반복)-->
+        <tbody>
+        {{#petitionList}}
+        <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">
+          <td>{{id}}</td>
+          <td>{{petiField}}</td>
+          <td>{{petiTitle}}</td>
+          <td>{{maskedUserNickName}}</td>
+          <td>{{createDt}}</td>
+          <td>{{agreeQty}}</td>
+          <td>{{endDt}}</td>
+          <td>{{#daysLeft}}D-{{daysLeft}}{{/daysLeft}}</td>
+        </tr>
+        {{/petitionList}}
+        <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
+        </tbody>
+      </table>
+    </div>
+
+
+        <div class="fixed-box">
+            <h3>인기 청원</h3>
+            <ul>
+                {{#topAgreedPetitions}}
+                <li>
+                    <a href="/petition/petition_view?id={{id}}">
+                      {{petiField}} - {{petiTitle}}
+                    </a>
+                </li>
+                {{/topAgreedPetitions}}
+            </ul>
+        </div>
+
+
+    <div class="pagination">
+      <span>게시글 수: {{searchPetiDto.total}}</span>
+      <div id="page" class="board-content mt-8 justify-between items-center">
+        <div id="pagination" class="flex justify-center space-x-2"></div>
+      </div>
+      <button onclick="location.href='/petition/petition_add'">청원하기</button>
+    </div>
+  </div>
+</div>
 </body>
 <script>
+
+  $(document).ready(function() {
+    $.paging();
+    updatePetitonStatuses();
+  });
+
+  function updatePetitonStatuses(){
+    $.ajax({
+      url:'/api/v1/petition/updatestatuses',
+      type:'POST',
+      success: function(response){
+        console.log(response);
+      },
+      error: function(error){
+        console.error('청원 상태 업데이트 오류:',error);
+      }
+    })
+  }
+
+  $.paging = function(){
+    let totPage = Math.ceil(("{{searchPetiDto.total}}" * 1) / 10);
+    let page = "{{searchPetiDto.page}}" * 1;
+    let startPage = getStartPage(page);
+    let endPage = getEndPage(startPage);
+    let prev = (page-1) < 1 ? 1: page-1;
+    let next = (page+1) >= totPage ? totPage : page +1;
+
+    let petiField = "{{searchPetiDto.petiField}}";
+    let searchName = "{{searchPetiDto.searchName}}";
+
+    $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" +petiField+"&searchName=" + searchName + "&page="+ prev+"'><img src='/board/img/pageLeft.png'></a>");
+
+    for (let i = startPage; i <= endPage; i++){
+      let sClass = "pagination-link px-3 py-2 text-gray-700";
+      if(page == i){
+        sClass += " active";
+      }
+      $("#pagination").append("<a class='" + sClass + "' href='/petition/petition_list?petiField=" + petiField + "&searchName=" + searchName + "&page=" + i +"'>" + i + "</a>");
+    }
+    $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" + petiField + "&searchName="+ searchName + "&page=" + next + "'><img src='/board/img/pageRight.png'></a>");
+  }
+
+  function getStartPage(page){
+    let one = 1;
+    let ten = ~~((page-1)/10) *10;
+    let startPage = ten + one;
+    return ~~ (startPage);
+  }
+
+  function getEndPage(startPage){
+    let totPage = ~~((("{{searchPetiDto.total}}" * 1) + 9) / 10);
+    let tPage = startPage + 9;
+    if(tPage < totPage){
+      return ~~(tPage);
+    }
+    return ~~(totPage);
+  }
+
   // 페이지 로드 될 때 자동 실행되는 함수
   $(function(){
     let petiField = "{{searchPetiDto.petiField}}";
@@ -206,9 +330,37 @@
       $("#petiField").text(petiField);
 
     }
+
     $("#petiField").text(petiField);
 
   });
+
+  function updateRemainingTime(){
+    let id = $(id).val();
+    let daysLeft= parseInt(document.getElementById("daysLeft_"+id).value);
+    let hoursLeft= parseInt(document.getElementById("hoursLeft_"+id).value);
+    let minutesLeft= parseInt(document.getElementById("minutesLeft_"+id).value);
+    let secondesLeft= parseInt(document.getElementById("secondesLeft_"+id).value);
+
+    if(daysLeft === "D-day"){
+      if(secondesLeft > 0){
+        secondesLeft--;
+      }else if(minutesLeft > 0){
+        minutesLeft--;
+        secondesLeft = 59;
+      }else if(hoursLeft > 0){
+        hoursLeft--;
+        minutesLeft = 59;
+        secondesLeft = 59;
+      }
+    }
+
+    document.getElementById("remainingTime_"+id).innerText = formatRemainingTime(daysLeft,hoursLeft,minutesLeft,secondesLeft);
+
+
+    setTimeout(updateRemainingTime,1000);
+  }
+
 
 
 </script>
