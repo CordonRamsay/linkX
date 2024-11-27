@@ -10,75 +10,138 @@
       display: flex;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
     }
+
     #sidebar {
       width: 30%;
       max-width: 400px;
-      background: #f9f9f9;
+      background: #ffffff;
       border-right: 1px solid #ddd;
       padding: 20px;
       overflow-y: auto;
       height: 100vh;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
+
+    .logoBtn {
+      display: block; /* 인라인 요소에서 블록 요소로 변경 */
+      margin-bottom: 20px; /* 로고와 아래 요소 간의 여백 */
+    }
+
     #filter-bar {
-      display: flex;
-      justify-content: space-around;
+      display: flex; /* 버튼을 가로로 나열 */
+      justify-content: space-between; /* 버튼 간 동일한 간격 */
+      gap: 10px; /* 버튼 간 간격 */
       margin-bottom: 20px;
     }
+
     .filter-button {
-      padding: 10px 20px;
+      flex: 1; /* 버튼이 동일한 크기로 확장 */
+      max-width: 150px; /* 버튼의 최대 너비 제한 */
+      height: 30px; /* 버튼 높이 고정 */
       border: 1px solid #ddd;
       background: #fff;
-      border-radius: 5px;
+      border-radius: 25px; /* 버튼을 둥글게 처리 */
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
+      color: #333;
+      text-align: center; /* 텍스트를 가로 중앙 정렬 */
+      transition: background-color 0.3s, color 0.3s;
+      box-sizing: border-box;
     }
+
     .filter-button.active {
-      background: #007BFF;
-      color: #fff;
+      font-weight: bold;
+      background: #FFFFFF;
+      color: #000000;
+      border-width: 2px;
+      border-color: #F76394;
+      box-sizing: border-box;
     }
+
     #restaurant-list {
       margin: 0;
       padding: 0;
     }
+
     .restaurant-item {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       margin-bottom: 15px;
-      padding: 10px;
+      padding: 15px;
       cursor: pointer;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .restaurant-item:hover {
-      background: #f5f5f5;
+      background: #f9f9f9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+    .restaurant-item strong {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .restaurant-item p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #666;
+    }
+
     #map-container {
       flex: 1;
       height: 100vh;
     }
+
     #map {
       width: 100%;
       height: 100%;
     }
+
     .review-item {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       margin: 10px 0;
       position: relative;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    .review-item h4 {
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .review-item p {
+      font-size: 13px;
+      margin: 3px 0;
+      color: #555;
+    }
+
     .delete-button {
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: red;
+      background-color: #e74c3c;
       color: white;
       border: none;
       cursor: pointer;
       padding: 5px 10px;
       font-size: 12px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
     }
+
+    .delete-button:hover {
+      background-color: #c0392b;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -91,36 +154,61 @@
       justify-content: center;
       align-items: center;
     }
+
     .modal-content {
       background-color: #fff;
       padding: 20px;
-      border-radius: 5px;
+      border-radius: 10px;
       width: 400px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       position: relative;
     }
+
     .modal-content h2 {
       margin-top: 0;
+      font-size: 18px;
+      color: #333;
     }
+
     .modal-close {
       background: none;
       border: none;
-      font-size: 18px;
+      font-size: 20px;
       position: absolute;
       top: 10px;
       right: 10px;
       cursor: pointer;
     }
-    .button-group {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
+    .pagination-btn {
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 0 5px;
+      transition: background-color 0.3s;
+    }
+
+    .pagination-btn.active {
+      background-color: #007BFF;
+      color: #fff;
+      border-color: #007BFF;
+    }
+
+    .pagination-btn:disabled {
+      background-color: #f9f9f9;
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background-color: #f0f0f0;
     }
   </style>
 </head>
 <body>
 <div id="sidebar">
-  <h1>맛집 지도</h1>
+  <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
   <div id="filter-bar">
     <button class="filter-button" data-category="all">전체</button>
     <button class="filter-button" data-category="음식">음식점</button>
@@ -130,6 +218,7 @@
     <button class="filter-button" data-category="은행">은행</button>
   </div>
   <div id="restaurant-list"></div>
+  <div id="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;"></div>
 </div>
 <div id="map-container">
   <div id="map"></div>
@@ -143,7 +232,10 @@
     const map = new naver.maps.Map('map', mapOptions);
     let currentCategory = 'all';
     let markers = []; // 현재 맵에 표시된 모든 마커를 저장하는 배열
-
+    const allButton = document.querySelector('.filter-button[data-category="all"]');
+    if (allButton) {
+      allButton.classList.add("active"); // 초기 active 클래스 추가
+    }
     function loadRestaurants() {
       $.ajax({
         url: '/taste/data/list',
@@ -243,18 +335,29 @@
 
     loadRestaurants();
   });
-  function loadReviews(restId, reviewList) {
+  function loadReviews(restId, reviewList, currentPage = 1) {
+    const itemsPerPage = 4; // 한 페이지에 표시할 리뷰 수
+
     $.ajax({
       url: `/taste/data/reviews/${restId}`,
       type: 'GET',
       dataType: 'json',
       success: function (reviews) {
         reviewList.empty();
+
         if (!reviews.length) {
           reviewList.append('<p>등록된 리뷰가 없습니다.</p>');
           return;
         }
-        reviews.forEach((review) => {
+
+        // 페이징 처리
+        const totalPages = Math.ceil(reviews.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedReviews = reviews.slice(startIndex, endIndex);
+
+        // 리뷰 표시
+        paginatedReviews.forEach((review) => {
           const reviewItem = $(`
           <div class="review-item">
             <div>
@@ -279,14 +382,53 @@
               deleteReview(reviewId, reviewItem);
             }
           });
+
           reviewList.append(reviewItem);
         });
+
+        // 페이징 UI 추가
+        renderReviewPagination(restId, reviewList, currentPage, totalPages);
       },
       error: function (xhr) {
         console.error('Error fetching reviews:', xhr.responseText);
       }
     });
   }
+
+  function renderReviewPagination(restId, reviewList, currentPage, totalPages) {
+    const paginationContainer = $('<div class="pagination"></div>');
+    reviewList.append(paginationContainer);
+
+    if (totalPages <= 1) return; // 페이지가 1개 이하일 경우 페이징 표시 안 함
+
+    // 이전 버튼
+    const prevButton = $(`<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''}>이전</button>`);
+    prevButton.on('click', function () {
+      if (currentPage > 1) {
+        loadReviews(restId, reviewList, currentPage - 1);
+      }
+    });
+    paginationContainer.append(prevButton);
+
+    // 페이지 번호 버튼
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = $(`<button class="pagination-btn ${i === currentPage ? 'active' : ''}">${i}</button>`);
+      pageButton.on('click', function () {
+        loadReviews(restId, reviewList, i);
+      });
+      paginationContainer.append(pageButton);
+    }
+
+    // 다음 버튼
+    const nextButton = $(`<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''}>다음</button>`);
+    nextButton.on('click', function () {
+      if (currentPage < totalPages) {
+        loadReviews(restId, reviewList, currentPage + 1);
+      }
+    });
+    paginationContainer.append(nextButton);
+  }
+
 
   function deleteReview(reviewId, reviewItem) {
     $.ajax({
