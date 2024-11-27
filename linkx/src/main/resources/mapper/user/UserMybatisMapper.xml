@@ -4,28 +4,28 @@
 <mapper namespace="com.mjc.linkx.user.IUserMybatisMapper">
 
     <!-- 닉네임으로 사용자 존재 여부 확인 -->
-    <select id="existByNickname" resultType="boolean" parameterType="string">
+    <select id="existByNickname" resultType="Integer" parameterType="string">
         SELECT EXISTS (
             SELECT 1 FROM user_tbl WHERE nickname = #{nickname}
         )
     </select>
 
     <!-- 로그인 ID로 사용자 존재 여부 확인 -->
-    <select id="existByLoginId" resultType="boolean" parameterType="string">
+    <select id="existByLoginId" resultType="Integer" parameterType="string">
         SELECT EXISTS (
             SELECT 1 FROM user_tbl WHERE loginId = #{loginId}
         )
     </select>
 
     <!-- 이메일로 사용자 존재 여부 확인 -->
-    <select id="existByEmail" resultType="boolean" parameterType="string">
+    <select id="existByEmail" resultType="Integer" parameterType="string">
         SELECT EXISTS (
             SELECT 1 FROM user_tbl WHERE email = #{email}
         )
     </select>
 
     <!-- 학번으로 사용자 존재 여부 확인 -->
-    <select id="existByStuNum" resultType="boolean" parameterType="string">
+    <select id="existByStuNum" resultType="Integer" parameterType="string">
         SELECT EXISTS (
             SELECT 1 FROM user_tbl WHERE stuNum = #{stuNum}
         )
