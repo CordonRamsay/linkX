@@ -23,23 +23,6 @@ public class SessionLoginController {
 
     private final UserService userService;
 
-//    @GetMapping(value = {"", "/"})
-//    public String home(Model model, @SessionAttribute(name="userId", required = false)Long userId) {
-//        try {
-//            model.addAttribute("loginType", "session-login");
-//            model.addAttribute("pageName", "세션 로그인");
-//
-//           UserDto user = this.userService.getLoginUserById(userId);
-//
-//            if (user != null) {
-//                model.addAttribute("nickname", user.getNickname());
-//            }
-//        } catch (Exception ex) {
-//            log.error(ex.toString());
-//        }
-//
-//        return "index";
-//    }
     // 회원가입 페이지 이동
     @GetMapping("/join")
     public String joinPage(Model model) {
@@ -64,6 +47,14 @@ public class SessionLoginController {
         // 중복 체크: 닉네임
         if (userService.checkNicknameDuplicate(joinRequest.getNickname())) {
             bindingResult.addError(new FieldError("joinRequest", "nickname", "닉네임이 중복됩니다."));
+        }
+        // 중복 체크: 이메일
+        if (userService.checkEmailDuplicate(joinRequest.getEmail())) {
+            bindingResult.addError(new FieldError("joinRequest", "email", "이메일이 중복됩니다."));
+        }
+        // 중복 체크: 학번
+        if (userService.checkStuNumDuplicate(joinRequest.getStuNum())) {
+            bindingResult.addError(new FieldError("joinRequest", "stuNum", "학번이 중복됩니다."));
         }
         // 비밀번호 확인 체크
         if (!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
@@ -90,20 +81,23 @@ public class SessionLoginController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest loginRequest, Model model,
-                        HttpServletRequest httpServletRequest, BindingResult bindingResult) {
+                        HttpServletRequest httpServletRequest) {
 
         try {
             model.addAttribute("loginType", "session-login");
             model.addAttribute("pageName", "세션 로그인");
 
+            if (loginRequest == null) {
+                return "redirect:/";
+            }
             IUser user = userService.login(loginRequest);
 
+            // ID와 PW에 해당하는 회원정보가 없을 경우
             if (user == null) {
-                bindingResult.reject("loginFail", "로그인 아이디 또는 비밀번호가 틀렸습니다.");
-            }
-            if (bindingResult.hasErrors()) {
+                model.addAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
                 return "login/login";
             }
+
 
             // 세션을 생성하기 전에 기존의 세션 파기
             httpServletRequest.getSession().invalidate();
@@ -111,11 +105,11 @@ public class SessionLoginController {
             // 세션에 userId를 넣어줌
             session.setAttribute("LoginUser",user);
             session.setAttribute("userId", user.getId());
-
-            session.setMaxInactiveInterval(3600); // Session이 1시간동안 유지
+            session.setMaxInactiveInterval(7200); // 세션 2시간동안 유지
 
         } catch (Exception ex) {
             log.error(ex.toString());
+            model.addAttribute("message", "서버 오류가 발생했습니다. 다시 시도해주세요.");
             return "login/login";
         }
         return "redirect:/";

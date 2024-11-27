@@ -22,26 +22,41 @@ public class UserService {
 
 
     // 회원가입 시 loginId 중복체크 기능 구현: 중복되면 true 리턴
-    public boolean checkLoginIdDuplicate(String loginId) {
+    public Boolean checkLoginIdDuplicate(String loginId) {
         return userMybatisMapper.existByLoginId(loginId);
     }
+
     // 회원가입 시 nickname 중복체크 기능 구현: 중복되면 true 리턴
-    public boolean checkNicknameDuplicate(String nickname) {
+    public Boolean checkNicknameDuplicate(String nickname) {
         return userMybatisMapper.existByNickname(nickname);
     }
+
     // 회원가입 시 email 중복체크 기능 구현: 중복되면 true 리턴
-    public boolean checkEmailDuplicate(String email) {
+    public Boolean checkEmailDuplicate(String email) {
         return userMybatisMapper.existByEmail(email);
     }
 
+    // 회원가입 시 학번 중복체크 기능 구현: 중복되면 true 리턴
+    public Boolean checkStuNumDuplicate(String stuNum) {
+        return userMybatisMapper.existByStuNum(stuNum);
+    }
+
     // 회원 가입
-    public void join(JoinRequest request) {
+    public IUser join(JoinRequest request) {
+
+        if (request == null) {
+            return null;
+        }
+        UserDto dto = UserDto.builder().build();
+        dto.copyFields(request);
 
         request.setPassword(encoder.encode(request.getPassword()));
         userMybatisMapper.insert(request.toUser());
+
+        return dto;
     }
 
-    // 로그인
+    // 로그인 : id & pw 일치하는지 검사
     public UserDto login(LoginRequest request) {
 
         if(request == null || request.getLoginId() == null || request.getPassword() == null) {

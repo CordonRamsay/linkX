@@ -13,7 +13,6 @@ public interface IBoardFree extends IBoardBase {
     String getContent();
     void setContent(String content);
 
-
     String getCountComment();
     void setCountComment(String countComment);
 
@@ -54,6 +53,10 @@ public interface IBoardFree extends IBoardBase {
         if (from.getCountComment() != null) {
             this.setCountComment(from.getCountComment());
         }
+        if (from.getLikeYn() != null) {
+            this.setLikeYn(from.getLikeYn());
+        }
+
 
     }
 }

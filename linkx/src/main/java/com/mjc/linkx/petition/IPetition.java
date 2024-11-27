@@ -13,9 +13,6 @@ public interface IPetition {
     String getPetiField();
     void setPetiField(String petiField);
 
-/*    String getPetiEffect();                   //사용 중지(
-    void setPetiEffect(String petiEffect);*/
-
     String getPetiContent();
     void setPetiContent(String petiContent);
 
@@ -39,5 +36,44 @@ public interface IPetition {
 
     Boolean getPlaying();
     void setPlaying(Boolean playing);
+
+    default void copyFields(IPetition from){
+        if(from == null){
+            return;
+        }
+        if(from.getId() != null){
+            this.setId(from.getId());
+        }
+        if(from.getPetiTitle() != null && !from.getPetiTitle().isEmpty()){
+            this.setPetiTitle(from.getPetiTitle());
+        }
+        if(from.getPetiField() != null && !from.getPetiField().isEmpty()){
+            this.setPetiField(from.getPetiField());
+        }
+        if(from.getPetiContent() != null && !from.getPetiContent().isEmpty()){
+            this.setPetiContent(from.getPetiContent());
+        }
+        if(from.getUserId() != null){
+            this.setUserId(from.getUserId());
+        }
+        if(from.getCreateDt() != null){
+            this.setCreateDt(from.getCreateDt());
+        }
+        if(from.getEndDt() != null){
+            this.setEndDt(from.getEndDt());
+        }
+        if(from.getAgreeQty() != null){
+            this.setAgreeQty(from.getAgreeQty());
+        }
+        if(from.getDeleteYn() != null){
+            this.setDeleteYn(from.getDeleteYn());
+        }
+        if(from.getUserNickName() != null && !from.getUserNickName().isEmpty()){
+            this.setUserNickName(from.getUserNickName());
+        }
+        if(from.getPlaying() != null){
+            this.setPlaying(from.getPlaying());
+        }
+    }
 
 }

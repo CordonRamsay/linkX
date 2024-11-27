@@ -22,8 +22,6 @@ public class IndexController {
     @GetMapping("")
     public String index(Model model, @SessionAttribute(name = "userId", required = false) Long userId, HttpSession session) {
 
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
 
         if (userId != null) {
             IUser loginUser = this.userService.getLoginUserById(userId);
@@ -34,6 +32,7 @@ public class IndexController {
 
         if (user != null) {
             model.addAttribute("nickname", user.getNickname());
+            model.addAttribute("major",user.getMajorName());
         }
 
         return "index";

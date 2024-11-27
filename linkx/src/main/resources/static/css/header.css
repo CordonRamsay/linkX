@@ -1,0 +1,12 @@
+.header_major{
+    font-weight: bold;
+    display : flex;
+    justify-content: center;
+    color:black;
+}
+.header_nickname{
+    display : flex;
+    justify-content: center;
+    font-weight: bold;
+    color:white;
+}
