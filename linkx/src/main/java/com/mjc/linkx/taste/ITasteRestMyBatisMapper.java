@@ -11,5 +11,9 @@ public interface ITasteRestMyBatisMapper {
     List<TasteReviewDto> getReviewsByRestaurantId(Long restId);
 
     void insertReview(TasteReviewDto reviewDto);
+
+    void deleteReviewById(Long reviewId);
+
+    TasteReviewDto getReviewById(Long reviewId);
     //List<TasteRestDto> getAllRestaurants();
 }

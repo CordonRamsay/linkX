@@ -38,17 +38,19 @@
     <!-- 특정 음식점의 리뷰 리스트 조회 -->
     <select id="getReviewsByRestaurantId" parameterType="Long" resultType="TasteReviewDto">
         SELECT r.id
-             , r.reviewTitle
-             , r.reviewContent
-             , r.reviewStar
-             , r.reviewLike
-             , r.reviewDate
-             , u.nickname AS userNickname
+        , r.reviewTitle
+        , r.reviewContent
+        , r.reviewStar
+        , r.reviewLike
+        , r.reviewDate
+        , u.nickname AS userNickname
+        , r.userId  <!-- 추가로 확인 -->
         FROM taste_review_tbl r
-                 JOIN user_tbl u ON r.userId = u.id
+        JOIN user_tbl u ON r.userId = u.id
         WHERE r.restId = #{restId}
         ORDER BY r.reviewDate DESC
     </select>
+
 
     <insert id="insertReview" parameterType="TasteReviewDto" useGeneratedKeys="true" keyProperty="id">  <!-- useGeneratedKeys 속성으로 자동생성된 키를 가져오고,
                                                                                                     keyProperty 속성에 "id" 필드를 정의하여 id 값이
@@ -71,6 +73,14 @@
         , #{reviewLike}
         , #{userNickName})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
     </insert>
+
+    <select id="getReviewById" parameterType="Long" resultType="TasteReviewDto">
+        SELECT * FROM taste_review_tbl WHERE id = #{reviewId}
+    </select>
+
+    <delete id="deleteReviewById" parameterType="Long">
+        DELETE FROM taste_review_tbl WHERE id = #{reviewId}
+    </delete>
 
 
 </mapper>

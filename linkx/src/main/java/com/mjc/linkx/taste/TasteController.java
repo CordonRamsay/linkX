@@ -24,6 +24,7 @@ public class TasteController {
             // 로그인이 되어있으면 nickname을 화면으로 전달, 로그인 안 되어있으면 예외 처리
             if (loginUser != null) {
                 model.addAttribute("nickname", loginUser.getNickname());
+                session.setAttribute("LoginUser", loginUser);
             } else {
                 throw new LoginAccessException("로그인을 해주세요");
             }

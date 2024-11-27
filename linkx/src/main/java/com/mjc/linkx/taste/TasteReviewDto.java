@@ -21,4 +21,7 @@ public class TasteReviewDto {
     private int reviewLike;       // 리뷰 좋아요 수
     private String userNickName;  // 작성자 닉네임
     private LocalDateTime reviewDate; // 리뷰 작성 날짜
+    private boolean canDelete;    // 삭제 가능 여부 (추가)
+
+    // 기본 생성자, 모든 필드 생성자 등은 Lombok으로 생성됨
 }

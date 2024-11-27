@@ -1,8 +1,9 @@
-// TasteServiceImpl.java
 package com.mjc.linkx.taste;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mjc.linkx.user.UserDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
@@ -24,7 +25,7 @@ public class TasteServiceImpl implements TasteService {
 
     @Override
     public String fetchAndSaveTasteData() {
-        String query = "명지대 음식점";
+        String query = "명지전문대학 은행";
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/local.json")
@@ -47,10 +48,11 @@ public class TasteServiceImpl implements TasteService {
         List<TasteRestDto> tasteRestDtos = parseJsonToDtoList(result.getBody());
 
         for (TasteRestDto dto : tasteRestDtos) {
+            log.debug("Parsed DTO: {}", dto); // DTO의 내용을 콘솔에 출력
             tasteRestMapper.insert(dto);
         }
 
-        return "데이터 저장 완료";
+        return result.getBody();
     }
 
     private List<TasteRestDto> parseJsonToDtoList(String json) {
@@ -81,13 +83,56 @@ public class TasteServiceImpl implements TasteService {
     }
 
     @Override
-    public List<TasteReviewDto> getReviewsByRestaurantId(Long restId) {
-        return tasteRestMapper.getReviewsByRestaurantId(restId);
+    public List<TasteReviewDto> getReviewsByRestaurantId(Long restId, HttpSession session) {
+        List<TasteReviewDto> reviews = tasteRestMapper.getReviewsByRestaurantId(restId);
+        Long currentUserId = getCurrentUserIdFromSession(session); // 세션에서 현재 사용자 ID 가져오기
+
+        for (TasteReviewDto review : reviews) {
+            log.info("리뷰 작성자 ID: {}, 현재 사용자 ID: {}", review.getUserId(), currentUserId);
+            review.setCanDelete(review.getUserId() != null && review.getUserId().equals(currentUserId));
+        }
+        return reviews;
     }
+
+    private Long getCurrentUserIdFromSession(HttpSession session) {
+        Object loginUser = session.getAttribute("LoginUser");
+        if (loginUser == null) {
+            log.warn("세션에 로그인 정보가 없습니다.");
+            return null;
+        }
+        log.info("현재 로그인한 사용자 ID: {}", ((UserDto) loginUser).getId());
+        return ((UserDto) loginUser).getId();
+    }
+
+
 
     @Override
     public void addReview(TasteReviewDto reviewDto) {
-        tasteRestMapper.insertReview(reviewDto);
+        try {
+            tasteRestMapper.insertReview(reviewDto);
+        } catch (Exception e) {
+            log.error("리뷰 추가 중 오류 발생: ", e);
+            throw new RuntimeException("리뷰를 추가할 수 없습니다.");
+        }
     }
 
+    @Override
+    public void deleteReview(Long reviewId, Long userId) throws Exception {
+        TasteReviewDto review = tasteRestMapper.getReviewById(reviewId);
+        if (review == null) {
+            log.warn("삭제하려는 리뷰가 존재하지 않습니다. 리뷰 ID: {}", reviewId);
+            throw new Exception("리뷰가 존재하지 않습니다.");
+        }
+        if (!review.getUserId().equals(userId)) {
+            log.warn("리뷰 삭제 권한이 없습니다. 리뷰 ID: {}, 요청 사용자 ID: {}", reviewId, userId);
+            throw new Exception("삭제 권한이 없습니다.");
+        }
+        try {
+            tasteRestMapper.deleteReviewById(reviewId);
+            log.info("리뷰가 삭제되었습니다. 리뷰 ID: {}", reviewId);
+        } catch (Exception e) {
+            log.error("리뷰 삭제 중 오류 발생: ", e);
+            throw new Exception("리뷰를 삭제할 수 없습니다.");
+        }
+    }
 }

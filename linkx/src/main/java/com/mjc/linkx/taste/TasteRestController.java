@@ -24,6 +24,7 @@ public class TasteRestController {
     // 외부 API 호출 후 데이터 저장
     @GetMapping("")
     public String taste() {
+        log.debug("Taste data request received.");
         return tasteService.fetchAndSaveTasteData();  // 데이터 저장 로직을 서비스로 위임
     }
 
@@ -35,9 +36,10 @@ public class TasteRestController {
 
     // 특정 음식점의 리뷰 리스트 가져오기
     @GetMapping("/reviews/{restId}")
-    public List<TasteReviewDto> getReviewsByRestaurant(@PathVariable Long restId) {
-        return tasteService.getReviewsByRestaurantId(restId);
+    public List<TasteReviewDto> getReviewsByRestaurant(@PathVariable Long restId, HttpSession session) {
+        return tasteService.getReviewsByRestaurantId(restId, session);
     }
+
 
     // 리뷰 추가 (로그인 사용자 정보 사용)
     @PostMapping("/reviews")
@@ -66,4 +68,30 @@ public class TasteRestController {
                     .body(Map.of("error", "리뷰 작성 중 문제가 발생했습니다."));
         }
     }
+
+    // 리뷰 삭제
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId, HttpSession session) {
+        try {
+            // 세션에서 로그인한 사용자 확인
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser == null) {
+                throw new LoginAccessException("로그인이 필요합니다.");
+            }
+
+            // 리뷰 삭제
+            tasteService.deleteReview(reviewId, loginUser.getId());
+
+            // 성공 응답
+            return ResponseEntity.ok(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));
+        } catch (LoginAccessException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", ex.getMessage()));
+        } catch (Exception ex) {
+            log.error("리뷰 삭제 중 오류 발생: ", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "리뷰 삭제 중 문제가 발생했습니다."));
+        }
+    }
+
 }
