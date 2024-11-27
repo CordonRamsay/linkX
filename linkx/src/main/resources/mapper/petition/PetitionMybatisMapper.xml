@@ -31,7 +31,7 @@
              , pt.petiField
              , pt.petititle
              , pt.userId
-             , ut.nickname AS userNickName
+             , ut.name AS userNickName
              , date_format(pt.createDt,"%Y-%m-%d") as createDt
              , pt.peticontent
              , date_format(pt.endDt,"%Y-%m-%d") as endDt
@@ -80,7 +80,7 @@
             </choose>
         </if>
         AND playing = true
-        ORDER BY pt.id DESC
+        ORDER BY ${sortColumn} ${sortAscDesc}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 

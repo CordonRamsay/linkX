@@ -25,8 +25,8 @@ public class SearchPetiDto extends SearchDto {
     private Integer page;
 
     private String orderByWord;//정렬할 컬럼
-    private String sortColumn;
-    private String sortAscDesc;
+    private String sortColumn = "createDt";
+    private String sortAscDesc = "DESC";
     private Integer rowsOnePage;
     private Integer firstIndex;
     public Integer getFirstIndex() {

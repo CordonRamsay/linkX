@@ -1,194 +1,74 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>청원 상세보기</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            background-color: #f2f2f2;
-        }
-        .container {
-            width: 900px;
-            background-color: #ffffff;
-        }
-        .header {
-            background-color: #f4a8c0;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: black;
-        }
-        .login {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 15px;
-            border: none;
-            cursor: pointer;
-        }
-        .sidebar {
-            float: left;
-            width: 200px;
-            background-color: #ffc0cb;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .sidebar .section {
-            margin-bottom: 20px;
-        }
-        .sidebar h3 {
-            margin: 0;
-            padding: 10px 0;
-            font-weight: bold;
-        }
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-        }
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #eeeeee;
-        }
-        .details-table th, .details-table td {
-            padding: 10px;
-            border: 1px solid #dddddd;
-            text-align: center;
-        }
-        .info {
-            margin: 20px 0;
-            padding: 10px;
-            border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-        }
-        .info-item {
-            margin-bottom: 10px;
-        }
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .buttons button {
-            padding: 10px 20px;
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="/board/css/board_list.css">
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청원 게시물</title>
+  <link rel="stylesheet" href="/petition/petition_view.css">
 </head>
 <body>
-
 <div class="container">
-    {{>layout/header}}
-    <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
+  <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
 
-    <div class="sidebar">
-        <div class="section">
-            <h3>Link X</h3>
-        </div>
-        <div class="section">
-            <h3>게시판</h3>
-            <ul>
-                <li>자유 게시판</li>
-                <li>학과 게시판</li>
-            </ul>
-        </div>
-        <div class="section">
-            <h3>청원하기</h3>
-            <ul>
-                <li>청원 진행중</li>
-                <li>청원 종료</li>
-            </ul>
-        </div>
-        <div class="section">
-            <h3>맛집추천</h3>
-        </div>
+
+  <div class="countdown-circle">D-{{PetitionDto.daysLeft}}</div>
+  <h1>청원 상세보기</h1>
+  <div class="post">
+    <p class="category">{{PetitionDto.petiField}}</p>
+    <h2>{{PetitionDto.petiTitle}}</h2>
+    <p class="date">{{PetitionDto.createDt}} | {{PetitionDto.maskedUserNickName}} </p>
+    <p class="content">
+      {{PetitionDto.petiContent}}
+    </p>
+    <p class="vote-period">동의기간 {{PetitionDto.createDt}} ~ {{PetitionDto.endDt}}</p>
+    <p class="vote-count" id="agreeQty">동의수 {{PetitionDto.agreeQty}}</p>
+    <div class="button-group">
+      <button type="button" class="list" onclick="goBackList()">목록</button>
+      <button type="button" class="agree" onclick="$.petiAgree({{PetitionDto.id}});">동의</button>
     </div>
-
-    <div class="content">
-        <h3>청원 상세보기</h3>
-        <table class="details-table">
-            <tr>
-                <th>청원분야</th>
-                <th>게시일</th>
-                <th>동의자 수</th>
-                <th>청원 마감일</th>
-            </tr>
-            <tr>
-                <td>{{PetitionDto.petiField}}</td>
-                <td>{{PetitionDto.createDt}}</td>
-                <td id="agreeQty">{{PetitionDto.agreeQty}}</td>
-                <td>{{PetitionDto.endDt}}</td>
-            </tr>
-        </table>
-
-        <div class="info">
-            <div class="info-item"><strong>청원인:</strong>{{PetitionDto.userNickName}}</div>
-            <div class="info-item"><strong>청원제목:</strong>{{PetitionDto.petiTitle}}</div>
-            <div class="info-item"><strong>청원내용:</strong>{{PetitionDto.petiContent}}</div>
-
-        </div>
-        <div class="buttons">
-            <button type="button" onclick="goBackList()" >목록</button>
-                <button onclick="$.petiAgree({{PetitionDto.id}});">동의하기</button>
-        </div>
-    </div>
+  </div>
 </div>
 </body>
+
 <script>
-    function goBackList(){
-            location.href='/petition/petition_list?petiField='
-    }
+  function goBackList(){
+    location.href='/petition/petition_list?petiField='
+  }
 
 
 
-    $.petiAgree = function (id) {
-        let url = "/api/v1/petition/sig/"+id;
-        $.ajax({
-            type : "GET",
-            url : url,
-            dataType : "json",
-            contentType: "application/json; charset=UTF-8",
-        }).done(function (data, status, xhr) {
-            // data : ResponseEntity.body
-            // status : JQuery 상태 문자열 성공시 success
-            // xhr : HTTP 상태코드, 응답 헤더 포함
-            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-            if (status === "success") {
-                $("#agreeQty").text(data.responseData.agreeQty);
+  $.petiAgree = function (id) {
+    let url = "/api/v1/petition/sig/"+id;
+    $.ajax({
+      type : "GET",
+      url : url,
+      dataType : "json",
+      contentType: "application/json; charset=UTF-8",
+    }).done(function (data, status, xhr) {
+      // data : ResponseEntity.body
+      // status : JQuery 상태 문자열 성공시 success
+      // xhr : HTTP 상태코드, 응답 헤더 포함
+      console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+      if (status === "success") {
+        $("#agreeQty").text(data.responseData.agreeQty);
 
-                let message = data.message;
-                if (message === "동의") {
-                    alert("이미 동의한 청원입니다");
+        let message = data.message;
+        if (message === "동의") {
+          alert("이미 동의한 청원입니다");
 
-                } else {
-                    alert("청원에 동의했습니다");
+        } else {
+          alert("청원에 동의했습니다");
 
-                }
+        }
 
-                // 그냥 임시로 새로고침 처리
-                //window.location.reload();
-            }
-        }).fail(function (jqXHR, status, errorThrown) {
-            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-            alert("실패 했습니다. " + jqXHR.responseJSON.message);
-        });
-    };
+        // 그냥 임시로 새로고침 처리
+        //window.location.reload();
+      }
+    }).fail(function (jqXHR, status, errorThrown) {
+      console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+      alert("실패 했습니다. " + jqXHR.responseJSON.message);
+    });
+  };
 
 
 </script>
