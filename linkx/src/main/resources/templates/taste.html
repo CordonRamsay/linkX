@@ -279,7 +279,6 @@
               deleteReview(reviewId, reviewItem);
             }
           });
-
           reviewList.append(reviewItem);
         });
       },
@@ -288,7 +287,6 @@
       }
     });
   }
-
 
   function deleteReview(reviewId, reviewItem) {
     $.ajax({
@@ -363,8 +361,14 @@
       <textarea id="review-content" rows="3" placeholder="리뷰 내용을 입력하세요" style="width: 100%; margin-bottom: 10px;"></textarea>
     </div>
     <div>
-      <label for="review-star">별점 (1~5)</label>
-      <input type="number" id="review-star" min="1" max="5" style="width: 100%; margin-bottom: 10px;">
+      <label for="review-star">별점</label>
+      <select id="review-star" style="width: 100%; margin-bottom: 10px;">
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+      </select>
     </div>
     <div class="button-group">
       <button onclick="closeReviewModal()">취소</button>
@@ -372,5 +376,6 @@
     </div>
   </div>
 </div>
+
 </body>
 </html>
