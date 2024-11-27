@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -29,23 +32,14 @@ public class UserRestController implements IResponseController {
     private ResponseEntity<ResponseDto> signup(@Valid @RequestBody JoinRequest dto, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
-                // 유효성 검사 실패 시 오류 메시지 추출
-                String errorMessages = bindingResult.getFieldErrors().stream()
-                        .map(error -> String.format("'%s': %s", error.getField(), error.getDefaultMessage()))
-                        .reduce((msg1, msg2) -> msg1 + ", " + msg2) // 여러 메시지 결합
-                        .orElse("Invalid input.");
-
-                return makeResponseEntity(
-                        HttpStatus.BAD_REQUEST.value(),
-                        HttpStatus.BAD_REQUEST,
-                        errorMessages,
-                        null
+                // 에러 메시지를 응답에 포함
+                Map<String, String> errorMessages = new HashMap<>();
+                bindingResult.getFieldErrors().forEach(error ->
+                        errorMessages.put(error.getField(), error.getDefaultMessage())
                 );
+                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", errorMessages);
             }
-            if (dto == null) {
-                return makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);
-            }
-            // 회원가입 : user테이블에 insert
+            // 회원가입 : 유저 테이블에 insert
             IUser result = this.userService.join(dto);
 
             return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);

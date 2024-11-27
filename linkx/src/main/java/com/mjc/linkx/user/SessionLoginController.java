@@ -6,13 +6,10 @@ import com.mjc.linkx.security.dto.LoginRequest;
 import com.mjc.linkx.security.dto.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,43 +29,7 @@ public class SessionLoginController {
         model.addAttribute("pageName", "세션 로그인");
 
         model.addAttribute("joinRequest", new JoinRequest());
-        return "login/join2";
-    }
-
-    // 회원가입 처리
-    @PostMapping("/join")
-    public String join(@Valid @ModelAttribute JoinRequest joinRequest,
-                       BindingResult bindingResult, Model model) {
-        model.addAttribute("loginType", "session-login");
-        model.addAttribute("pageName", "세션 로그인");
-
-        // 중복 체크: 로그인 아이디
-        if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
-            bindingResult.addError(new FieldError("joinRequest", "loginId", "로그인 아이디가 중복됩니다."));
-        }
-        // 중복 체크: 닉네임
-        if (userService.checkNicknameDuplicate(joinRequest.getNickname())) {
-            bindingResult.addError(new FieldError("joinRequest", "nickname", "닉네임이 중복됩니다."));
-        }
-        // 중복 체크: 이메일
-        if (userService.checkEmailDuplicate(joinRequest.getEmail())) {
-            bindingResult.addError(new FieldError("joinRequest", "email", "이메일이 중복됩니다."));
-        }
-        // 중복 체크: 학번
-        if (userService.checkStuNumDuplicate(joinRequest.getStuNum())) {
-            bindingResult.addError(new FieldError("joinRequest", "stuNum", "학번이 중복됩니다."));
-        }
-        // 비밀번호 확인 체크
-        if (!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
-            bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "비밀번호가 일치하지 않습니다."));
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "login/join2";
-        }
-
-        userService.join(joinRequest);  // 회원가입 처리
-        return "redirect:/";
+        return "login/join";
     }
 
     // 로그인 페이지 이동
@@ -79,8 +40,6 @@ public class SessionLoginController {
         model.addAttribute("message", "");
         model.addAttribute("alertMessage", "");
         model.addAttribute("loginId", "");
-
-
 
         return "login/login";
     }
