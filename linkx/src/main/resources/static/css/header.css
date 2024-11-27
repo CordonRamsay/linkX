@@ -1,0 +1,35 @@
+.header_major{
+    font-weight: bold;
+    display : flex;
+    justify-content: center;
+    color:black;
+}
+.login_welcome{
+    font-weight: bold;
+    display : flex;
+    justify-content: center;
+    color:black;
+}
+.header_nickname{
+    display : flex;
+    justify-content: center;
+    font-weight: bold;
+    color:#f76394;
+}
+.login_header{
+    display : flex;
+    justify-content: center;
+    color: #f76394;
+}
+.btnBar{
+    margin-bottom: 30px;
+}
+.btn:hover {
+    color: #f76394;
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+}
+#login_btn .join_btn{
+    background-color : #fff;
+    border-color: #f76394;
+}
