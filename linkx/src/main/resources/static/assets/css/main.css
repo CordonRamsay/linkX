@@ -18,7 +18,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
+:root {
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #272829; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #050d18; /* Color for headings, subheadings and title throughout the website */
@@ -158,9 +158,9 @@ h6 {
 }
 
 .header .profile-img img {
-  margin: 15px auto;
+  margin: 30px auto;
   display: block;
-  width: 120px;
+  width: 200px;
   border: 8px solid color-mix(in srgb, var(--default-color), transparent 85%);
 }
 
@@ -309,13 +309,13 @@ h6 {
 .navmenu a:hover,
 .navmenu .active,
 .navmenu .active:focus {
-  color: var(--nav-hover-color);
+  color: #f76394;
 }
 
 .navmenu a:hover .navicon,
 .navmenu .active .navicon,
 .navmenu .active:focus .navicon {
-  color: var(--accent-color);
+  color: #f76394;
 }
 
 .navmenu .active .toggle-dropdown,
@@ -331,13 +331,13 @@ h6 {
 
 .navmenu .dropdown a,
 .navmenu .dropdown a:focus {
-  color: --nav-dropdown-color;
+  /*color: --nav-dropdown-color;*/
 }
 
 .navmenu .dropdown a:hover,
 .navmenu .dropdown .active,
 .navmenu .dropdown .active:focus {
-  color: var(--nav-dropdown-hover-color);
+  /*color: var(--nav-dropdown-hover-color);*/
 }
 
 .navmenu .dropdown ul {
