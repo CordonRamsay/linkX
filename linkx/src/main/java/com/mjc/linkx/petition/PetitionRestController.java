@@ -1,11 +1,6 @@
 package com.mjc.linkx.petition;
 
 
-import com.mjc.linkx.boardfree.BoardFreeDto;
-import com.mjc.linkx.boardfree.IBoardFree;
-import com.mjc.linkx.boardfree.IBoardFreeService;
-import com.mjc.linkx.boardlike.BoardLikeDto;
-import com.mjc.linkx.boardlike.IBoardLikeService;
 import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.dto.CUInfoDto;
 import com.mjc.linkx.common.dto.ResponseDto;
@@ -38,8 +33,8 @@ public class PetitionRestController implements IResponseController {
 
 
 
-    @GetMapping("/sig/{id}")
-    public ResponseEntity<ResponseDto> addagreeQty(HttpSession session, @Validated @PathVariable Long id) {
+    @PostMapping("/sig/{id}")
+    public ResponseEntity<ResponseDto> addagreeQty(HttpSession session, @PathVariable Long id) {
         try {
             if (id == null || id <= 0) {
                 return makeResponseEntity(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST, "입력 매개변수 에러", null);

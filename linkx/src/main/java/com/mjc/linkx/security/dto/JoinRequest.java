@@ -20,11 +20,11 @@ public class JoinRequest implements IUser {
 
     private Long id;
 
-    @Size(min = 8, max = 20, message = "아이디는 8 ~ 20자 이내로 입력해주세요.")
+    @Size(min = 6, max = 20, message = "아이디는 6 ~ 20자 이내로 입력해주세요.")
     @NotEmpty(message = "아이디를 입력해주세요")
     private String loginId;
 
-    @Size(min = 8, max = 20, message = "비밀번호는 8 ~ 20자 이내로 입력해주세요.")
+    @Size(min = 6, max = 20, message = "비밀번호는 6 ~ 20자 이내로 입력해주세요.")
     @NotEmpty(message = "비밀번호를 입력해주세요")
     private String password;
 

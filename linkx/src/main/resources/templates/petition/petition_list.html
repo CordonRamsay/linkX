@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="/petition/petition_list.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+{{>layout/links}}
 <body>
+{{>layout/header}}
 <div class="container">
-    <header class="header">
+    <header class="peti-header">
         <h1>청원목록</h1>
     </header>
 
@@ -23,12 +25,23 @@
         <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1'">기숙사</button>
         <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1'">학생회</button>
         <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1'">기타</button>
-        <div class="search-box">
-            <input type="text" placeholder="여기에 청원을 입력해주세요" name="searchName" value="{{searchPetiDto.searchName}}">
-            <button type="submit">검색</button>
+
+            <!-- 검색 -->
+            <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
+                <!-- Hidden input to keep petiField in search -->
+                <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
+                <input type="hidden" name="sortColumn" value="{{searchPetiDto.sortColumn}}">
+                <input type="hidden" name="sortAscDesc" value="{{searchPetiDto.sortAscDesc}}">
+
+                <select id="searchField" name="searchField">
+                    <option value="petiTitle">청원명</option>
+                    <option value="petiContent">내용</option>
+                </select>
+                <input type="text" placeholder="검색어를 입력해 주세요" name="searchName" value="{{searchPetiDto.searchName}}">
+                <button type="submit" class="add-btn" >검색</button>
+            </form>
+            <button class="add-btn" onclick="location.href='/petition/petition_add'">+ 청원하기</button>
         </div>
-        <button class="add-btn" onclick="location.href='/petition/petition_add'">+ 청원하기</button>
-    </div>
 
     <div class="search-bar">
         <div>
@@ -97,7 +110,7 @@
         {{/topAgreedPetitions}}
     </ul>
 </div>
-
+{{>layout/scripts}}
 </body>
 <script>
 

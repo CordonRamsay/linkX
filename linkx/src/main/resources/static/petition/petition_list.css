@@ -16,10 +16,10 @@ body {
 }
 
 /* Header */
-.header {
+.peti-header {
     margin: 20px 0;
 }
-.header h1 {
+.peti-header h1 {
     font-size: 24px;
     font-weight: bold;
 }
@@ -178,17 +178,17 @@ body {
     margin-top: 25px;
 }
 
-.search-box button {
-    background-color: #007bff;
-    color: white;
-    padding: 3px 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    height: 30px;
-    margin-top: 22px;
-}
+/*.search-box button {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    padding: 3px 8px;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    height: 30px;*/
+/*    margin-top: 22px;*/
+/*}*/
 
 /* Search Bar */
 .search-bar {

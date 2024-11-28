@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>청원 게시물</title>
   <link rel="stylesheet" href="/petition/petition_view.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -40,7 +41,7 @@
   $.petiAgree = function (id) {
     let url = "/api/v1/petition/sig/"+id;
     $.ajax({
-      type : "GET",
+      type : "POST",
       url : url,
       dataType : "json",
       contentType: "application/json; charset=UTF-8",
@@ -60,7 +61,6 @@
           alert("청원에 동의했습니다");
 
         }
-
         // 그냥 임시로 새로고침 처리
         //window.location.reload();
       }
