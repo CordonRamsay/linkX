@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID 찾기</title>
+    <link href="/css/findid.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
+    </div>
+    <main>
+        <div class="find-box">
+            <h2>ID 찾기</h2>
+            <div class="errorMsg"></div>
+            <h3 class="find-title">이름과 이메일로 찾기 </h3>
+            <div class="input-group">
+                <label for="name">이름</label>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name" name="name" required>
+                <label for="email">이메일</label>
+                <input type="email" placeholder="이메일을 입력해주세요." class="input-field" id="email" name="email" required>
+                <button type="button" class="btn find-btn" onclick="findByNameAndEmail()">ID 찾기</button>
+            </div>
+
+            <div class="divider">
+                <span>또는</span>
+            </div>
+
+            <h3>이름과 휴대폰번호로 찾기 </h3>
+            <div class="input-group">
+                <label for="name">이름</label>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name2" name="name" required>
+                <label for="email">휴대폰번호</label>
+                <input type="email" placeholder="휴대폰 번호를 입력해주세요." class="input-field" id="phone" name="phone" required>
+                <button type="button" class="btn find-btn" onclick="findByNameAndPhone()">ID 찾기</button>
+            </div>
+            <div class="info-box" id="info-box">
+                <span>찾은 ID: <span id="found-id"></span></span>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    function findByNameAndEmail() {
+// 기본적인 유효성 검사
+        const namePhone = document.getElementById('name-phone').value;
+        const phoneNumber = document.getElementById('phone-number').value;
+        const nameEmail = document.getElementById('name-email').value;
+        const email = document.getElementById('email').value;
+
+
+    // 두 방식 중 하나라도 값이 있다면
+    if ((namePhone && phoneNumber) || (nameEmail && email)) {
+        // 예시로 ID를 찾은 것으로 가정
+        let foundId = 'exampleUser123';
+
+        // 결과 출력
+        document.getElementById('info-box').style.display = 'block';
+        document.getElementById('found-id').textContent = foundId;
+    } else {
+        alert('모든 입력을 완료해주세요.');
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -225,7 +225,7 @@ h6 {
 
 .header .header-toggle {
   color: var(--contrast-color);
-  background-color: var(--accent-color);
+  background-color: #ef8c8c;
   font-size: 22px;
   display: flex;
   align-items: center;

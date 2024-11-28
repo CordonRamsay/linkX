@@ -125,6 +125,25 @@
         FROM user_tbl WHERE name = #{name} AND email = #{email}
     </select>
 
+    <!-- 이름과 휴대폰번호로 사용자 정보 조회 (ID 찾기) -->
+    <select id="findByNameAndPhone" resultType="UserDto">
+        SELECT id
+             ,loginId
+             ,password
+             ,name
+             ,phone
+             ,univ
+             ,majorId
+             ,(SELECT majorName
+               FROM major_tbl
+               WHERE id = majorId )AS majorName
+             ,stuNum
+             ,email
+             ,nickname
+             ,role
+        FROM user_tbl WHERE name = #{name} AND phone = #{phone}
+    </select>
+
     <!-- 로그인ID, 이름, 이메일로 사용자 정보 조회 (비밀번호 찾기) -->
     <select id="findByLoginIdAndNameAndEmail" resultType="UserDto">
         SELECT id

@@ -33,6 +33,18 @@ public class LoginController {
         return "login/login";
     }
 
+    // ID찾기 페이지 이동
+    @GetMapping("/findID")
+    public String findIdPage(Model model) {
+        return "login/findid";
+    }
+
+    // PW찾기 페이지 이동
+    @GetMapping("/findPW")
+    public String findPW(Model model) {
+        return "login/findpw";
+    }
+
 //    // 로그인
 //    @PostMapping("/login")
 //    public String login(@Validated @ModelAttribute LoginRequest loginRequest, Model model,
@@ -77,7 +89,7 @@ public class LoginController {
     public String logout(HttpServletRequest request, Model model) {
 
         HttpSession session = request.getSession(false);  // Session이 없으면 null return
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
         return "redirect:/";
