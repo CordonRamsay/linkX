@@ -28,13 +28,13 @@ public class SpotRestController {
         return spotService.fetchAndSaveTasteData();  // 데이터 저장 로직을 서비스로 위임
     }
 
-    // 음식점 리스트 가져오기
+    // 스팟 리스트 가져오기
     @GetMapping("/list")
     public List<SpotDto> getTasteList() {
         return spotService.getSpotList();  // 데이터 조회 로직을 서비스로 위임
     }
 
-    // 특정 음식점의 리뷰 리스트 가져오기
+    // 특정 스팟의 리뷰 리스트 가져오기
     @GetMapping("/reviews/{spotId}")
     public List<SpotReviewDto> getReviewsByRestaurant(@PathVariable Long spotId, HttpSession session) {
         return spotService.getReviewsBySpotId(spotId, session);

@@ -7,12 +7,8 @@ import java.util.List;
 public interface ISpotMyBatisMapper {
     void insert(SpotDto spotDto);
     List<SpotDto> getSpotList();
-
     List<SpotReviewDto> getReviewsBySpotId(Long spotId);
-
     void insertReview(SpotReviewDto reviewDto);
-
     void deleteReviewById(Long reviewId);
-
     SpotReviewDto getReviewById(Long reviewId);
 }

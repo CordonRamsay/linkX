@@ -12,12 +12,12 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class SpotDto {
-    private Long id; // 식당 id
-    private String title; // 식당 이름
-    private String link; // 식당 사이트
-    private String category; // 식당 카테고리
-    private String addr; // 식당 주소
-    private String roadAddr; // 식당 도로명 주소
-    private String mapX; // 식당 X좌표
-    private String mapY; // 식당 Y좌표
+    private Long id; // 스팟 id
+    private String title; // 스팟 이름
+    private String link; // 스팟 사이트
+    private String category; // 스팟 카테고리
+    private String addr; // 스팟 주소
+    private String roadAddr; // 스팟 도로명 주소
+    private String mapX; // 스팟 X좌표
+    private String mapY; // 스팟 Y좌표
 }
