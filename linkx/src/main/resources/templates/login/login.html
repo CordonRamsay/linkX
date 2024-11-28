@@ -40,17 +40,19 @@
         let errorMsg = $(".errorMsg");
         // 아이디가 빈 값인 경우
         if (loginId === "") {
+            // 테두리 빨갛게 표시 후 포커싱
             let idField = $("#loginId");
             idField.css("border", "2px solid red");
-
+            idField.focus();
             errorMsg.text("아이디를 입력하세요");
             return;
         }
         // 비밀번호가 빈 값인 경우
         if (password === "") {
+            // 테두리 빨갛게 표시 후 포커싱
             let pwField = $("#password");
             pwField.css("border", "2px solid red");
-
+            pwField.focus();
             errorMsg.text("비밀번호를 입력하세요");
             return;
         }
@@ -94,6 +96,15 @@
                 $.login();
             }
         });
+        // input에서 포커스 되었을때
+        $(".input-field").on("focus", function (e) {
+            $(this).css("border", "2px solid #0e0");
+        });
+        // input에서 포커스 벗어났을때
+        $(".input-field").on("blur", function (e) {
+            $(this).css("border", "2px solid #ddd");
+        });
+
     })
 
 

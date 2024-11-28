@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #ffcaed;
+    background-color: #ffffff;
 }
 
 .container {
@@ -13,24 +13,12 @@ body {
     padding: 50px 20px;
 }
 
-header .logo {
-    font-size: 32px;
-    color: #000;
-    font-weight: bold;
-}
-
-header .logo .logoBtn{
-    color: #F76394;
-}
-.logoBtn{
-    text-decoration: none;
-}
-
 
 .login-box {
     background-color: #fff;
     width: 100%;
     max-width: 600px; /* 기존보다 더 넓게 */
+    height : 800px;
     margin: 100px auto; /* 위아래 간격을 조금 늘림 */
     padding: 50px 40px; /* 내부 여백을 키워 요소 간 간격을 확보 */
     border-radius: 12px; /* 모서리 조금 더 둥글게 */
@@ -45,17 +33,19 @@ header .logo .logoBtn{
 
 .input-field {
     width: 100%;
-    padding: 12px 15px;
+    padding: 20px;
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+    outline : none;
+    transition: border 0.3s ease;
 }
 
 .btn {
     display: block;
     width: 100%;
-    padding: 12px;
+    padding: 20px;
     margin: 10px 0;
     font-size: 16px;
     border: none;
@@ -68,16 +58,12 @@ header .logo .logoBtn{
     color: #fff;
 }
 
-.kakao-btn {
-    background-color: #ffe812;
-    color: #3c1e1e;
-    font-weight: bold;
-}
 
 .divider {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    margin-top: 150px;
+    margin-bottom:30px;
     color: #aaa;
     font-size: 14px;
 }
