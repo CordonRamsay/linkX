@@ -1,4 +1,4 @@
-package com.mjc.linkx.taste;
+package com.mjc.linkx.spotlink;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class TasteRestDto {
+public class SpotDto {
     private Long id; // 식당 id
     private String title; // 식당 이름
     private String link; // 식당 사이트
