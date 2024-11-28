@@ -35,6 +35,8 @@ public class IndexController {
             model.addAttribute("major",user.getMajorName());
         }
 
+        model.addAttribute("alertMessage", "");
+
         return "index";
     }
 }

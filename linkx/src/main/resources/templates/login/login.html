@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>{{pageName}}</title>
     <link href="/css/login.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -13,14 +14,10 @@
     <main>
         <div class="login-box">
             <h2>로그인</h2>
-            <form method="post" action="/{{loginType}}/login">
-                <input type="text" placeholder="ID를 입력해주세요." class="input-field" id="loginId" name="loginId" required>
+            <div class="errorMsg">{{message}}</div>
+            <form id="loginForm" method="post" action="/{{loginType}}/login">
+                <input type="text" placeholder="ID를 입력해주세요." class="input-field" id="loginId" name="loginId" value="{{loginId}}" required>
                 <input type="password" placeholder="비밀번호를 입력해주세요." class="input-field" id="password" name="password" required>
-
-                {{#globalErrors}}
-                <br/>
-                <div class="error-class">{{.}}</div>
-                {{/globalErrors}}
 
                 <!-- 오류 메시지 표시 -->
                 {{#error}}
@@ -30,7 +27,6 @@
                 <br/>
 
                 <button type="submit" class="btn login-btn">로그인</button>
-<!--                <button type="button" class="btn kakao-btn">카카오로 로그인</button>-->
             </form>
             <div class="divider">
                 <span>or</span>
@@ -43,7 +39,23 @@
         </div>
     </main>
 </div>
+<script>
+    let message = "{{message}}";
 
 
+    if (message != undefined && message != null && message.length > 0) {
+        let idField = $("#loginId");
+        idField.css("border", "2px solid red");
+        let pwField = $("#password");
+        pwField.css("border", "2px solid red");
+    }
+
+
+        let alertMessage = "{{alertMessage}}"; // RedirectAttributes에서 전달된 값
+        if (alertMessage) {
+        alert(alertMessage);
+         }
+
+</script>
 </body>
 </html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>청원하기 - 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #f2f2f2;
+    }
+    .container {
+      width: 900px;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #f4a8c0;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: black;
+    }
+    .login {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 15px;
+      border: none;
+      cursor: pointer;
+    }
+    .sidebar {
+      float: left;
+      width: 200px;
+      background-color: #ffc0cb;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .sidebar .section {
+      margin-bottom: 20px;
+    }
+    .sidebar h3 {
+      margin: 0;
+      padding: 10px 0;
+      font-weight: bold;
+    }
+    .fixed-box {
+      position: fixed;
+      top: 50%; right: 20px;
+      transform: translateY(-50%);
+      width: 300px; background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px; box-sizing: border-box;
+      border: 1px solid #ddd; background-color: #f9f9f9;
+    }
+    .fixed-box h3 { margin-top: 0; }
+    .fixed-box ul { list-style-type: none; padding-left: 0; }
+    .fixed-box li { margin-bottom: 10px; }
+    .fixed-box li a { text-decoration: none; color: #333; }
+    .fixed-box li a:hover { text-decoration: underline; }
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+    .category-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .category-buttons button {
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #dddddd;
+      text-align: center;
+    }
+    .pagination, .search-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .search-bar select, .search-bar input {
+      padding: 5px;
+      font-size: 14px;
+    }
+    .pagination button {
+      padding: 5px 10px;
+      border: 1px solid #4A90E2;
+      background-color: #4A90E2;
+      color: white;
+      cursor: pointer;
+    }
+    .pagination a {
+      display: inline-block;
+      padding: 8px 16px;
+      margin: 4px;
+      text-decoration: none;
+      color: #007bff;
+      background-color: #ffffff;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .pagination a:hover {
+      background-color: #007bff;
+      color: #ffffff;
+    }
+    .pagination a.active {
+      background-color: #007bff;
+      color: #ffffff;
+      border: 1px solid #007bff;
+    }
+  </style>
+  <link rel="stylesheet" href="/board/css/board_list.css">
+  <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+  {{>layout/header}}
+
+  <div class="sidebar">
+    <div class="section">
+      <h3>Link X</h3>
+    </div>
+    <div class="section">
+      <h3>게시판</h3>
+      <ul>
+        <li>자유 게시판</li>
+        <li>학과 게시판</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>청원하기</h3>
+      <ul>
+        <li>청원 진행중</li>
+        <li>청원 종료</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h3>맛집추천</h3>
+    </div>
+  </div>
+
+  <div class="content">
+    <h3>청원목록 - <span id="petiField">전체</span></h3>
+    <div class="category-buttons">
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=&searchName=&page=1">전체</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=수리&searchName=&page=1">수리</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=교내행사&searchName=&page=1">교내행사</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=강의&searchName=&page=1">강의</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=홈페이지&searchName=&page=1">홈페이지</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=급식&searchName=&page=1">급식</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1">기숙사</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1">학생회</a>
+      <a href="/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1">기타</a>
+    </div>
+
+    <div class="search-bar">
+      <div>
+        <label>정렬:</label>
+        <select id="sortColumn" name="sortColumn" onchange="submitSearchForm()">
+          <option value="createDt">최신순</option>
+          <option value="agreeQty">인기순</option>
+        </select>
+        <label>순서:</label>
+        <select id="sortAscDesc" name="sortAscDesc" onchange="submitSearchForm()">
+          <option value="DESC">내림차순</option>
+          <option value="ASC">오름차순</option>
+        </select>
+      </div>
+
+
+      <!-- 검색 -->
+      <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
+        <!-- Hidden input to keep petiField in search -->
+        <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
+        <input type="hidden" name="sortColumn" value="{{searchPetiDto.sortColumn}}">
+        <input type="hidden" name="sortAscDesc" value="{{searchPetiDto.sortAscDesc}}">
+
+        <select id="searchField" name="searchField">
+          <option value="petiTitle">청원명</option>
+          <option value="petiContent">내용</option>
+        </select>
+        <input type="text" placeholder="검색어를 입력해 주세요" name="searchName" value="{{searchPetiDto.searchName}}">
+        <button type="submit">검색</button>
+      </form>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+        <tr>
+          <th>NO</th>
+          <th>분야</th>
+          <th>청원명</th>
+          <th>청원인</th>
+          <th>청원 시작일</th>
+          <th>참여자수</th>
+          <th>마감일</th>
+          <th>D-DAY</th>
+        </tr>
+        </thead>
+        <!--db에서 값을 가져와 리스트 출력(반복)-->
+        <tbody>
+        {{#petitionList}}
+        <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">
+          <td>{{id}}</td>
+          <td>{{petiField}}</td>
+          <td>{{petiTitle}}</td>
+          <td>{{maskedUserNickName}}</td>
+          <td>{{createDt}}</td>
+          <td>{{agreeQty}}</td>
+          <td>{{endDt}}</td>
+          <td>{{#daysLeft}}D-{{daysLeft}}{{/daysLeft}}</td>
+        </tr>
+        {{/petitionList}}
+        <!-- 추가 행을 여기에 삽입할 수 있습니다. -->
+        </tbody>
+      </table>
+    </div>
+
+
+        <div class="fixed-box">
+            <h3>인기 청원</h3>
+            <ul>
+                {{#topAgreedPetitions}}
+                <li>
+                    <a href="/petition/petition_view?id={{id}}">
+                      {{petiField}} - {{petiTitle}}
+                    </a>
+                </li>
+                {{/topAgreedPetitions}}
+            </ul>
+        </div>
+
+
+    <div class="pagination">
+      <span>게시글 수: {{searchPetiDto.total}}</span>
+      <div id="page" class="board-content mt-8 justify-between items-center">
+        <div id="pagination" class="flex justify-center space-x-2"></div>
+      </div>
+      <button onclick="location.href='/petition/petition_add'">청원하기</button>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+
+  function submitSearchForm(){
+    const sortColumn = document.getElementById("sortColumn").value;
+    const sortAscDesc = document.getElementById("sortAscDesc").value;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('sortColumn',sortColumn);
+    urlParams.set('sortAscDesc',sortAscDesc);
+
+    window.location.search = urlParams.toString();
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortColumn = urlParams.get('sortColumn');
+    const sortAscDesc = urlParams.get('sortAscDesc');
+
+    if(sortColumn){
+      document.getElementById("sortColumn").value = sortColumn;
+    }
+    if(sortAscDesc){
+      document.getElementById("sortAscDesc").value = sortAscDesc;
+    }
+  });
+
+  $(document).ready(function() {
+    $.paging();
+    updatePetitonStatuses();
+  });
+
+  function updatePetitonStatuses(){
+    $.ajax({
+      url:'/api/v1/petition/updatestatuses',
+      type:'POST',
+      success: function(response){
+        console.log(response);
+      },
+      error: function(error){
+        console.error('청원 상태 업데이트 오류:',error);
+      }
+    })
+  }
+
+  $.paging = function(){
+    let totPage = Math.ceil(("{{searchPetiDto.total}}" * 1) / 10);
+    let page = "{{searchPetiDto.page}}" * 1;
+    let startPage = getStartPage(page);
+    let endPage = getEndPage(startPage);
+    let prev = (page-1) < 1 ? 1: page-1;
+    let next = (page+1) >= totPage ? totPage : page +1;
+
+    let petiField = "{{searchPetiDto.petiField}}";
+    let searchName = "{{searchPetiDto.searchName}}";
+    let sortColumn = "{{searchPetiDto.sortColumn}}";
+    let sortAscDesc = "{{searchPetiDto.sortAscDesc}}";
+
+    $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" +petiField+"&searchName=" + searchName + "&page="+ prev+ "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'><img src='/board/img/pageLeft.png'></a>");
+
+    for (let i = startPage; i <= endPage; i++){
+      let sClass = "pagination-link px-3 py-2 text-gray-700";
+      if(page == i){
+        sClass += " active";
+      }
+      $("#pagination").append("<a class='" + sClass + "' href='/petition/petition_list?petiField=" + petiField + "&searchName=" + searchName + "&page=" + i +"&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'>" + i + "</a>");
+    }
+    $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" + petiField + "&searchName="+ searchName + "&page=" + next + "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+ "'><img src='/board/img/pageRight.png'></a>");
+  }
+
+  function getStartPage(page){
+    let one = 1;
+    let ten = ~~((page-1)/10) *10;
+    let startPage = ten + one;
+    return ~~ (startPage);
+  }
+
+  function getEndPage(startPage){
+    let totPage = ~~((("{{searchPetiDto.total}}" * 1) + 9) / 10);
+    let tPage = startPage + 9;
+    if(tPage < totPage){
+      return ~~(tPage);
+    }
+    return ~~(totPage);
+  }
+
+  // 페이지 로드 될 때 자동 실행되는 함수
+  $(function(){
+    let petiField = "{{searchPetiDto.petiField}}";
+
+    if (petiField.trim() === "") {
+      petiField = "전체";
+      $("#petiField").text(petiField);
+
+    }
+
+    $("#petiField").text(petiField);
+
+  });
+
+  function updateRemainingTime(){
+    let id = $(id).val();
+    let daysLeft= parseInt(document.getElementById("daysLeft_"+id).value);
+    let hoursLeft= parseInt(document.getElementById("hoursLeft_"+id).value);
+    let minutesLeft= parseInt(document.getElementById("minutesLeft_"+id).value);
+    let secondesLeft= parseInt(document.getElementById("secondesLeft_"+id).value);
+
+    if(daysLeft === "D-day"){
+      if(secondesLeft > 0){
+        secondesLeft--;
+      }else if(minutesLeft > 0){
+        minutesLeft--;
+        secondesLeft = 59;
+      }else if(hoursLeft > 0){
+        hoursLeft--;
+        minutesLeft = 59;
+        secondesLeft = 59;
+      }
+    }
+
+    document.getElementById("remainingTime_"+id).innerText = formatRemainingTime(daysLeft,hoursLeft,minutesLeft,secondesLeft);
+
+
+    setTimeout(updateRemainingTime,1000);
+  }
+
+
+
+</script>
+</html>

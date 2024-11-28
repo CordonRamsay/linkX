@@ -4,6 +4,10 @@
     justify-content: center;
     color:black;
 }
+.header{
+    border-right: 1px solid lightgrey;
+    padding:10px;
+}
 .login_welcome{
     font-weight: bold;
     display : flex;

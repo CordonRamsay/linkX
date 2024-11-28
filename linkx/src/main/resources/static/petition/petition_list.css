@@ -1,0 +1,214 @@
+/* Reset */
+body, h1, p, table {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.peti-header {
+    margin: 20px 0;
+}
+.peti-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.filter-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+.search-box input {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+.add-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Petition Info */
+.petition-info p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Table */
+.petition-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.petition-table thead {
+    background-color: #f1f1f1;
+}
+.petition-table th, .petition-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.petition-table th {
+    font-weight: bold;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+/* Fixed Box - Popular Petitions */
+.fixed-box {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 250px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    font-size: 14px;
+    z-index: 1000;
+
+    /* 화면에 겹치지 않도록 추가 여백 설정 */
+    max-height: calc(100vh - 120px);
+    overflow-y: auto; /* 스크롤 가능 */
+}
+
+/* "인기 청원" 제목 스타일 */
+.fixed-box h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+/* 리스트 스타일 */
+.fixed-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fixed-box ul li {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.fixed-box ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.fixed-box ul li a:hover {
+    color: #0056b3;
+}
+
+/* 기존 콘텐츠와 가림 방지 */
+body {
+    margin-right: 280px; /* 오른쪽 고정 박스 여백 확보 */
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding: 3px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+    height: 30px;
+    margin-top: 25px;
+}
+
+/*.search-box button {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    padding: 3px 8px;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    height: 30px;*/
+/*    margin-top: 22px;*/
+/*}*/
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar label {
+    font-size: 14px;
+    color: #555;
+    margin-right: 5px;
+}
+
+.search-bar select {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+

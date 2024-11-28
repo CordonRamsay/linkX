@@ -1,22 +1,20 @@
 
 <link href="/css/header.css" rel="stylesheet">
+<div style="padding: 20px">
 <header id="header" class="header dark-background d-flex flex-column">
     <i class="header-toggle d-xl-none bi bi-list"></i>
-
     <div class="profile-img">
         <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
     </div>
-
-<a href="/">aaaa</a>
     <nav id="navmenu" class="navmenu">
         <ul>
             <li><a href="/" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
-            <li><a href="/petition/petition_list?petiField=&searchName="><i class="bi bi-person navicon"></i> 청원하기</a></li>
+            <li><a href="/petition/petition_list?sortColumn=createDt&sortAscDesc=DESC&petiField=&searchName=&page=1"><i class="bi bi-person navicon"></i> 청원하기</a></li>
             <li><a href="/taste"><i class="bi bi-file-earmark-text navicon"></i> 맛집지도</a></li>
             <li class="dropdown"><a href="/boardFree/board_list?page=1&searchName="><i class="bi bi-menu-button navicon"></i> <span>게시판</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
                     <li><a href="/boardFree/board_list?page=1&searchName=">자유 게시판</a></li>
-                    <li class="dropdown"><a href="/boardDept/board_list?page=1&searchName=&majorId=1"><span>학과 게시판</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <li class="dropdown"><a href="/boardDept/board_list?page=1&sea&page=1rchName=&majorId=1"><span>학과 게시판</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
                             <li><a href="/boardDept/board_list?page=1&searchName=&majorId=1">컴퓨터공학과</a></li>
                             <li><a href="/boardDept/board_list?page=1&searchName=&majorId=2">컴퓨터보안공학과</a></li>
@@ -72,5 +70,5 @@
         </div>
         {{/nickname}}
     </div>
-
 </header>
+</div>
