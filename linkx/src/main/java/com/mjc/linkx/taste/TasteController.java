@@ -31,7 +31,7 @@ public class TasteController {
 
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }

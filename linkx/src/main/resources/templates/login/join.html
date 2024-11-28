@@ -118,7 +118,7 @@
         </div>
     </form>
     <div class="form-footer">
-        <p>기존 회원이신가요? <a href="/{{loginType}}/login">로그인</a></p>
+        <p>기존 회원이신가요? <a href="/login/login">로그인</a></p>
     </div>
 </div>
 </body>
@@ -335,7 +335,7 @@
                 // response(code, httpStatus, message, responseData)
                 if (response.code === 200) {
                     alert("회원가입이 완료되었습니다.");
-                    window.location.href = '/session-login/login'; // 성공 시 메인 화면으로 이동
+                    window.location.href = '/login/login'; // 성공 시 로그인 화면으로 이동
                 } else {
                     alert("회원가입 중 오류가 발생했습니다: " + response.message);
                 }

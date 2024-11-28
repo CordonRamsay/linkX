@@ -20,7 +20,7 @@ public class AllControllerAdvice {
     private final String[] authUrls = new String[]{
              "/boardFree"
             , "/boardDept"
-            , "/session-login"
+            , "/login"
             ,"/api/v1/boardfree"
             ,"/api/v1/comment"
             ,"/api/v1/user"

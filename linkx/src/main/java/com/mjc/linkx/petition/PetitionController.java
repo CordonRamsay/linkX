@@ -81,7 +81,7 @@ public class PetitionController implements IResponseController {
                 throw new LoginAccessException("로그인이 필요합니다");
             }
         } catch (LoginAccessException ex) {
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -100,7 +100,7 @@ public class PetitionController implements IResponseController {
             UserDto user = this.userService.getLoginUserById(loginUser.getId());
             this.petitionService.insert(dto, user.getId());
         } catch (LoginAccessException ex) {
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         }catch (Exception ex){
             log.error(ex.toString());
         }
