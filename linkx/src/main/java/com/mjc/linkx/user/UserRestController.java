@@ -8,6 +8,8 @@ import com.mjc.linkx.common.exception.IdNotFoundException;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.security.dto.JoinRequest;
 import com.mjc.linkx.security.dto.LoginRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +51,37 @@ public class UserRestController implements IResponseController {
         }
     }
 
+    // 로그인
+    @PostMapping("/login")
+    private ResponseEntity<ResponseDto> login(@RequestBody LoginRequest dto, HttpServletRequest httpServletRequest) {
+        try {
+
+            UserDto result = this.userService.login(dto);
+            if (result != null) {
+                // 세션을 생성하기 전에 기존의 세션 파기
+                httpServletRequest.getSession().invalidate();
+                HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
+                // 세션에 userId를 넣어줌
+                session.setAttribute("LoginUser",result);
+                session.setAttribute("userId", result.getId());
+                session.setMaxInactiveInterval(7200); // 세션 2시간동안 유지
+
+                return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"로그인 되었습니다.",result );
+            }
+            else{
+                return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "아이디 또는 비밀번호를 확인해주세요.", null);
+            }
+
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
+        }
+    }
+
     // ID 중복 검사
     @PostMapping("/checkId")
     private ResponseEntity<ResponseDto> checkId(@Valid @RequestBody LoginRequest loginRequest) {
+
         try {
             if (loginRequest == null) {
                 makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "아이디를 입력해 주세요", null);
