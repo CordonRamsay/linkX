@@ -124,9 +124,35 @@
       color: #555;
     }
 
+    .review-container {
+      margin-top: 10px;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      display: none;
+    }
+    .review-form-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .review-form-button:hover {
+      background-color: #0056b3;
+    }
+
     .delete-button {
       position: absolute;
-      top: 10px;
+      bottom: 10px;
       right: 10px;
       background-color: #e74c3c;
       color: white;
@@ -225,13 +251,24 @@
 </div>
 <script>
   $(document).ready(function () {
+    const mjcLocation = new naver.maps.LatLng(37.5846502, 126.9254007);
+
     const mapOptions = {
-      center: new naver.maps.LatLng(37.58469198890765, 126.92568962210997),
+      center: mjcLocation,
       zoom: 17
     };
     const map = new naver.maps.Map('map', mapOptions);
+
+    const mjcMarker = new naver.maps.Marker({
+      position: mjcLocation,
+      map: map,
+      zIndex: 100 // 다른 마커 위에 표시
+    });
+
+
     let currentCategory = 'all';
     let markers = []; // 현재 맵에 표시된 모든 마커를 저장하는 배열
+    const infoWindow = new naver.maps.InfoWindow();
 
     // 초기 필터 버튼 "전체" 활성화
     const allButton = document.querySelector('.filter-button[data-category="all"]');
@@ -263,6 +300,7 @@
       markers.forEach(marker => marker.setMap(null));
       markers = []; // 마커 배열 초기화
 
+
       spots
               .filter(spot => {
                 if (currentCategory === 'all') {
@@ -285,13 +323,11 @@
                 });
                 markers.push(marker);
 
-                const infoWindow = new naver.maps.InfoWindow({
-                  content: `<div style="padding:5px;">${spot.title}</div>`
-                });
-
                 naver.maps.Event.addListener(marker, 'click', function () {
+                  infoWindow.setContent(`<div style="padding:5px;">${spot.title}</div>`);
                   infoWindow.open(map, marker);
                 });
+
 
                 // 리스트 항목 생성
                 const spotItem = $(`
@@ -304,9 +340,9 @@
             </div>
           `);
 
-                const reviewContainer = $('<div style="margin-top: 10px; padding-left: 20px; display: none;"></div>');
-                const reviewFormButton = $('<button style="margin-top: 10px;">리뷰 작성</button>');
-                const reviewList = $('<div class="review-list" style="margin-top: 10px;"></div>');
+                const reviewContainer = $('<div class="review-container"></div>');
+                const reviewFormButton = $('<button class="review-form-button">리뷰 작성</button>');
+                const reviewList = $('<div class="review-list"></div>');
 
                 // 리뷰 작성 버튼 이벤트
                 reviewFormButton.on('click', function (event) {
@@ -320,6 +356,7 @@
                 // 리스트 클릭 이벤트
                 spotItem.on('click', function () {
                   map.setCenter(latLng);
+                  infoWindow.setContent(`<div style="padding:5px;">${spot.title}</div>`);
                   infoWindow.open(map, marker);
 
                   if (reviewContainer.is(':visible')) {
@@ -340,9 +377,9 @@
       $('.filter-button').removeClass('active');
       $(this).addClass('active');
       currentCategory = $(this).data('category');
+      infoWindow.close();
       loadSpots();
     });
-
     // 초기 로드
     loadSpots();
   });
@@ -378,7 +415,6 @@
           }
             </div>
           `);
-
           // 리뷰 삭제 버튼 이벤트
           reviewItem.find('.delete-button').on('click', function () {
             const reviewId = $(this).data('review-id');
@@ -386,7 +422,6 @@
               deleteReview(reviewId, reviewItem);
             }
           });
-
           reviewList.append(reviewItem);
         });
       },
@@ -445,7 +480,6 @@
       success: function (newReview) {
         alert('리뷰 작성 완료!');
         const reviewList = $(`.spot-item[data-spot-id="${spotId}"]`).next().find('.review-list');
-
         loadReviews(spotId, reviewList);
         closeReviewModal();
       },
@@ -471,11 +505,11 @@
     <div>
       <label for="review-star">별점</label>
       <select id="review-star" style="width: 100%; margin-bottom: 10px;">
-        <option value="1">⭐</option>
-        <option value="2">⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
         <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="1">⭐</option>
       </select>
     </div>
     <div class="button-group">
@@ -484,6 +518,5 @@
     </div>
   </div>
 </div>
-
 </body>
 </html>

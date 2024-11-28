@@ -52,10 +52,7 @@
     </select>
 
 
-    <insert id="insertReview" parameterType="SpotReviewDto" useGeneratedKeys="true" keyProperty="id">  <!-- useGeneratedKeys 속성으로 자동생성된 키를 가져오고,
-                                                                                                    keyProperty 속성에 "id" 필드를 정의하여 id 값이
-                                                                                                     자동 증감되어 DB에 저장된다 -->
-
+    <insert id="insertReview" parameterType="SpotReviewDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO spot_review_tbl ( reviewTitle
         , reviewContent
         , spotId
@@ -71,7 +68,7 @@
         , #{reviewDate}
         , #{reviewStar}
         , #{reviewLike}
-        , #{userNickName})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
+        , #{userNickName})
     </insert>
 
     <select id="getReviewById" parameterType="Long" resultType="SpotReviewDto">

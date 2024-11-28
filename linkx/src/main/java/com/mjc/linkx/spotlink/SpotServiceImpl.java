@@ -25,7 +25,7 @@ public class SpotServiceImpl implements SpotService {
 
     @Override
     public String fetchAndSaveTasteData() {
-        String query = "명지전문대학 은행";
+        String query = "명지전문대학";
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/local.json")
