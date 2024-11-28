@@ -232,10 +232,14 @@
     const map = new naver.maps.Map('map', mapOptions);
     let currentCategory = 'all';
     let markers = []; // 현재 맵에 표시된 모든 마커를 저장하는 배열
+
+    // 초기 필터 버튼 "전체" 활성화
     const allButton = document.querySelector('.filter-button[data-category="all"]');
     if (allButton) {
-      allButton.classList.add("active"); // 초기 active 클래스 추가
+      allButton.classList.add("active");
     }
+
+    // 식당 데이터 로드 함수
     function loadRestaurants() {
       $.ajax({
         url: '/taste/data/list',
@@ -250,6 +254,7 @@
       });
     }
 
+    // 식당 데이터를 화면에 표시
     function displayRestaurants(restaurants) {
       const restaurantList = $('#restaurant-list');
       restaurantList.empty();
@@ -261,9 +266,9 @@
       restaurants
               .filter(restaurant => {
                 if (currentCategory === 'all') {
-                  return true; // "전체"일 경우 모든 데이터 표시
+                  return true; // "전체" 선택 시 모든 데이터 표시
                 }
-                // 쉼표로 구분된 카테고리를 배열로 분리 후, 현재 선택된 카테고리가 포함되었는지 확인
+                // 쉼표로 구분된 카테고리를 배열로 분리 후 필터링
                 const categories = restaurant.category.split(',');
                 return categories.some(category => category.trim().includes(currentCategory));
               })
@@ -278,7 +283,7 @@
                   map: map,
                   title: restaurant.title
                 });
-                markers.push(marker); // 새로 생성된 마커를 배열에 추가
+                markers.push(marker);
 
                 const infoWindow = new naver.maps.InfoWindow({
                   content: `<div style="padding:5px;">${restaurant.title}</div>`
@@ -290,17 +295,20 @@
 
                 // 리스트 항목 생성
                 const restaurantItem = $(`
-                    <div class="restaurant-item" data-rest-id="${restaurant.id}">
-                    <div>
-                    <strong>${restaurant.title}</strong>
-                    <p>${restaurant.addr}</p>
-                    <p>${restaurant.roadAddr}</p>
-                    </div>
-                </div>
-                `);
+            <div class="restaurant-item" data-rest-id="${restaurant.id}">
+              <div>
+                <strong>${restaurant.title}</strong>
+                <p>${restaurant.addr}</p>
+                <p>${restaurant.roadAddr}</p>
+              </div>
+            </div>
+          `);
+
                 const reviewContainer = $('<div style="margin-top: 10px; padding-left: 20px; display: none;"></div>');
                 const reviewFormButton = $('<button style="margin-top: 10px;">리뷰 작성</button>');
                 const reviewList = $('<div class="review-list" style="margin-top: 10px;"></div>');
+
+                // 리뷰 작성 버튼 이벤트
                 reviewFormButton.on('click', function (event) {
                   event.stopPropagation();
                   openReviewModal(restaurant.id, restaurant.title);
@@ -309,6 +317,7 @@
                 reviewContainer.append(reviewFormButton);
                 reviewContainer.append(reviewList);
 
+                // 리스트 클릭 이벤트
                 restaurantItem.on('click', function () {
                   map.setCenter(latLng);
                   infoWindow.open(map, marker);
@@ -326,6 +335,7 @@
               });
     }
 
+    // 필터 버튼 클릭 이벤트
     $('#filter-bar').on('click', '.filter-button', function () {
       $('.filter-button').removeClass('active');
       $(this).addClass('active');
@@ -333,11 +343,12 @@
       loadRestaurants();
     });
 
+    // 초기 로드
     loadRestaurants();
   });
-  function loadReviews(restId, reviewList, currentPage = 1) {
-    const itemsPerPage = 4; // 한 페이지에 표시할 리뷰 수
 
+  // 리뷰 로드 함수
+  function loadReviews(restId, reviewList) {
     $.ajax({
       url: `/taste/data/reviews/${restId}`,
       type: 'GET',
@@ -350,32 +361,25 @@
           return;
         }
 
-        // 페이징 처리
-        const totalPages = Math.ceil(reviews.length / itemsPerPage);
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const paginatedReviews = reviews.slice(startIndex, endIndex);
-
-        // 리뷰 표시
-        paginatedReviews.forEach((review) => {
+        reviews.forEach((review) => {
           const reviewItem = $(`
-          <div class="review-item">
-            <div>
-              <h4>${review.reviewTitle}</h4>
-              <p>${review.reviewContent}</p>
-              <p>작성자: ${review.userNickName}</p>
-              <p>별점: ${'⭐'.repeat(review.reviewStar)}</p>
-              <p>작성일: ${new Date(review.reviewDate).toLocaleDateString()}</p>
-            </div>
-            ${
+            <div class="review-item">
+              <div>
+                <h4>${review.reviewTitle}</h4>
+                <p>${review.reviewContent}</p>
+                <p>작성자: ${review.userNickName}</p>
+                <p>별점: ${'⭐'.repeat(review.reviewStar)}</p>
+                <p>작성일: ${new Date(review.reviewDate).toLocaleDateString()}</p>
+              </div>
+              ${
                   review.canDelete
                           ? `<button class="delete-button" data-review-id="${review.id}">삭제</button>`
                           : ''
           }
-          </div>
-        `);
+            </div>
+          `);
 
-          // 삭제 버튼 이벤트 연결
+          // 리뷰 삭제 버튼 이벤트
           reviewItem.find('.delete-button').on('click', function () {
             const reviewId = $(this).data('review-id');
             if (confirm('리뷰를 삭제하시겠습니까?')) {
@@ -385,9 +389,6 @@
 
           reviewList.append(reviewItem);
         });
-
-        // 페이징 UI 추가
-        renderReviewPagination(restId, reviewList, currentPage, totalPages);
       },
       error: function (xhr) {
         console.error('Error fetching reviews:', xhr.responseText);
@@ -395,41 +396,7 @@
     });
   }
 
-  function renderReviewPagination(restId, reviewList, currentPage, totalPages) {
-    const paginationContainer = $('<div class="pagination"></div>');
-    reviewList.append(paginationContainer);
-
-    if (totalPages <= 1) return; // 페이지가 1개 이하일 경우 페이징 표시 안 함
-
-    // 이전 버튼
-    const prevButton = $(`<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''}>이전</button>`);
-    prevButton.on('click', function () {
-      if (currentPage > 1) {
-        loadReviews(restId, reviewList, currentPage - 1);
-      }
-    });
-    paginationContainer.append(prevButton);
-
-    // 페이지 번호 버튼
-    for (let i = 1; i <= totalPages; i++) {
-      const pageButton = $(`<button class="pagination-btn ${i === currentPage ? 'active' : ''}">${i}</button>`);
-      pageButton.on('click', function () {
-        loadReviews(restId, reviewList, i);
-      });
-      paginationContainer.append(pageButton);
-    }
-
-    // 다음 버튼
-    const nextButton = $(`<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''}>다음</button>`);
-    nextButton.on('click', function () {
-      if (currentPage < totalPages) {
-        loadReviews(restId, reviewList, currentPage + 1);
-      }
-    });
-    paginationContainer.append(nextButton);
-  }
-
-
+  // 리뷰 삭제 함수
   function deleteReview(reviewId, reviewItem) {
     $.ajax({
       url: `/taste/data/reviews/${reviewId}`,
@@ -444,6 +411,8 @@
       }
     });
   }
+
+  // 리뷰 작성 모달 관련 함수
   function openReviewModal(restId, restaurantTitle) {
     const modal = $('#review-modal');
     modal.show().data('restId', restId);
@@ -461,8 +430,8 @@
     const reviewContent = $('#review-content').val().trim();
     const reviewStar = parseInt($('#review-star').val(), 10);
 
-    if (!reviewTitle || !reviewContent || isNaN(reviewStar) || reviewStar < 1 || reviewStar > 5) {
-      alert('모든 필드를 올바르게 입력하세요. 별점은 1~5 사이의 숫자여야 합니다.');
+    if (!reviewTitle || !reviewContent || isNaN(reviewStar)) {
+      alert('모든 필드를 올바르게 입력하세요.');
       return;
     }
 
@@ -477,10 +446,7 @@
         alert('리뷰 작성 완료!');
         const reviewList = $(`.restaurant-item[data-rest-id="${restId}"]`).next().find('.review-list');
 
-        // 최신 리뷰 데이터를 DB에서 다시 가져와 목록 갱신
         loadReviews(restId, reviewList);
-
-        // 모달 닫기
         closeReviewModal();
       },
       error: function (xhr) {
