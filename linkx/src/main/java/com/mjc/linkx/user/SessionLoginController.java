@@ -44,6 +44,7 @@ public class SessionLoginController {
         return "login/login";
     }
 
+    // 로그인
     @PostMapping("/login")
     public String login(@Validated @ModelAttribute LoginRequest loginRequest, Model model,
                         HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) {
@@ -70,10 +71,10 @@ public class SessionLoginController {
                 // 세션에 userId를 넣어줌
                 session.setAttribute("LoginUser",user);
                 session.setAttribute("userId", user.getId());
-                // 리디렉션 시 alertMessage 전달
-                redirectAttributes.addFlashAttribute("alertMessage", "로그인 되었습니다.");
                 session.setMaxInactiveInterval(7200); // 세션 2시간동안 유지
 
+                // 성공 메시지 추가
+                redirectAttributes.addFlashAttribute("alertMessage", "로그인 되었습니다.");
                 return "redirect:/";
             }
         } catch (Exception ex) {

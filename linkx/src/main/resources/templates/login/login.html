@@ -19,11 +19,6 @@
                 <input type="text" placeholder="ID를 입력해주세요." class="input-field" id="loginId" name="loginId" value="{{loginId}}" required>
                 <input type="password" placeholder="비밀번호를 입력해주세요." class="input-field" id="password" name="password" required>
 
-                {{#globalErrors}}
-                <br/>
-                <div class="error-class">{{.}}</div>
-                {{/globalErrors}}
-
                 <!-- 오류 메시지 표시 -->
                 {{#error}}
                 <br/>
@@ -32,7 +27,6 @@
                 <br/>
 
                 <button type="submit" class="btn login-btn">로그인</button>
-<!--                <button type="button" class="btn kakao-btn">카카오로 로그인</button>-->
             </form>
             <div class="divider">
                 <span>or</span>
@@ -48,7 +42,6 @@
 <script>
     let message = "{{message}}";
 
-    console.log("alertMessage:", alertMessage);  // 값 확인
 
     if (message != undefined && message != null && message.length > 0) {
         let idField = $("#loginId");
@@ -57,10 +50,12 @@
         pwField.css("border", "2px solid red");
     }
 
-    let alertMessage = "{{alertMessage}}";
-    if (alertMessage) {
+
+        let alertMessage = "{{alertMessage}}"; // RedirectAttributes에서 전달된 값
+        if (alertMessage) {
         alert(alertMessage);
-    }
+         }
+
 </script>
 </body>
 </html>
