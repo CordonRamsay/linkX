@@ -9,16 +9,16 @@ import java.util.List;
 public interface IUserMybatisMapper{
 
     // 닉네임으로 사용자 존재 여부 확인 (중복 체크)
-    boolean existByNickname(String nickname);
+    Integer existByNickname(String nickname);
 
     // 로그인 ID로 사용자 존재 여부 확인 (중복 체크)
-    boolean existByLoginId(String loginId);
+    Integer existByLoginId(String loginId);
 
     // 이메일로 사용자 존재 여부 확인 (중복 체크)
-    boolean existByEmail(String email);
+    Integer existByEmail(String email);
 
     // 학번으로 사용자 존재 여부 확인 (중복 체크)
-    boolean existByStuNum(String stuNum);
+    Integer existByStuNum(String stuNum);
 
     // 회원가입
     void insert(UserDto user);

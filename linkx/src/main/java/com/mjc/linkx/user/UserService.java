@@ -23,22 +23,26 @@ public class UserService {
 
     // 회원가입 시 loginId 중복체크 기능 구현: 중복되면 true 리턴
     public Boolean checkLoginIdDuplicate(String loginId) {
-        return userMybatisMapper.existByLoginId(loginId);
+        Integer result = userMybatisMapper.existByLoginId(loginId);
+        return result != null && result == 1;
     }
 
     // 회원가입 시 nickname 중복체크 기능 구현: 중복되면 true 리턴
     public Boolean checkNicknameDuplicate(String nickname) {
-        return userMybatisMapper.existByNickname(nickname);
+        Integer result = userMybatisMapper.existByNickname(nickname);
+        return result != null && result == 1;
     }
 
     // 회원가입 시 email 중복체크 기능 구현: 중복되면 true 리턴
     public Boolean checkEmailDuplicate(String email) {
-        return userMybatisMapper.existByEmail(email);
+        Integer result = userMybatisMapper.existByEmail(email);
+        return result != null && result == 1;
     }
 
     // 회원가입 시 학번 중복체크 기능 구현: 중복되면 true 리턴
     public Boolean checkStuNumDuplicate(String stuNum) {
-        return userMybatisMapper.existByStuNum(stuNum);
+        Integer result = userMybatisMapper.existByStuNum(stuNum);
+        return result != null && result == 1;
     }
 
     // 회원 가입

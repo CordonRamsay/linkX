@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffcaed;
+}
+label {
+    display: block; /* 블록 요소로 설정하여 입력 필드 위에 위치 */
+    font-size: 14px; /* 글자 크기 */
+    font-weight: bold; /* 글자 굵기 */
+    color: #333; /* 텍스트 색상 */
+    margin-bottom: 5px; /* 입력 필드와 간격 */
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 50px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.container h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    max-width: 70%; /* 너비를 약간 줄임 */
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.form-group.flex {
+    flex-direction: column; /* 기본적으로 세로 정렬 */
+}
+
+.form-group.flex .row {
+    display: flex;
+    align-items: center; /* input과 button을 수직 가운데 정렬 */
+    gap: 10px; /* input과 button 간격 */
+    width: 100%; /* 한 줄로 채우기 */
+}
+
+.form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/*중복체크 버튼*/
+.duple-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #f76394;
+    background-color: #fff;
+    border-color: #f76394;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.duple-btn:hover {
+    background-color: #f76394;
+    color : #fff;
+}
+
+/*회원가입 버튼*/
+.submit-btn{
+    background-color: #f76394;
+    color : #fff;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+}
+
+
+
+
+/*중복체크를 다 통과하지않았거나 값을 다 입력하지 않았을때 사용하는 버튼*/
+.noSubmit-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #888;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.noSubmit-btn:hover {
+    background-color: #666;
+}
+
+
+
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-footer a {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}

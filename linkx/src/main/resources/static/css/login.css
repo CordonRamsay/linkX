@@ -105,3 +105,6 @@ header .logo .logoBtn{
 .signup-text .signup-link:hover {
     text-decoration: underline;
 }
+.errorMsg{
+    color:red;
+}
