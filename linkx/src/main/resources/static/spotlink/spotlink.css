@@ -239,3 +239,38 @@ body {
 .pagination-btn:hover:not(:disabled) {
     background-color: #f0f0f0;
 }
+
+#search-input {
+    width: 100%;
+    height: 40px;
+    padding: 10px 40px 10px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #ff3366;
+    box-shadow: 0 0 5px rgba(255, 51, 102, 0.3);
+    background-color: #fff;
+}
+
+#search-button {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#search-button img {
+    width: 20px;
+    height: 20px;
+}

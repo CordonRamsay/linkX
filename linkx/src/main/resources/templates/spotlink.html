@@ -10,6 +10,10 @@
 <body>
 <div id="sidebar">
   <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="검색어를 입력하세요" />
+    <button id="search-button"><img src="/img/search-icon.png" alt="검색" style="width: 20px; height: 20px;"/></button>
+  </div>
   <div id="filter-bar">
     <button class="filter-button" data-category="all">전체</button>
     <button class="filter-button" data-category="음식">음식점</button>
@@ -27,6 +31,7 @@
 <script>
   $(document).ready(function () {
     const mjcLocation = new naver.maps.LatLng(37.5846502, 126.9254007);
+    let originalSpots = [];
 
     const mapOptions = {
       center: mjcLocation,
@@ -78,6 +83,7 @@
         type: 'GET',
         dataType: 'json',
         success: function (spots) {
+          originalSpots = spots; // 전체 데이터를 저장
           displaySpots(spots);
         },
         error: function (xhr) {
@@ -222,9 +228,37 @@
               });
     }
 
+    function searchSpots(keyword) {
+      const lowerKeyword = keyword.toLowerCase(); // 대소문자 무시를 위해 소문자로 변환
+      const filteredSpots = originalSpots.filter((spot) => {
+        const nameMatch = spot.title.toLowerCase().includes(lowerKeyword); // 이름에 검색어 포함 여부
+        const categoryMatch = spot.category.toLowerCase().includes(lowerKeyword); // 카테고리에 검색어 포함 여부
+        return nameMatch || categoryMatch; // 둘 중 하나라도 true면 포함
+      });
+      displaySpots(filteredSpots); // 필터링된 데이터 표시
+    }
+    
+    // 검색 버튼 클릭 이벤트
+    $('#search-button').on('click', function () {
+      const keyword = $('#search-input').val().trim(); // 검색어 입력값
+      if (keyword === '') {
+        alert('검색어를 입력해주세요.');
+        return;
+      }
+      searchSpots(keyword); // 검색 실행
+    });
 
-
-
+    // 엔터 키 입력 이벤트
+    $('#search-input').on('keydown', function (event) {
+      if (event.key === 'Enter') {
+        const keyword = $(this).val().trim();
+        if (keyword === '') {
+          alert('검색어를 입력해주세요.');
+          return;
+        }
+        searchSpots(keyword); // 검색 실행
+      }
+    });
 
     // 필터 버튼 클릭 이벤트
     $('#filter-bar').on('click', '.filter-button', function () {
