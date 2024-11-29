@@ -336,7 +336,19 @@
                 markers.push(marker);
 
                 naver.maps.Event.addListener(marker, 'click', function () {
-                  infoWindow.setContent(`<div style="padding:5px;">${spot.title}</div>`);
+                  const avgRating = spot.avgRating !== undefined && spot.avgRating !== null ? spot.avgRating.toFixed(1) : 'N/A';
+                  const reviewCount = spot.reviewCount || 0;
+
+                  // infoWindow에 표시할 HTML 내용
+                  const contentString = `
+    <div style="padding:5px; font-size:14px;">
+      <strong>${spot.title}</strong>
+      <p>⭐ <b>${avgRating}</b></p>
+      <p>💬 <b>${reviewCount}</b></p>
+    </div>
+  `;
+                  // infoWindow에 내용 설정 및 열기
+                  infoWindow.setContent(contentString);
                   infoWindow.open(map, marker);
                 });
 
@@ -369,7 +381,20 @@
                 // 리스트 클릭 이벤트
                 spotItem.on('click', function () {
                   map.setCenter(latLng);
-                  infoWindow.setContent(`<div style="padding:5px;">${spot.title}</div>`);
+                  const avgRating = spot.avgRating !== undefined && spot.avgRating !== null ? spot.avgRating.toFixed(1) : 'N/A';
+                  const reviewCount = spot.reviewCount || 0;
+
+                  // infoWindow에 표시할 HTML 내용
+                  const contentString = `
+    <div style="padding:5px; font-size:14px;">
+      <strong>${spot.title}</strong>
+      <p>⭐ <b>${avgRating}</b></p>
+      <p>💬 <b>${reviewCount}</b></p>
+    </div>
+  `;
+
+                  // infoWindow에 내용 설정 및 열기
+                  infoWindow.setContent(contentString);
                   infoWindow.open(map, marker);
 
                   if (reviewContainer.is(':visible')) {
@@ -446,19 +471,26 @@
 
   // 리뷰 삭제 함수
   function deleteReview(reviewId, reviewItem) {
+    const spotId = reviewItem.closest('.review-container').prev('.spot-item').data('spotId'); // 연결된 spotId 가져오기
+
     $.ajax({
       url: `/spotlink/data/reviews/${reviewId}`,
       type: 'DELETE',
       success: function () {
         alert('리뷰가 성공적으로 삭제되었습니다.');
-        reviewItem.remove();
+        reviewItem.remove(); // 삭제된 리뷰 DOM에서 제거
+
+        // 리뷰 삭제 후 장소 정보 업데이트
+        const reviewList = $(`.spot-item[data-spot-id="${spotId}"]`).next('.review-container').find('.review-list');
+        updateSpotInfo(spotId, reviewList);
       },
       error: function (xhr) {
-        console.error('Error deleting review:', xhr.responseText);
+        console.error('리뷰 삭제 중 오류:', xhr.responseText);
         alert('리뷰 삭제 중 오류가 발생했습니다.');
       }
     });
   }
+
 
   // 리뷰 작성 모달 관련 함수
   function openReviewModal(spotId, spotTitle) {
@@ -496,7 +528,6 @@
 
         const reviewList = $(`.spot-item[data-spot-id="${spotId}"]`).next().find('.review-list');
         loadReviews(spotId, reviewList);
-
         updateSpotInfo(spotId);
       },
       error: function (xhr) {
@@ -515,7 +546,7 @@
         const reviewCount = spot.reviewCount || 0;
 
         // 장소 정보 갱신
-        spotItem.find('p:last').html(`⭐ 별점 <b>${avgRating}</b> 리뷰 ${reviewCount}`);
+        spotItem.find('p:last').html(`⭐ 별점 <b>${avgRating}</b> 리뷰 <b>${reviewCount}</b>`);
       },
       error: function (xhr) {
         console.error('장소 정보 갱신 중 오류:', xhr.responseText);
