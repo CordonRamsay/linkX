@@ -1,4 +1,4 @@
-package com.mjc.linkx.taste;
+package com.mjc.linkx.spotlink;
 
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
-@RequestMapping("/taste")
-public class TasteController {
+@RequestMapping("/spotlink")
+public class SpotController {
 
     @GetMapping("")
-    public String taste(Model model, HttpSession session) {
+    public String spot(Model model, HttpSession session) {
 
         try {
             // 세션에서 LoginUser 확인
@@ -35,6 +35,6 @@ public class TasteController {
         } catch (Exception ex) {
             log.error(ex.toString());
         }
-        return "taste";
+        return "spotlink";
     }
 }

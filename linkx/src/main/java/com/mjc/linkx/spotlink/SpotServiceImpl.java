@@ -1,4 +1,4 @@
-package com.mjc.linkx.taste;
+package com.mjc.linkx.spotlink;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,14 +18,14 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class TasteServiceImpl implements TasteService {
+public class SpotServiceImpl implements SpotService {
 
     @Autowired
-    private ITasteRestMyBatisMapper tasteRestMapper;
+    private ISpotMyBatisMapper spotMapper;
 
     @Override
     public String fetchAndSaveTasteData() {
-        String query = "명지전문대학 은행";
+        String query = "명지전문대학";
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
                 .path("/v1/search/local.json")
@@ -45,23 +45,23 @@ public class TasteServiceImpl implements TasteService {
                 .build();
 
         ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-        List<TasteRestDto> tasteRestDtos = parseJsonToDtoList(result.getBody());
+        List<SpotDto> spotDtos = parseJsonToDtoList(result.getBody());
 
-        for (TasteRestDto dto : tasteRestDtos) {
+        for (SpotDto dto : spotDtos) {
             log.debug("Parsed DTO: {}", dto); // DTO의 내용을 콘솔에 출력
-            tasteRestMapper.insert(dto);
+            spotMapper.insert(dto);
         }
 
         return result.getBody();
     }
 
-    private List<TasteRestDto> parseJsonToDtoList(String json) {
-        List<TasteRestDto> dtos = new ArrayList<>();
+    private List<SpotDto> parseJsonToDtoList(String json) {
+        List<SpotDto> dtos = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode itemsNode = objectMapper.readTree(json).path("items");
             for (JsonNode itemNode : itemsNode) {
-                TasteRestDto dto = new TasteRestDto();
+                SpotDto dto = new SpotDto();
                 dto.setTitle(itemNode.path("title").asText());
                 dto.setLink(itemNode.path("link").asText());
                 dto.setCategory(itemNode.path("category").asText());
@@ -78,16 +78,16 @@ public class TasteServiceImpl implements TasteService {
     }
 
     @Override
-    public List<TasteRestDto> getTasteList() {
-        return tasteRestMapper.getTasteList();
+    public List<SpotDto> getSpotList() {
+        return spotMapper.getSpotList();
     }
 
     @Override
-    public List<TasteReviewDto> getReviewsByRestaurantId(Long restId, HttpSession session) {
-        List<TasteReviewDto> reviews = tasteRestMapper.getReviewsByRestaurantId(restId);
+    public List<SpotReviewDto> getReviewsBySpotId(Long spotId, HttpSession session) {
+        List<SpotReviewDto> reviews = spotMapper.getReviewsBySpotId(spotId);
         Long currentUserId = getCurrentUserIdFromSession(session); // 세션에서 현재 사용자 ID 가져오기
 
-        for (TasteReviewDto review : reviews) {
+        for (SpotReviewDto review : reviews) {
             log.info("리뷰 작성자 ID: {}, 현재 사용자 ID: {}", review.getUserId(), currentUserId);
             review.setCanDelete(review.getUserId() != null && review.getUserId().equals(currentUserId));
         }
@@ -107,9 +107,9 @@ public class TasteServiceImpl implements TasteService {
 
 
     @Override
-    public void addReview(TasteReviewDto reviewDto) {
+    public void addReview(SpotReviewDto reviewDto) {
         try {
-            tasteRestMapper.insertReview(reviewDto);
+            spotMapper.insertReview(reviewDto);
         } catch (Exception e) {
             log.error("리뷰 추가 중 오류 발생: ", e);
             throw new RuntimeException("리뷰를 추가할 수 없습니다.");
@@ -118,7 +118,7 @@ public class TasteServiceImpl implements TasteService {
 
     @Override
     public void deleteReview(Long reviewId, Long userId) throws Exception {
-        TasteReviewDto review = tasteRestMapper.getReviewById(reviewId);
+        SpotReviewDto review = spotMapper.getReviewById(reviewId);
         if (review == null) {
             log.warn("삭제하려는 리뷰가 존재하지 않습니다. 리뷰 ID: {}", reviewId);
             throw new Exception("리뷰가 존재하지 않습니다.");
@@ -128,7 +128,7 @@ public class TasteServiceImpl implements TasteService {
             throw new Exception("삭제 권한이 없습니다.");
         }
         try {
-            tasteRestMapper.deleteReviewById(reviewId);
+            spotMapper.deleteReviewById(reviewId);
             log.info("리뷰가 삭제되었습니다. 리뷰 ID: {}", reviewId);
         } catch (Exception e) {
             log.error("리뷰 삭제 중 오류 발생: ", e);

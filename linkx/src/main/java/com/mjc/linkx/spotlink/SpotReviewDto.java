@@ -1,4 +1,4 @@
-package com.mjc.linkx.taste;
+package com.mjc.linkx.spotlink;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TasteReviewDto {
+public class SpotReviewDto {
     private Long id;              // 리뷰 ID
-    private Long restId;          // 음식점 ID (리뷰가 연결된 음식점)
+    private Long spotId;          // 스팟 ID (리뷰가 연결된 스팟)
     private Long userId;          // 작성자 사용자 ID
     private String reviewTitle;   // 리뷰 제목
     private String reviewContent; // 리뷰 내용
@@ -22,6 +22,4 @@ public class TasteReviewDto {
     private String userNickName;  // 작성자 닉네임
     private LocalDateTime reviewDate; // 리뷰 작성 날짜
     private boolean canDelete;    // 삭제 가능 여부 (추가)
-
-    // 기본 생성자, 모든 필드 생성자 등은 Lombok으로 생성됨
 }
