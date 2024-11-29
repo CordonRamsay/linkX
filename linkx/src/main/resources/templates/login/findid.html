@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ID 찾기</title>
     <link href="/css/findid.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -14,55 +15,135 @@
     <main>
         <div class="find-box">
             <h2>ID 찾기</h2>
-            <div class="errorMsg"></div>
             <h3 class="find-title">이름과 이메일로 찾기 </h3>
             <div class="input-group">
                 <label for="name">이름</label>
-                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name" name="name" required>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name" name="name" >
                 <label for="email">이메일</label>
-                <input type="email" placeholder="이메일을 입력해주세요." class="input-field" id="email" name="email" required>
-                <button type="button" class="btn find-btn" onclick="findByNameAndEmail()">ID 찾기</button>
+                <input type="email" placeholder="이메일을 입력해주세요." class="input-field" id="email" name="email" >
+                <button type="button" class="btn find-btn" onclick="$.findByNameAndEmail();">ID 찾기</button>
             </div>
 
             <div class="divider">
                 <span>또는</span>
             </div>
 
-            <h3>이름과 휴대폰번호로 찾기 </h3>
+
+            <h3 class="find-title">이름과 휴대폰번호로 찾기 </h3>
             <div class="input-group">
                 <label for="name">이름</label>
-                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name2" name="name" required>
-                <label for="email">휴대폰번호</label>
-                <input type="email" placeholder="휴대폰 번호를 입력해주세요." class="input-field" id="phone" name="phone" required>
-                <button type="button" class="btn find-btn" onclick="findByNameAndPhone()">ID 찾기</button>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name2" name="name" >
+                <label for="phone">휴대폰번호</label>
+                <input type="text" placeholder="휴대폰 번호를 입력해주세요." class="input-field" id="phone" name="phone" >
+                <button type="button" class="btn find-btn" onclick="$.findByNameAndPhone();">ID 찾기</button>
             </div>
             <div class="info-box" id="info-box">
-                <span>찾은 ID: <span id="found-id"></span></span>
+                <span id="found-id"></span>
             </div>
         </div>
     </main>
 </div>
 <script>
-    function findByNameAndEmail() {
-// 기본적인 유효성 검사
-        const namePhone = document.getElementById('name-phone').value;
-        const phoneNumber = document.getElementById('phone-number').value;
-        const nameEmail = document.getElementById('name-email').value;
-        const email = document.getElementById('email').value;
+    // 이름과 이메일로 ID 찾기
+    $.findByNameAndEmail = function () {
 
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let request = {
+            name : name,
+            email : email
+        }
+        let findId = $("#found-id");
+        let url = '/api/v1/user/findByNameAndEmail';
 
-    // 두 방식 중 하나라도 값이 있다면
-    if ((namePhone && phoneNumber) || (nameEmail && email)) {
-        // 예시로 ID를 찾은 것으로 가정
-        let foundId = 'exampleUser123';
+        if (name === '') {
+            let nameField = $("#name");
+            nameField.css("border", "2px solid red");
+            nameField.focus();
+            alert("이름을 입력하세요");
+            return;
+        }
+        if (email === '') {
+            let emailField = $("#email");
+            emailField.css("border", "2px solid red");
+            emailField.focus();
+            alert("이메일을 입력하세요");
+            return;
+        }
+        $.ajax({
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
 
-        // 결과 출력
-        document.getElementById('info-box').style.display = 'block';
-        document.getElementById('found-id').textContent = foundId;
-    } else {
-        alert('모든 입력을 완료해주세요.');
-    }
-}
+            success: function (data) {
+                if (data.code === 200) {
+                    // 나온 아이디(data.responseData)를 화면에 뿌려주는 로직
+                    alert("해당하는 ID를 찾았습니다")
+                    findId.text(data.responseData);
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
+    $.findByNameAndPhone = function () {
+        let name = $("#name2").val();
+        let phone = $("#phone").val();
+        let request = {
+            name : name,
+            phone : phone
+        }
+        let findId = $("#found-id");
+        let url = '/api/v1/user/findByNameAndPhone';
+
+        if (name === '') {
+            let nameField = $("#name2");
+            nameField.css("border", "2px solid red");
+            nameField.focus();
+            alert("이름을 입력하세요");
+            return;
+        }
+        if (phone === '') {
+            let phoneField = $("#phone");
+            phoneField.css("border", "2px solid red");
+            phoneField.focus();
+            alert("휴대폰 번호를 입력하세요");
+            return;
+        }
+        $.ajax({
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
+
+            success: function (data) {
+                if (data.code === 200) {
+                    // 나온 아이디(data.responseData)를 화면에 뿌려주는 로직
+                    alert(data.message);
+                    findId.text(data.responseData);
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
 
 </script>
 

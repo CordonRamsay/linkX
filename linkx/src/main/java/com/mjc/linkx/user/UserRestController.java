@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/vi/user")
+@RequestMapping("/api/v1/user")
 public class UserRestController implements IResponseController {
 
     private final UserService userService;
@@ -129,5 +129,34 @@ public class UserRestController implements IResponseController {
         Boolean result = this.userService.checkStuNumDuplicate(joinRequest.getStuNum());
 
         return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
+    }
+
+    // ID 찾기 (이름, 이메일)
+    @PostMapping("/findByNameAndEmail")
+    private ResponseEntity<ResponseDto> findByNameAndEmail(@RequestBody JoinRequest joinRequest) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "이름과 이메일을 입력해 주세요", null);
+        }
+        UserDto result = this.userService.findByNameAndEmail(joinRequest.getName(), joinRequest.getEmail());
+        if (result != null) {
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result.getLoginId());
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
+
+
+    }
+    // ID 찾기 (이름, 폰)
+    @PostMapping("/findByNameAndPhone")
+    private ResponseEntity<ResponseDto> findByNameAndPhone(@RequestBody JoinRequest joinRequest) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "이름과 휴대폰번호를 입력해 주세요", null);
+        }
+        UserDto result = this.userService.findByNameAndPhone(joinRequest.getName(), joinRequest.getPhone());
+        if (result != null) {
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "아이디를 찾기에 성공했습니다. 아래를 확인하세요", result.getLoginId());
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
     }
 }

@@ -172,7 +172,7 @@
         }
 
         $.ajax({
-            url: '/api/vi/user/checkId',
+            url: '/api/v1/user/checkId',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({loginId : loginId}),
@@ -220,7 +220,7 @@
         }
 
         $.ajax({
-            url: '/api/vi/user/checkNickname',
+            url: '/api/v1/user/checkNickname',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({nickname : nickname}),
@@ -260,7 +260,7 @@
         }
 
         $.ajax({
-            url: '/api/vi/user/checkEmail',
+            url: '/api/v1/user/checkEmail',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({email : email}),
@@ -303,7 +303,7 @@
         }
 
         $.ajax({
-            url: '/api/vi/user/checkStuNum',
+            url: '/api/v1/user/checkStuNum',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({stuNum : stuNum}),
@@ -357,7 +357,7 @@
         $("input").removeClass("error-input");
 
         $.ajax({
-            url: '/api/vi/user/signup', // 회원가입 컨트롤러 엔드포인트
+            url: '/api/v1/user/signup', // 회원가입 컨트롤러 엔드포인트
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(formData),  // js객체를 json형식으로 변환

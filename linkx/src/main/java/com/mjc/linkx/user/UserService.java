@@ -96,12 +96,26 @@ public class UserService {
         this.userMybatisMapper.delete(id);
     }
 
-    // ID 찾기
+    // ID 찾기(이름,이메일)
     public UserDto findByNameAndEmail(String name, String email) {
         if (name == null || email == null) {
             return null;
         }
         UserDto find = this.userMybatisMapper.findByNameAndEmail(name, email);
+        if (find == null) {
+            return null;
+        }
+        return find;
+    }
+    // ID 찾기(이름,폰)
+    public UserDto findByNameAndPhone(String name, String phone) {
+        if (name == null || phone == null) {
+            return null;
+        }
+        UserDto find = this.userMybatisMapper.findByNameAndPhone(name, phone);
+        if (find == null) {
+            return null;
+        }
         return find;
     }
 
@@ -111,8 +125,12 @@ public class UserService {
             return null;
         }
         UserDto find = this.userMybatisMapper.findByLoginIdAndNameAndEmail(loginId, name, email);
+        if (find == null) {
+            return null;
+        }
         return find;
     }
+
     public UserDto getLoginUserByLoginId(String loginId) {
         if (loginId == null) {
             return null; // loginId가 없으면 null 반환
@@ -122,9 +140,9 @@ public class UserService {
         if (user == null) {
             return null; // 사용자 정보가 없으면 null 반환
         }
-
         return user;
     }
+
 
     public UserDto getLoginUserById(Long id) {
         if (id == null) {
