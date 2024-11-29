@@ -6,6 +6,7 @@ import com.mjc.linkx.user.UserDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,52 @@ public class SpotServiceImpl implements SpotService {
         }
 
         return result.getBody();
+    }
+
+    @Cacheable(value = "images", key = "#query")
+    public String searchImage(String query) {
+        try {
+            // API 호출 전 1000ms 딜레이 추가
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://openapi.naver.com")
+                .path("/v1/search/image.json")
+                .queryParam("query", query)
+                .queryParam("display", 1)
+                .queryParam("start", 1)
+                .queryParam("sort", "sim")
+                .encode()
+                .build()
+                .toUri();
+
+        RestTemplate restTemplate = new RestTemplate();
+        RequestEntity<Void> req = RequestEntity
+                .get(uri)
+                .header("X-Naver-Client-Id", "AWhC4hyaemuGWN5ZutWr")
+                .header("X-Naver-Client-Secret", "Tarvc6gJdA")
+                .build();
+
+        try {
+            ResponseEntity<String> result = restTemplate.exchange(req, String.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(result.getBody());
+            JsonNode itemsNode = rootNode.path("items");
+
+            if (itemsNode.isArray() && !itemsNode.isEmpty()) {
+                JsonNode firstItem = itemsNode.get(0);
+                return firstItem.path("link").asText(); // 이미지 URL 반환
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 이미지가 없으면 기본 이미지 반환
+        return "/img/default.png";
     }
 
     private List<SpotDto> parseJsonToDtoList(String json) {

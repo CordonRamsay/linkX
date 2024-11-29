@@ -5,232 +5,7 @@
   <title>스팟링크</title>
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j5sii37kyv&submodules=geocoder"></script>
   <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-  <style>
-    body {
-      display: flex;
-      margin: 0;
-      padding: 0;
-      font-family: 'Arial', sans-serif;
-    }
-
-    #sidebar {
-      width: 30%;
-      max-width: 400px;
-      background: #ffffff;
-      border-right: 1px solid #ddd;
-      padding: 20px;
-      overflow-y: auto;
-      height: 100vh;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .logoBtn {
-      display: block; /* 인라인 요소에서 블록 요소로 변경 */
-      margin-bottom: 20px; /* 로고와 아래 요소 간의 여백 */
-    }
-
-    #filter-bar {
-      display: flex; /* 버튼을 가로로 나열 */
-      justify-content: space-between; /* 버튼 간 동일한 간격 */
-      gap: 10px; /* 버튼 간 간격 */
-      margin-bottom: 20px;
-    }
-
-    .filter-button {
-      flex: 1; /* 버튼이 동일한 크기로 확장 */
-      max-width: 150px; /* 버튼의 최대 너비 제한 */
-      height: 30px; /* 버튼 높이 고정 */
-      border: 1px solid #ddd;
-      background: #fff;
-      border-radius: 25px; /* 버튼을 둥글게 처리 */
-      cursor: pointer;
-      font-size: 12px;
-      color: #333;
-      text-align: center; /* 텍스트를 가로 중앙 정렬 */
-      transition: background-color 0.3s, color 0.3s;
-      box-sizing: border-box;
-    }
-
-    .filter-button.active {
-      font-weight: bold;
-      background: #FFFFFF;
-      color: #000000;
-      border-width: 2px;
-      border-color: #F76394;
-      box-sizing: border-box;
-    }
-
-    #spot-list {
-      margin: 0;
-      padding: 0;
-    }
-
-    .spot-item {
-      border: 1px solid #ddd;
-      margin-bottom: 15px;
-      padding: 15px;
-      cursor: pointer;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .spot-item:hover {
-      background: #f9f9f9;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .spot-item strong {
-      font-size: 16px;
-      color: #333;
-    }
-
-    .spot-item p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #666;
-    }
-
-    #map-container {
-      flex: 1;
-      height: 100vh;
-    }
-
-    #map {
-      width: 100%;
-      height: 100%;
-    }
-
-    .review-item {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px 0;
-      position: relative;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .review-item h4 {
-      font-size: 14px;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .review-item p {
-      font-size: 13px;
-      margin: 3px 0;
-      color: #555;
-    }
-
-    .review-container {
-      margin-top: 10px;
-      padding: 15px;
-      border-top: 1px solid #ddd;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      display: none;
-    }
-    .review-form-button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .review-form-button:hover {
-      background-color: #0056b3;
-    }
-
-    .delete-button {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      cursor: pointer;
-      padding: 5px 10px;
-      font-size: 12px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    .delete-button:hover {
-      background-color: #c0392b;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center; /* 가로 중앙 정렬 */
-      align-items: center; /* 세로 중앙 정렬 */
-    }
-
-    .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-      font-size: 18px;
-      color: #333;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 20px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-    }
-    .pagination-btn {
-      padding: 5px 10px;
-      border: 1px solid #ddd;
-      background-color: #fff;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 0 5px;
-      transition: background-color 0.3s;
-    }
-
-    .pagination-btn.active {
-      background-color: #007BFF;
-      color: #fff;
-      border-color: #007BFF;
-    }
-
-    .pagination-btn:disabled {
-      background-color: #f9f9f9;
-      color: #ccc;
-      cursor: not-allowed;
-    }
-
-    .pagination-btn:hover:not(:disabled) {
-      background-color: #f0f0f0;
-    }
-  </style>
+  <link rel="stylesheet" href="/spotlink/spotlink.css">
 </head>
 <body>
 <div id="sidebar">
@@ -281,12 +56,20 @@
     let currentCategory = 'all';
     let markers = []; // 현재 맵에 표시된 모든 마커를 저장하는 배열
     const infoWindow = new naver.maps.InfoWindow();
+    let currentInfoWindow = null;
 
     // 초기 필터 버튼 "전체" 활성화
     const allButton = document.querySelector('.filter-button[data-category="all"]');
     if (allButton) {
       allButton.classList.add("active");
     }
+
+    naver.maps.Event.addListener(map, 'click', function () {
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+        currentInfoWindow = null;
+      }
+    });
 
     // 스팟 데이터 로드 함수
     function loadSpots() {
@@ -312,13 +95,11 @@
       markers.forEach(marker => marker.setMap(null));
       markers = []; // 마커 배열 초기화
 
-
       spots
               .filter(spot => {
                 if (currentCategory === 'all') {
                   return true; // "전체" 선택 시 모든 데이터 표시
                 }
-                // 쉼표로 구분된 카테고리를 배열로 분리 후 필터링
                 const categories = spot.category.split(',');
                 return categories.some(category => category.trim().includes(currentCategory));
               })
@@ -335,35 +116,25 @@
                 });
                 markers.push(marker);
 
-                naver.maps.Event.addListener(marker, 'click', function () {
-                  const avgRating = spot.avgRating !== undefined && spot.avgRating !== null ? spot.avgRating.toFixed(1) : 'N/A';
-                  const reviewCount = spot.reviewCount || 0;
+                // HTML 태그 제거
+                const plainTitle = spot.title.replace(/<[^>]*>/g, ''); // HTML 태그 제거
+                const encodedTitle = encodeURIComponent(plainTitle);
 
-                  // infoWindow에 표시할 HTML 내용
-                  const contentString = `
-    <div style="padding:5px; font-size:14px;">
-      <strong>${spot.title}</strong>
-      <p>⭐ <b>${avgRating}</b></p>
-      <p>💬 <b>${reviewCount}</b></p>
-    </div>
-  `;
-                  // infoWindow에 내용 설정 및 열기
-                  infoWindow.setContent(contentString);
-                  infoWindow.open(map, marker);
-                });
-
-
-                // 리스트 항목 생성
+                // Spot 아이템 생성
                 const spotItem = $(`
-            <div class="spot-item" data-spot-id="${spot.id}">
-              <div>
-                <strong>${spot.title}</strong>
-                <p>${spot.addr}</p>
-                <p>${spot.roadAddr}</p>
-                <p>⭐별점 <b>${spot.avgRating.toFixed(1)}</b> 리뷰 <b>${spot.reviewCount}</b></p>
-              </div>
-            </div>
-          `);
+        <div class="spot-item" data-spot-id="${spot.id}">
+          <div class="spot-thumbnail">
+            <img src="/img/default.png" alt="" class="thumbnail-image"> <!-- 기본 이미지 -->
+          </div>
+          <div class="spot-info">
+            <strong>${spot.title}</strong>
+            <p class="road-address">
+              <span class="icon">📍</span> ${spot.roadAddr}
+            </p>
+            <p>⭐ 별점 <b>${spot.avgRating.toFixed(1)}</b> 리뷰 <b>${spot.reviewCount}</b></p>
+          </div>
+        </div>
+      `);
 
                 const reviewContainer = $('<div class="review-container"></div>');
                 const reviewFormButton = $('<button class="review-form-button">리뷰 작성</button>');
@@ -384,16 +155,13 @@
                   const avgRating = spot.avgRating !== undefined && spot.avgRating !== null ? spot.avgRating.toFixed(1) : 'N/A';
                   const reviewCount = spot.reviewCount || 0;
 
-                  // infoWindow에 표시할 HTML 내용
                   const contentString = `
-    <div style="padding:5px; font-size:14px;">
-      <strong>${spot.title}</strong>
-      <p>⭐ <b>${avgRating}</b></p>
-      <p>💬 <b>${reviewCount}</b></p>
-    </div>
-  `;
-
-                  // infoWindow에 내용 설정 및 열기
+          <div style="padding:5px; font-size:14px;">
+            <strong>${spot.title}</strong>
+            <p>⭐ <b>${avgRating}</b></p>
+            <p>💬 <b>${reviewCount}</b></p>
+          </div>
+        `;
                   infoWindow.setContent(contentString);
                   infoWindow.open(map, marker);
 
@@ -406,9 +174,57 @@
                   }
                 });
 
+                // AJAX 요청으로 이미지 URL 가져오기
+                $.ajax({
+                  url: `/spotlink/data/image?title=${encodedTitle}`, // 정제된 title 사용
+                  type: 'GET',
+                  success: function (imageUrl) {
+                    // 성공적으로 이미지 반환 시 업데이트
+                    if (imageUrl) {
+                      spotItem.find('.thumbnail-image').attr('src', imageUrl);
+                    }
+                  },
+                  error: function () {
+                    console.error(`이미지를 가져오는 중 오류 발생: ${plainTitle}`);
+                  }
+                });
+
+                // Spot 아이템 추가
                 spotList.append(spotItem).append(reviewContainer);
+
+                // 마커 클릭 이벤트
+                naver.maps.Event.addListener(marker, 'click', function () {
+                  const avgRating = spot.avgRating !== undefined && spot.avgRating !== null ? spot.avgRating.toFixed(1) : 'N/A';
+                  const reviewCount = spot.reviewCount || 0;
+
+                  const contentString = `
+          <div style="padding:5px; font-size:14px;">
+            <strong>${spot.title}</strong>
+            <p>⭐ <b>${avgRating}</b></p>
+            <p>💬 <b>${reviewCount}</b></p>
+          </div>
+        `;
+                  if (currentInfoWindow && currentInfoWindow.getContent() === contentString && currentInfoWindow.getMap()) {
+                    currentInfoWindow.close();
+                    currentInfoWindow = null;
+                    return;
+                  }
+
+                  // 다른 마커를 클릭했거나 InfoWindow가 닫힌 경우 새로 열기
+                  if (currentInfoWindow) {
+                    currentInfoWindow.close();
+                  }
+
+                  infoWindow.setContent(contentString);
+                  infoWindow.open(map, marker);
+                  currentInfoWindow = infoWindow;
+                });
               });
     }
+
+
+
+
 
     // 필터 버튼 클릭 이벤트
     $('#filter-bar').on('click', '.filter-button', function () {
