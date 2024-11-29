@@ -23,16 +23,37 @@
                 , #{mapY})    <!-- parameterType "BoardFreeDto"를 매개변수로 받아와 해당 필드인 title, content, createId를 삽입 -->
     </insert>
 
+    <select id="getSpotById" parameterType="Long" resultType="SpotDto">
+        SELECT s.id,
+               s.title,
+               s.category,
+               s.addr,
+               s.roadaddr,
+               s.mapx,
+               s.mapy,
+               IFNULL(AVG(r.reviewStar), 0) AS avgRating,
+               COUNT(r.id) AS reviewCount
+        FROM spot_tbl s
+                 LEFT JOIN spot_review_tbl r ON s.id = r.spotId
+        WHERE s.id = #{spotId}
+        GROUP BY s.id, s.title, s.category, s.addr, s.roadaddr, s.mapx, s.mapy
+    </select>
+
+
     <!-- 음식점 정보 조회 -->
-    <select id="getSpotList" resultType="SpotDto" >
-        SELECT id
-                , title
-                , category
-                , addr
-                , roadaddr
-                , mapx
-                , mapy
-        FROM spot_tbl
+    <select id="getSpotList" resultType="SpotDto">
+        SELECT s.id
+        , s.title
+        , s.category
+        , s.addr
+        , s.roadaddr
+        , s.mapx
+        , s.mapy
+        , IFNULL(AVG(r.reviewStar), 0) AS avgRating  <!-- 평균 평점 계산 -->
+        , COUNT(r.id) AS reviewCount                 <!-- 리뷰 개수 계산 -->
+        FROM spot_tbl s
+        LEFT JOIN spot_review_tbl r ON s.id = r.spotId
+        GROUP BY s.id, s.title, s.category, s.addr, s.roadaddr, s.mapx, s.mapy
     </select>
 
     <!-- 특정 음식점의 리뷰 리스트 조회 -->

@@ -20,4 +20,6 @@ public class SpotDto {
     private String roadAddr; // 스팟 도로명 주소
     private String mapX; // 스팟 X좌표
     private String mapY; // 스팟 Y좌표
+    private Double avgRating; // 추가: 평균 평점
+    private Integer reviewCount; // 추가: 리뷰 개수
 }

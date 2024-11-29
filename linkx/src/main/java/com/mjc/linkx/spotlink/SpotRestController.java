@@ -93,5 +93,9 @@ public class SpotRestController {
                     .body(Map.of("error", "리뷰 삭제 중 문제가 발생했습니다."));
         }
     }
-
+    @GetMapping("/spot/{spotId}")
+    public ResponseEntity<SpotDto> getSpotById(@PathVariable Long spotId) {
+        SpotDto spot = spotService.getSpotById(spotId);
+        return ResponseEntity.ok(spot);
+    }
 }

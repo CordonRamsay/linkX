@@ -135,4 +135,9 @@ public class SpotServiceImpl implements SpotService {
             throw new Exception("리뷰를 삭제할 수 없습니다.");
         }
     }
+    @Override
+    public SpotDto getSpotById(Long spotId) {
+        return spotMapper.getSpotById(spotId);
+    }
+
 }
