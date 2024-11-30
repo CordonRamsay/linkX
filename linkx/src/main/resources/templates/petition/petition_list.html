@@ -82,9 +82,9 @@
             <td>{{petiTitle}}</td>
             <td>{{agreeQty}}</td>
             <td>{{maskedUserNickName}}</td>
-            <td>{{createDt}}</td>
-            <td>{{endDt}}</td>
-            <td>{{#daysLeft}}D-{{daysLeft}}{{/daysLeft}}</td>
+            <td data-datetime="{{createDt}}">{{createDt}}</td>
+            <td data-datetime="{{endDt}}">{{endDt}}</td>
+            <td data-days-left="{{daysLeft}}">D-{{daysLeft}}</td>
         </tr>
         {{/petitionList}}
         <!-- 추가적인 데이터 -->
@@ -113,19 +113,22 @@
 {{>layout/scripts}}
 </body>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[data-datetime]").forEach(function(element) {
+            let datetime = element.getAttribute("data-datetime");
+            let date = new Date(datetime);
+            let formattedDate = date.toISOString().split('T')[0]; // 년-월-일 형식으로 변환
+            element.textContent = formattedDate;
+        });
 
-    function submitSearchForm(){
-        const sortColumn = document.getElementById("sortColumn").value;
-        const sortAscDesc = document.getElementById("sortAscDesc").value;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('sortColumn',sortColumn);
-        urlParams.set('sortAscDesc',sortAscDesc);
-
-        window.location.search = urlParams.toString();
-    }
-
-    document.addEventListener("DOMContentLoaded",function(){
+        // D-0을 D-Day로 변경
+        document.querySelectorAll("[data-days-left]").forEach(function(element) {
+            let daysLeft = element.getAttribute("data-days-left");
+            if (daysLeft === "0") {
+                element.textContent = "D-Day";
+            } else { element.textContent = "D-" + daysLeft;
+            }
+        });
         const urlParams = new URLSearchParams(window.location.search);
         const sortColumn = urlParams.get('sortColumn');
         const sortAscDesc = urlParams.get('sortAscDesc');
@@ -138,9 +141,23 @@
         }
     });
 
+
+    function submitSearchForm(){
+        const sortColumn = document.getElementById("sortColumn").value;
+        const sortAscDesc = document.getElementById("sortAscDesc").value;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('sortColumn',sortColumn);
+        urlParams.set('sortAscDesc',sortAscDesc);
+
+        window.location.search = urlParams.toString();
+    }
+
+
+
     $(document).ready(function() {
         $.paging();
-        updatePetitonStatuses();
+
     });
 
     function updatePetitonStatuses(){
@@ -211,30 +228,6 @@
 
     });
 
-    function updateRemainingTime(){
-        let id = $(id).val();
-        let daysLeft= parseInt(document.getElementById("daysLeft_"+id).value);
-        let hoursLeft= parseInt(document.getElementById("hoursLeft_"+id).value);
-        let minutesLeft= parseInt(document.getElementById("minutesLeft_"+id).value);
-        let secondesLeft= parseInt(document.getElementById("secondesLeft_"+id).value);
 
-        if(daysLeft === "D-day"){
-            if(secondesLeft > 0){
-                secondesLeft--;
-            }else if(minutesLeft > 0){
-                minutesLeft--;
-                secondesLeft = 59;
-            }else if(hoursLeft > 0){
-                hoursLeft--;
-                minutesLeft = 59;
-                secondesLeft = 59;
-            }
-        }
-
-        document.getElementById("remainingTime_"+id).innerText = formatRemainingTime(daysLeft,hoursLeft,minutesLeft,secondesLeft);
-
-
-        setTimeout(updateRemainingTime,1000);
-    }
 </script>
 </html>
