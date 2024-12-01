@@ -31,4 +31,7 @@ public interface IPetitionService {
     void addagreeQty(Long petiId,IUser user);
 
 
+    List<PetitionDto> findAllByNameContainsOld(SearchPetiDto searchPetiDto);
+
+    Integer countAllByContainsOld(SearchPetiDto searchPetiDto);
 }

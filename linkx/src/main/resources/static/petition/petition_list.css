@@ -13,6 +13,7 @@ body {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
+    padding-right: 280px; /* Add padding to avoid overlap with sidebar */
 }
 
 /* Header */
@@ -158,7 +159,7 @@ body {
 
 /* 기존 콘텐츠와 가림 방지 */
 body {
-    margin-right: 280px; /* 오른쪽 고정 박스 여백 확보 */
+    margin-right: 0; /* Remove right margin */
 }
 
 /* Search Box */
@@ -210,5 +211,3 @@ body {
     border-radius: 4px;
     font-size: 14px;
 }
-
-

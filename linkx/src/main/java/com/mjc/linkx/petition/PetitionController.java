@@ -70,6 +70,50 @@ public class PetitionController implements IResponseController {
         }
         return "petition/petition_list";
     }
+    @GetMapping("/petition_list_old")               //청원글 리스트 조회
+    public String petitionListOld(@ModelAttribute("searchPetiDto") SearchPetiDto searchPetiDto, Model model, HttpSession session) {
+        try{
+            IUser loginUser =(IUser) session.getAttribute("LoginUser");
+            if(loginUser != null) {
+                model.addAttribute("nickname",loginUser.getNickname());
+                model.addAttribute("major", loginUser.getMajorName());
+            }
+            // petiField 값이 검색 중에도 유지되도록 확인
+            String petiField = searchPetiDto.getPetiField();
+            if (petiField == null || petiField.trim().isEmpty()) {
+                searchPetiDto.setPetiField(""); // 기본값 설정
+            }
+            // searchName 값이 검색 중에도 유지되도록(일단 위에랑 같이 해봄)
+            String searchName = searchPetiDto.getSearchName();
+            if (searchName == null || searchName.trim().isEmpty()) {
+                searchPetiDto.setSearchName("");
+            }
+
+            //동의자 수 상위 5개 청원 가져오기
+            List<PetitionDto> topAgreedPetitions = this.petitionService.findTopAgreedPetitions();
+            model.addAttribute("topAgreedPetitions", topAgreedPetitions);
+
+            Integer total = this.petitionService.countAllByContainsOld(searchPetiDto);
+            searchPetiDto.setTotal(total);
+            List<PetitionDto> list = this.petitionService.findAllByNameContainsOld(searchPetiDto);
+
+            //D-Day값을 모델에 추가
+            list.forEach(petition -> {
+                Map<String, Object> remainingTime = petition.getRemainingTime();
+                model.addAttribute("daysLeft_"+petition.getId(),remainingTime.get("daysLeft"));
+                model.addAttribute("hoursLeft_"+petition.getId(),remainingTime.get("hoursLeft"));
+                model.addAttribute("minutesLeft_"+petition.getId(),remainingTime.get("minutesLeft"));
+                model.addAttribute("secondesLeft_"+petition.getId(),remainingTime.get("secondesLeft"));
+            });
+
+
+
+            model.addAttribute("petitionList",list);
+        }catch(Exception ex){
+            log.error(ex.toString());
+        }
+        return "petition/petition_list_old";
+    }
 
     @GetMapping("/petition_add")            //청원글 등록 화면 return
     public String petitionAdd(HttpSession session, Model model) {
@@ -125,6 +169,25 @@ public class PetitionController implements IResponseController {
             log.error(ex.toString());
         }
         return "petition/petition_view";
+    }
+
+    @GetMapping("/petition_view_old")
+    public String petitionViewOld(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId){
+        try{
+            IUser user = this.userService.getLoginUserById(userId);
+            IPetition find = this.petitionService.findById(id);
+
+            //IPetition 타입의 find의 데이터를 petitionDto타입의 dto에 복사
+            PetitionDto viewDto = PetitionDto.builder().build();
+            viewDto.copyFields(find);
+
+            //findById로 찾아온 PetitionDto 객체 뷰에 전달
+            model.addAttribute("PetitionDto",viewDto);
+            model.addAttribute("errorMessage","이미 동의 하셨습니다.");
+        }catch(Exception ex){
+            log.error(ex.toString());
+        }
+        return "petition/petition_view_old";
     }
 
     // 청원 게시글 수정화면 관련은 청원에는 해당 수정 기능이 없음으로 구현 X
