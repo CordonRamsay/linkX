@@ -1,4 +1,11 @@
-/* Reset */
+/* Main Layout with Flexbox */
+.main {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 20px;
+}
+
 body, h1, p, table {
     margin: 0;
     padding: 0;
@@ -10,10 +17,10 @@ body {
     color: #333;
 }
 .container {
-    width: 90%;
+    flex: 1;
     max-width: 1200px;
     margin: 0 auto;
-    padding-right: 280px; /* Add padding to avoid overlap with sidebar */
+    padding: 20px;
 }
 
 /* Header */
@@ -106,21 +113,19 @@ body {
 }
 /* Fixed Box - Popular Petitions */
 .fixed-box {
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    width: 250px;
+    flex-shrink: 0; /* 고정 크기로 설정 */
+    width: 250px; /* 너비 고정 */
+    height: 300px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
     font-size: 14px;
-    z-index: 1000;
 
-    /* 화면에 겹치지 않도록 추가 여백 설정 */
-    max-height: calc(100vh - 120px);
     overflow-y: auto; /* 스크롤 가능 */
+    position: sticky; /* 스크롤할 때 화면 상단에 고정 */
+    top: 100px; /* 고정 위치 조정 */
 }
 
 /* "인기 청원" 제목 스타일 */

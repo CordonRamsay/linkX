@@ -6,10 +6,11 @@
     <title>청원목록</title>
     <link rel="stylesheet" href="/petition/petition_list.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{>layout/links}}
 </head>
-{{>layout/links}}
 <body>
 {{>layout/header}}
+<main class="main">
 <div class="container">
     <header class="peti-header">
         <h1>청원목록 - 진행중 청원</h1>
@@ -17,15 +18,15 @@
     <div><a href="/calendarList">캘린더 바로가기</a></div>
 
     <div class="filter-bar">
-        <button class="filter-btn active" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=&searchName=&page=1'">전체</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=유지보수&searchName=&page=1'">유지보수</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=교내행사&searchName=&page=1'">교내행사</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=강의&searchName=&page=1'">강의</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=홈페이지&searchName=&page=1'">홈페이지</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학식&searchName=&page=1'">학식</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1'">기숙사</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1'">학생회</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1'">기타</button>
+        <button class="filter-btn active" data-filter="" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=&searchName=&page=1'">전체</button>
+        <button class="filter-btn" data-filter="유지보수" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=유지보수&searchName=&page=1'">유지보수</button>
+        <button class="filter-btn" data-filter="교내행사" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=교내행사&searchName=&page=1'">교내행사</button>
+        <button class="filter-btn" data-filter="강의" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=강의&searchName=&page=1'">강의</button>
+        <button class="filter-btn" data-filter="홈페이지" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=홈페이지&searchName=&page=1'">홈페이지</button>
+        <button class="filter-btn" data-filter="학식" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학식&searchName=&page=1'">학식</button>
+        <button class="filter-btn" data-filter="기숙사" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1'">기숙사</button>
+        <button class="filter-btn" data-filter="학생회" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1'">학생회</button>
+        <button class="filter-btn" data-filter="기타" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1'">기타</button>
 
             <!-- 검색 -->
             <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
@@ -99,19 +100,21 @@
         </div>
     </div>
 </div>
+    <div class="fixed-box">
+        <h3>인기 청원</h3>
+        <ul>
+            {{#topAgreedPetitions}}
+            <li>
+                <a href="/petition/petition_view?id={{id}}">
+                    {{petiField}} - {{petiTitle}}
+                </a>
+            </li>
+            {{/topAgreedPetitions}}
+        </ul>
+    </div>
+</main>
 
-<div class="fixed-box">
-    <h3>인기 청원</h3>
-    <ul>
-        {{#topAgreedPetitions}}
-        <li>
-            <a href="/petition/petition_view?id={{id}}">
-                {{petiField}} - {{petiTitle}}
-            </a>
-        </li>
-        {{/topAgreedPetitions}}
-    </ul>
-</div>
+
 {{>layout/scripts}}
 </body>
 <script>
@@ -141,6 +144,29 @@
         if(sortAscDesc){
             document.getElementById("sortAscDesc").value = sortAscDesc;
         }
+
+        document.querySelectorAll(".filter-btn").forEach(function(button){
+            button.addEventListener("click",function(){
+
+                const filterValue = this.getAttribute("data-filter");
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set("petiField", filterValue);
+                window.location.search = urlParams.toString();
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded",function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const petiField = urlParams.get("petiField");
+
+        document.querySelectorAll(".filter-btn").forEach(function(button){
+            if(button.getAttribute("data-filter") === petiField){
+                button.classList.add("active");
+            } else{
+                button.classList.remove("active");
+            }
+        });
     });
 
 
