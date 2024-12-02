@@ -104,15 +104,10 @@ body {
     font-size: 20px;
     color: #dc98c6;
 }
-.login-text, .findPW-text{
+.login-text, .findPW-text, .findID-text{
     text-align: center;
 }
-.login-text a{
-    color: #007bff;
-    font-weight: bold;
-    text-decoration: none;
-}
-.findPW-text a{
+.login-text a,.findID-text a, .findPW-text a{
     color: #007bff;
     font-weight: bold;
     text-decoration: none;

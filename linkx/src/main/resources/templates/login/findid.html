@@ -40,7 +40,8 @@
             <div class="info-box" id="info-box">
                 <span id="found-id"></span>
             </div>
-                <p class="login-text">로그인 하러가기 <a href="/login/login">로그인</a></p>
+                <p class="findPW-text">비밀번호를 잊으셨나요? <a href="/login/findPW">비밀번호 변경</a></p>
+                <p class="login-text">로그인 하시겠습니까? <a href="/login/login"> 로그인</a></p>
         </div>
     </main>
 </div>
@@ -81,7 +82,7 @@
             success: function (data) {
                 if (data.code === 200) {
                     // 나온 아이디(data.responseData)를 화면에 뿌려주는 로직
-                    alert("해당하는 ID를 찾았습니다")
+                    alert(data.message)
                     findId.text(data.responseData);
                 }
             },
@@ -147,6 +148,5 @@
     };
 
 </script>
-
 </body>
 </html>

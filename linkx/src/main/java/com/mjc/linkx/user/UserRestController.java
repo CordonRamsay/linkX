@@ -139,7 +139,7 @@ public class UserRestController implements IResponseController {
         }
         UserDto result = this.userService.findByNameAndEmail(joinRequest.getName(), joinRequest.getEmail());
         if (result != null) {
-            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result.getLoginId());
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "아이디 찾기에 성공했습니다. 아래를 확인하세요", result.getLoginId());
         }else{
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
         }
@@ -154,9 +154,38 @@ public class UserRestController implements IResponseController {
         }
         UserDto result = this.userService.findByNameAndPhone(joinRequest.getName(), joinRequest.getPhone());
         if (result != null) {
-            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "아이디를 찾기에 성공했습니다. 아래를 확인하세요", result.getLoginId());
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "아이디 찾기에 성공했습니다. 아래를 확인하세요", result.getLoginId());
         }else{
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
+    }
+    // 비밀번호 찾기 (아이디, 이름, 이메일)
+    @PostMapping("/findPassword")
+    private ResponseEntity<ResponseDto> findPassword(@RequestBody JoinRequest joinRequest,HttpSession session) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "모든 값을 입력해 주세요", null);
+        }
+        // 로그인ID, 이름, 이메일 전달
+        UserDto result = this.userService.findByLoginIdAndNameAndEmail(joinRequest.getLoginId(),joinRequest.getName(), joinRequest.getEmail());
+        if (result != null) {
+            session.setAttribute("userDto", result);
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "회원정보 찾기 성공", result);
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
+    }
+    // 비밀번호 변경(아이디, 이름, 이메일)
+    @PatchMapping("/changePassword")
+    private ResponseEntity<ResponseDto> changePassword(@RequestBody JoinRequest joinRequest,HttpSession session) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "모든 값을 입력해 주세요", null);
+        }
+        // 비밀번호 전달
+        Boolean result = this.userService.changePassword(joinRequest);
+        if (result) {
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "비밀번호가 변경되었습니다.", true);
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 변경 실패", null);
         }
     }
 }

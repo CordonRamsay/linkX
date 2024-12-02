@@ -45,6 +45,9 @@ public interface IUserMybatisMapper{
     // 로그인 ID, 이름, 이메일로 사용자 정보 조회 ( 비밀번호 찾기 )
     UserDto findByLoginIdAndNameAndEmail(String loginId, String name, String email);
 
+    // 비밀번호 변경
+    void changePassword(UserDto dto);
+
 
 
 }

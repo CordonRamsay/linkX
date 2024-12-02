@@ -3,8 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>비밀번호 찾기</title>
+    <link href="/css/findpw.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
-    비번 찾자
+<div class="container">
+    <div class="header">
+        <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
+    </div>
+    <main>
+        <div class="find-box">
+            <h2>비밀번호 찾기</h2>
+            <div class="input-group">
+                <label for="loginId">아이디</label>
+                <input type="text" placeholder="아이디를 입력해주세요." class="input-field" id="loginId" name="loginId" >
+                <label for="name">이름</label>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name" name="name" >
+                <label for="email">이메일</label>
+                <input type="email" placeholder="이메일을 입력해주세요." class="input-field" id="email" name="email" >
+                <button type="button" class="btn find-btn" onclick="$.findPassword();">다음</button>
+            </div>
+<!--            <div class="info-box" id="info-box">-->
+<!--                <span id="found-id"></span>-->
+<!--            </div>-->
+            <p class="findID-text">아이디를 잊으셨나요? <a href="/login/findID">아이디 찾기</a></p>
+            <p class="login-text">로그인 하시겠습니까? <a href="/login/login"> 로그인</a></p>
+        </div>
+    </main>
+</div>
 </body>
+<script>
+    $.findPassword = function () {
+        let loginId = $("#loginId").val();
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let request = {
+            loginId : loginId,
+            name : name,
+            email : email
+        }
+
+        let url = '/api/v1/user/findPassword';
+
+        if (loginId === '') {
+            let idField = $("#loginId");
+            idField.css("border", "2px solid red");
+            idField.focus();
+            alert("아이디를 입력하세요");
+            return;
+        }
+        if (name === '') {
+            let nameField = $("#name");
+            nameField.css("border", "2px solid red");
+            nameField.focus();
+            alert("이름을 입력하세요");
+            return;
+        }
+        if (email === '') {
+            let emailField = $("#email");
+            emailField.css("border", "2px solid red");
+            emailField.focus();
+            alert("이메일을 입력하세요");
+            return;
+        }
+        $.ajax({
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
+
+            success: function (data) {
+                if (data.code === 200) {
+                    alert(data.message);
+                    window.location.href = '/login/changePW';
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
+</script>
 </html>
