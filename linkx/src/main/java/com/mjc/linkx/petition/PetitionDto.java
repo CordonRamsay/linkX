@@ -80,6 +80,14 @@ public class PetitionDto implements IPetition{
         }
     }
 
+    // petiContent의 길이를 제한하는 메서드
+    public String getShortPetiContent() {
+        if (this.petiContent != null && this.petiContent.length() > 100) {
+            return this.petiContent.substring(0, 10) + "...";
+        }
+        return this.petiContent;
+    }
+
     //남은 시간 계산 메서드 추가
     public Map<String, Object> getRemainingTime(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

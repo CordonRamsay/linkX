@@ -30,27 +30,21 @@
       </div>
     </div>
 
-    <!-- 진행중인 청원 -->
     <div class="petition-section">
       <h2 class="section-title">진행중인 청원</h2>
       <div class="petition-cards">
+        {{#hotAgreedPetitions}}
         <div class="card">
-          <p><strong>청원 제목 1</strong></p>
-          <p>청원 내용 요약...</p>
-          <p><strong>D-20</strong></p>
+          <a href="/petition/petition_view?id={{id}}">
+            <p><strong>제목:{{petiTitle}}</strong></p>
+            <p>내용:{{petiContent}}</p>
+            <p><strong>D-{{daysLeft}}</strong></p>
+          </a>
         </div>
-        <div class="card">
-          <p><strong>청원 제목 2</strong></p>
-          <p>청원 내용 요약...</p>
-          <p><strong>D-15</strong></p>
-        </div>
-        <div class="card">
-          <p><strong>청원 제목 3</strong></p>
-          <p>청원 내용 요약...</p>
-          <p><strong>D-10</strong></p>
-        </div>
+        {{/hotAgreedPetitions}}
       </div>
     </div>
+
 
     <!-- HOT한 맛집 후기 -->
     <div class="hot-reviews">
@@ -132,5 +126,6 @@
 <div id="preloader"></div>
 {{>layout/scripts}}
 </body>
+
 
 </html>

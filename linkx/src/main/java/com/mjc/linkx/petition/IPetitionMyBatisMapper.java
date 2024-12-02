@@ -37,4 +37,6 @@ public interface IPetitionMyBatisMapper {
     List<PetitionDto> findAllByNameContainsOld(SearchPetiDto dto);
 
     Integer countAllByContainsOld(SearchPetiDto dto);
+
+    List<PetitionDto> findHotAgreedPetitions();
 }

@@ -188,6 +188,25 @@
 
     </select>
 
+    <!--메인에 띄울 핫한 글 표시 -->
+    <select id="findHotAgreedPetitions" resultType="PetitionDto">
+        SELECT
+            id,
+            petiTitle,
+            -- petiContent 글자 수 100자로 제한, 100자 이상일 경우 '...'을 추가
+            CASE
+                WHEN LENGTH(petiContent) > 10 THEN CONCAT(SUBSTRING(petiContent, 1, 100), '...')
+                ELSE petiContent
+                END AS petiContent,
+            -- D-day 계산을 위한 daysLeft 값을 가져오기 위해 사용자 정의 함수 사용
+            endDt
+        FROM petition_tbl
+        WHERE playing = true
+        ORDER BY agreeQty DESC
+            LIMIT 3
+    </select>
+
+
     <!--청원에 동의 기록을 추가 -->
     <insert id ="insertSignature" parameterType="SignatureDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO signatures_tbl (petiId, userId)

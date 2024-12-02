@@ -104,6 +104,10 @@ public class PetitionServiceImpl implements IPetitionService{
         return petitionMyBatisMapper.findTopAgreedPetitions();
     }
 
+    public List<PetitionDto> findHotAgreedPetitions(){
+        return petitionMyBatisMapper.findHotAgreedPetitions();
+    }
+
     @Override
     public boolean hasUserAgreed(SignatureDto dto) {
 

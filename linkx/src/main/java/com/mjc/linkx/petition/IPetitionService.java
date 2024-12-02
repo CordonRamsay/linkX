@@ -34,4 +34,6 @@ public interface IPetitionService {
     List<PetitionDto> findAllByNameContainsOld(SearchPetiDto searchPetiDto);
 
     Integer countAllByContainsOld(SearchPetiDto searchPetiDto);
+
+    List<PetitionDto> findHotAgreedPetitions();
 }

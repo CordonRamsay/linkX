@@ -61,6 +61,10 @@ body {
     min-width: 250px;
     text-align: center;
 }
+.petition-cards p,
+.petition-cards a {
+    color: black; 
+}
 
 .card img {
     max-width: 100%;

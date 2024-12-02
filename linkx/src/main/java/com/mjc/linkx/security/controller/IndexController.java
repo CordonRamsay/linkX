@@ -3,6 +3,8 @@ package com.mjc.linkx.security.controller;
 
 import com.mjc.linkx.boardfree.BoardFreeDto;
 import com.mjc.linkx.boardfree.IBoardFreeService;
+import com.mjc.linkx.petition.IPetitionService;
+import com.mjc.linkx.petition.PetitionDto;
 import com.mjc.linkx.user.IUser;
 import com.mjc.linkx.user.UserDto;
 import com.mjc.linkx.user.UserService;
@@ -23,6 +25,7 @@ public class IndexController {
 
     private final UserService userService;
     private final IBoardFreeService boardFreeService;
+    private final IPetitionService petitionService;
 
     @GetMapping("")
     public String index(Model model, @SessionAttribute(name = "userId", required = false) Long userId, HttpSession session) {
@@ -44,6 +47,22 @@ public class IndexController {
         List<BoardFreeDto> viewTop = this.boardFreeService.findViewTop();
         model.addAttribute("recently", recently);
         model.addAttribute("viewTop", viewTop);
+
+
+        //청원 인기 글 가져오기,동의자 수 상위 5개 청원 가져오기
+        List<PetitionDto> hotAgreedPetitions = this.petitionService.findHotAgreedPetitions();
+        // 가져온 데이터 로그 출력
+        System.out.println("=== Hot Agreed Petitions ===");
+        hotAgreedPetitions.forEach(p -> {
+            System.out.println("ID: " + p.getId());
+            System.out.println("Title: " + p.getPetiTitle());
+            System.out.println("Content: " + p.getPetiContent());
+            System.out.println("Days Left: " + p.getDaysLeft());
+            System.out.println("-----------------------------");
+        });
+        model.addAttribute("hotAgreedPetitions", hotAgreedPetitions);
+
+
 
         return "index";
     }
