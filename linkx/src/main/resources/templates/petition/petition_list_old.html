@@ -12,33 +12,31 @@
 {{>layout/header}}
 <div class="container">
     <header class="peti-header">
-        <h1>청원목록 - 진행중 청원</h1>
+        <h1>청원목록 - 종료된 청원</h1>
     </header>
-    <div><a href="/calendarList">캘린더 바로가기</a></div>
 
     <div class="filter-bar">
-        <button class="filter-btn active" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=&searchName=&page=1'">전체</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=유지보수&searchName=&page=1'">유지보수</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=교내행사&searchName=&page=1'">교내행사</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=강의&searchName=&page=1'">강의</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=홈페이지&searchName=&page=1'">홈페이지</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학식&searchName=&page=1'">학식</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1'">기숙사</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1'">학생회</button>
-        <button class="filter-btn" onclick="location.href='/petition/petition_list?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1'">기타</button>
+        <button class="filter-btn active" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=&searchName=&page=1'">전체</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=유지보수&searchName=&page=1'">유지보수</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=교내행사&searchName=&page=1'">교내행사</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=강의&searchName=&page=1'">강의</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=홈페이지&searchName=&page=1'">홈페이지</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학식&searchName=&page=1'">학식</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기숙사&searchName=&page=1'">기숙사</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=학생회&searchName=&page=1'">학생회</button>
+        <button class="filter-btn" onclick="location.href='/petition/petition_list_old?sortColumn={{searchPetiDto.sortColumn}}&sortAscDesc={{searchPetiDto.sortAscDesc}}&petiField=기타&searchName=&page=1'">기타</button>
 
             <!-- 검색 -->
-            <form id="search-peti" name="search-peti" action="/petition/petition_list" method="GET">
+            <form id="search-peti" name="search-peti" action="/petition/petition_list_old" method="GET">
                 <!-- Hidden input to keep petiField in search -->
                 <input type="hidden" name="petiField" value="{{searchPetiDto.petiField}}">
                 <input type="hidden" name="sortColumn" value="{{searchPetiDto.sortColumn}}">
                 <input type="hidden" name="sortAscDesc" value="{{searchPetiDto.sortAscDesc}}">
 
-                <select id="searchField" name="searchField" >
+                <select id="searchField" name="searchField">
                     <option value="petiTitle">청원명</option>
                     <option value="petiContent">내용</option>
                 </select>
-
                 <input type="text" placeholder="검색어를 입력해 주세요" name="searchName" value="{{searchPetiDto.searchName}}">
                 <button type="submit" class="add-btn" >검색</button>
             </form>
@@ -73,12 +71,12 @@
             <th>청원인</th>
             <th>시작일</th>
             <th>마감일</th>
-            <th>D-Day</th>
+
         </tr>
         </thead>
         <tbody>
         {{#petitionList}}
-        <tr onclick="location.href='/petition/petition_view?id={{id}}'" style="cursor: pointer;">
+        <tr onclick="location.href='/petition/petition_view_old?id={{id}}'" style="cursor: pointer;">
             <td>{{id}}</td>
             <td>{{petiField}}</td>
             <td>{{petiTitle}}</td>
@@ -86,7 +84,7 @@
             <td>{{maskedUserNickName}}</td>
             <td data-datetime="{{createDt}}">{{createDt}}</td>
             <td data-datetime="{{endDt}}">{{endDt}}</td>
-            <td data-days-left="{{daysLeft}}">D-{{daysLeft}}</td>
+
         </tr>
         {{/petitionList}}
         <!-- 추가적인 데이터 -->
@@ -100,18 +98,7 @@
     </div>
 </div>
 
-<div class="fixed-box">
-    <h3>인기 청원</h3>
-    <ul>
-        {{#topAgreedPetitions}}
-        <li>
-            <a href="/petition/petition_view?id={{id}}">
-                {{petiField}} - {{petiTitle}}
-            </a>
-        </li>
-        {{/topAgreedPetitions}}
-    </ul>
-</div>
+
 {{>layout/scripts}}
 </body>
 <script>
@@ -123,14 +110,7 @@
             element.textContent = formattedDate;
         });
 
-        // D-0을 D-Day로 변경
-        document.querySelectorAll("[data-days-left]").forEach(function(element) {
-            let daysLeft = element.getAttribute("data-days-left");
-            if (daysLeft === "0") {
-                element.textContent = "D-Day";
-            } else { element.textContent = "D-" + daysLeft;
-            }
-        });
+
         const urlParams = new URLSearchParams(window.location.search);
         const sortColumn = urlParams.get('sortColumn');
         const sortAscDesc = urlParams.get('sortAscDesc');
@@ -188,16 +168,16 @@
         let sortColumn = "{{searchPetiDto.sortColumn}}";
         let sortAscDesc = "{{searchPetiDto.sortAscDesc}}";
 
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" +petiField+"&searchName=" + searchName + "&page="+ prev+ "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'><img src='/board/img/pageLeft.png'></a>");
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list_old?petiField=" +petiField+"&searchName=" + searchName + "&page="+ prev+ "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'><img src='/board/img/pageLeft.png'></a>");
 
         for (let i = startPage; i <= endPage; i++){
             let sClass = "pagination-link px-3 py-2 text-gray-700";
             if(page == i){
                 sClass += " active";
             }
-            $("#pagination").append("<a class='" + sClass + "' href='/petition/petition_list?petiField=" + petiField + "&searchName=" + searchName + "&page=" + i +"&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'>" + i + "</a>");
+            $("#pagination").append("<a class='" + sClass + "' href='/petition/petition_list_old?petiField=" + petiField + "&searchName=" + searchName + "&page=" + i +"&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+"'>" + i + "</a>");
         }
-        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list?petiField=" + petiField + "&searchName="+ searchName + "&page=" + next + "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+ "'><img src='/board/img/pageRight.png'></a>");
+        $("#pagination").append("<a class='px-3 py-2 text-gray-700' href='/petition/petition_list_old?petiField=" + petiField + "&searchName="+ searchName + "&page=" + next + "&sortColumn=" + sortColumn + "&sortAscDesc=" + sortAscDesc+ "'><img src='/board/img/pageRight.png'></a>");
     }
 
     function getStartPage(page){

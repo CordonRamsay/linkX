@@ -7,28 +7,36 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
 }
-
-.container {
+.header{
     text-align: center;
+}
+.find-title,h2{
+    text-align: center;
+}
+.container {
     padding: 50px 20px;
 }
 
 
-.login-box {
+.find-box {
     background-color: #fff;
     width: 100%;
     max-width: 600px; /* 기존보다 더 넓게 */
-    height : 800px;
+    height : auto;
     margin: 100px auto; /* 위아래 간격을 조금 늘림 */
     padding: 50px 40px; /* 내부 여백을 키워 요소 간 간격을 확보 */
     border-radius: 12px; /* 모서리 조금 더 둥글게 */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* 그림자 강조 */
 }
 
-.login-box h2 {
+.find-box h2 {
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
+}
+.input-group label{
+    font-weight: bold;
+    color: #5e5757;
 }
 
 .input-field {
@@ -53,7 +61,7 @@ body {
     cursor: pointer;
 }
 
-.login-btn {
+.find-btn {
     background-color: #f76394;
     color: #fff;
 }
@@ -62,8 +70,8 @@ body {
 .divider {
     display: flex;
     align-items: center;
-    margin-top: 150px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom:10px;
     color: #aaa;
     font-size: 14px;
 }
@@ -77,20 +85,22 @@ body {
     margin: 0 10px;
 }
 
-.signup-text {
-    font-size: 14px;
-    color: #555;
-}
-
-.signup-text .signup-link {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.signup-text .signup-link:hover {
-    text-decoration: underline;
-}
 .errorMsg{
     color:red;
+}
+
+.info-box {
+    background-color: #f0f0f0;
+    padding: 20px;
+    /*display: none;*/
+    border-radius: 8px;
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+
+}
+.info-box span {
+    font-size: 20px;
+    color: #dc98c6;
 }

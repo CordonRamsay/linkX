@@ -14,7 +14,7 @@
   <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
 
 
-  <div class="countdown-circle">D-{{PetitionDto.daysLeft}}</div>
+  <div class="countdown-circle">종료</div>
   <h1>청원 상세보기</h1>
   <div class="post">
     <p class="category">{{PetitionDto.petiField}}</p>
@@ -27,7 +27,7 @@
     <p class="vote-count">동의수: <span id="agreeQty">{{PetitionDto.agreeQty}}</span></p>
     <div class="button-group">
       <button type="button" class="list" onclick="goBackList()">목록</button>
-      <button type="button" class="agree" onclick="$.petiAgree({{PetitionDto.id}});">동의</button>
+
     </div>
   </div>
 </div>
@@ -35,7 +35,7 @@
 
 <script>
   function goBackList(){
-    location.href='/petition/petition_list?petiField='
+    location.href='/petition/petition_list_old?petiField='
   }
 
 

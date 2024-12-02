@@ -61,7 +61,7 @@ public class BoardDeptController implements IResponseController {
 
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         } catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -80,7 +80,7 @@ public class BoardDeptController implements IResponseController {
 
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         }  catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -117,7 +117,7 @@ public class BoardDeptController implements IResponseController {
 
             model.addAttribute("BoardDeptDto", find);
         }catch(LoginAccessException ex){
-           return "redirect:/session-login/login";
+           return "redirect:/login/login";
         }
         catch (Exception ex) {
             log.error(ex.toString());
@@ -142,7 +142,7 @@ public class BoardDeptController implements IResponseController {
             model.addAttribute("BoardDeptDto", dto);
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         }  catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -155,7 +155,7 @@ public class BoardDeptController implements IResponseController {
             this.boardDeptService.update(dto);
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         }  catch (Exception ex) {
             log.error(ex.toString());
         }
@@ -172,7 +172,7 @@ public class BoardDeptController implements IResponseController {
             majorId = find.getMajorId();
         }catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return "redirect:/session-login/login";
+            return "redirect:/login/login";
         }  catch (Exception ex) {
             log.error(ex.toString());
         }

@@ -1,4 +1,4 @@
-package com.mjc.linkx.taste;
+package com.mjc.linkx.spotlink;
 
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
@@ -15,35 +15,35 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/taste/data")
-public class TasteRestController {
+@RequestMapping("/spotlink/data")
+public class SpotRestController {
 
     @Autowired
-    private TasteService tasteService;
+    private SpotService spotService;
 
     // 외부 API 호출 후 데이터 저장
     @GetMapping("")
-    public String taste() {
+    public String spot() {
         log.debug("Taste data request received.");
-        return tasteService.fetchAndSaveTasteData();  // 데이터 저장 로직을 서비스로 위임
+        return spotService.fetchAndSaveTasteData();  // 데이터 저장 로직을 서비스로 위임
     }
 
-    // 음식점 리스트 가져오기
+    // 스팟 리스트 가져오기
     @GetMapping("/list")
-    public List<TasteRestDto> getTasteList() {
-        return tasteService.getTasteList();  // 데이터 조회 로직을 서비스로 위임
+    public List<SpotDto> getTasteList() {
+        return spotService.getSpotList();  // 데이터 조회 로직을 서비스로 위임
     }
 
-    // 특정 음식점의 리뷰 리스트 가져오기
-    @GetMapping("/reviews/{restId}")
-    public List<TasteReviewDto> getReviewsByRestaurant(@PathVariable Long restId, HttpSession session) {
-        return tasteService.getReviewsByRestaurantId(restId, session);
+    // 특정 스팟의 리뷰 리스트 가져오기
+    @GetMapping("/reviews/{spotId}")
+    public List<SpotReviewDto> getReviewsByRestaurant(@PathVariable Long spotId, HttpSession session) {
+        return spotService.getReviewsBySpotId(spotId, session);
     }
 
 
     // 리뷰 추가 (로그인 사용자 정보 사용)
     @PostMapping("/reviews")
-    public ResponseEntity<?> addReview(@RequestBody TasteReviewDto reviewDto, HttpSession session) {
+    public ResponseEntity<?> addReview(@RequestBody SpotReviewDto reviewDto, HttpSession session) {
         try {
             // 로그인 사용자 확인
             IUser loginUser = (IUser) session.getAttribute("LoginUser");
@@ -55,7 +55,7 @@ public class TasteRestController {
             reviewDto.setUserId(loginUser.getId());
             reviewDto.setReviewDate(LocalDateTime.now());
             reviewDto.setUserNickName(loginUser.getNickname());
-            tasteService.addReview(reviewDto);
+            spotService.addReview(reviewDto);
 
             // 성공 응답
             return ResponseEntity.ok(Map.of("message", "리뷰 작성이 완료되었습니다."));
@@ -80,7 +80,7 @@ public class TasteRestController {
             }
 
             // 리뷰 삭제
-            tasteService.deleteReview(reviewId, loginUser.getId());
+            spotService.deleteReview(reviewId, loginUser.getId());
 
             // 성공 응답
             return ResponseEntity.ok(Map.of("message", "리뷰가 성공적으로 삭제되었습니다."));

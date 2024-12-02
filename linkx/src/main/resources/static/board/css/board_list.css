@@ -6,10 +6,6 @@
     border: 1px solid black;
 }
 
-.board {
-    width: 80%;
-    padding: 10px;
-}
 
 .add-btn{
     background-color: #ffccdd;
@@ -59,6 +55,9 @@
 #countComment{
     color:red;
 }
-.section{
-    margin:100px;
+#background {
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
 }
+

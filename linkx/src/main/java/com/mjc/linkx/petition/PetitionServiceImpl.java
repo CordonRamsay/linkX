@@ -53,6 +53,18 @@ public class PetitionServiceImpl implements IPetitionService{
 
     }
 
+    @Override
+    public List<PetitionDto> findAllByNameContainsOld(SearchPetiDto dto) {
+        if(dto == null){
+            return List.of();
+        }
+        dto.settingValues();
+        List<PetitionDto> list = this.petitionMyBatisMapper.findAllByNameContainsOld(dto);
+
+        return list;
+
+    }
+
 
     @Override
     public Integer countAllByContains(SearchPetiDto dto) {
@@ -61,6 +73,16 @@ public class PetitionServiceImpl implements IPetitionService{
         }
         dto.settingValues();
         Integer count = this.petitionMyBatisMapper.countAllByContains(dto);
+        return count;
+    }
+
+    @Override
+    public Integer countAllByContainsOld(SearchPetiDto dto) {
+        if(dto == null){
+            return null;
+        }
+        dto.settingValues();
+        Integer count = this.petitionMyBatisMapper.countAllByContainsOld(dto);
         return count;
     }
 

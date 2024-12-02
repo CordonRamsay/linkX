@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjc.linkx.calendar.ICalendarMapper">
+
+    <!--일정 조회하기기 -->
+    <select id="calendarList" resultType="CalendarDto">
+        SELECT
+            CALENDAR_NO,
+            CALENDAR_TITLE AS TITLE,
+            DATE_FORMAT(CALENDAR_START, '%Y-%m-%d %H:%i:%s') AS START1,
+            DATE_FORMAT(CALENDAR_END,'%Y-%m-%d %H:%i:%s') AS END,
+            ALL_DAY
+        FROM CALENDAR
+    </select>
+
+    <!--일정 저장하기-->
+    <insert id="calendarSave" parameterType="CalendarDto" useGeneratedKeys="true" keyColumn="CALENDAR_NO" keyProperty="calendarNo">
+        INSERT INTO CALENDAR (CALENDAR_NO, CALENDAR_TITLE, CALENDAR_START, CALENDAR_END, ALL_DAY)
+        VALUES (
+                   (SELECT IFNULL(MAX_CALENDAR_NO + 1, 1)
+                    FROM (SELECT MAX(CALENDAR_NO) AS MAX_CALENDAR_NO FROM CALENDAR) AS temp),
+                #{title},
+                STR_TO_DATE(#{start1}, '%Y-%m-%d %H:%i:%s'),
+                STR_TO_DATE(#{end}, '%Y-%m-%d %H:%i:%s'),
+                #{allDay}
+               );
+
+    </insert>
+
+
+
+    <!--일정 삭제하기 -->
+    <delete id="calendarDelete">
+        DELETE FROM CALENDAR WHERE CALENDAR_NO = #{no}
+    </delete>
+
+    <!--일정 수정하기 -->
+    <update id="eventUpdate" parameterType="CalendarDto">
+        UPDATE CALENDAR SET
+                            CALENDAR_TITLE = #{title} ,
+                            CALENDAR_START = STR_TO_DATE(#{start1}, '%Y-%m-%d %H:%i:%s') ,
+                            CALENDAR_END = STR_TO_DATE(#{end}, '%Y-%m-%d %H:%i:%s') ,
+                            ALL_DAY = #{allDay}
+        WHERE CALENDAR_NO = #{calendarNo}
+    </update>
+
+</mapper>

@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -92,7 +93,7 @@ public class PetitionRestController implements IResponseController {
 
     @PostMapping("/updatestatuses")
     public ResponseEntity<String> updatePetitionStatuese(){
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         PetitionDto petition = null;
 
@@ -101,8 +102,8 @@ public class PetitionRestController implements IResponseController {
 
             for(PetitionDto currentPetition : petitions){
                 petition = currentPetition;
-                LocalDate endDt = LocalDate.parse(petition.getEndDt(), formatter);
-                boolean newPlayingStatus = !endDt.isBefore(today) && !endDt.isEqual(today);
+                LocalDateTime endDt = LocalDateTime.parse(petition.getEndDt(), formatter);
+                boolean newPlayingStatus = endDt.isAfter(today);
                 petitionService.updatePlaying(petition.getId(), newPlayingStatus);
             }
 

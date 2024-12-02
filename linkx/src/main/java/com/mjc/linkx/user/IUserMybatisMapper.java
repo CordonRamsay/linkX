@@ -39,6 +39,8 @@ public interface IUserMybatisMapper{
 
     // 이름과 이메일로 사용자 정보 조회 (ID 찾기 )
     UserDto findByNameAndEmail(String name, String email);
+    // 이름과 휴대폰번호로 사용자 정보 조회 (ID 찾기 )
+    UserDto findByNameAndPhone(String name, String phone);
 
     // 로그인 ID, 이름, 이메일로 사용자 정보 조회 ( 비밀번호 찾기 )
     UserDto findByLoginIdAndNameAndEmail(String loginId, String name, String email);

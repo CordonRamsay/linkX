@@ -34,4 +34,7 @@ public interface IPetitionMyBatisMapper {
     boolean hasUserAgreed(SignatureDto signature);
 
 
+    List<PetitionDto> findAllByNameContainsOld(SearchPetiDto dto);
+
+    Integer countAllByContainsOld(SearchPetiDto dto);
 }

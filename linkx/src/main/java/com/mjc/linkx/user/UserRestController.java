@@ -8,6 +8,8 @@ import com.mjc.linkx.common.exception.IdNotFoundException;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.security.dto.JoinRequest;
 import com.mjc.linkx.security.dto.LoginRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/vi/user")
+@RequestMapping("/api/v1/user")
 public class UserRestController implements IResponseController {
 
     private final UserService userService;
@@ -49,9 +51,37 @@ public class UserRestController implements IResponseController {
         }
     }
 
+    // 로그인
+    @PostMapping("/login")
+    private ResponseEntity<ResponseDto> login(@RequestBody LoginRequest dto, HttpServletRequest httpServletRequest) {
+        try {
+
+            UserDto result = this.userService.login(dto);
+            if (result != null) {
+                // 세션을 생성하기 전에 기존의 세션 파기
+                httpServletRequest.getSession().invalidate();
+                HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
+                // 세션에 userId를 넣어줌
+                session.setAttribute("LoginUser",result);
+                session.setAttribute("userId", result.getId());
+                session.setMaxInactiveInterval(7200); // 세션 2시간동안 유지
+
+                return makeResponseEntity(HttpStatus.OK.value(),HttpStatus.OK,"로그인 되었습니다.",result );
+            }
+            else{
+                return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "아이디 또는 비밀번호를 확인해주세요.", null);
+            }
+
+        } catch (Exception ex) {
+            log.error(ex.toString());
+            return makeResponseEntity(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND, ex.getMessage(), null);
+        }
+    }
+
     // ID 중복 검사
     @PostMapping("/checkId")
     private ResponseEntity<ResponseDto> checkId(@Valid @RequestBody LoginRequest loginRequest) {
+
         try {
             if (loginRequest == null) {
                 makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "아이디를 입력해 주세요", null);
@@ -99,5 +129,34 @@ public class UserRestController implements IResponseController {
         Boolean result = this.userService.checkStuNumDuplicate(joinRequest.getStuNum());
 
         return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result);
+    }
+
+    // ID 찾기 (이름, 이메일)
+    @PostMapping("/findByNameAndEmail")
+    private ResponseEntity<ResponseDto> findByNameAndEmail(@RequestBody JoinRequest joinRequest) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "이름과 이메일을 입력해 주세요", null);
+        }
+        UserDto result = this.userService.findByNameAndEmail(joinRequest.getName(), joinRequest.getEmail());
+        if (result != null) {
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "성공", result.getLoginId());
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
+
+
+    }
+    // ID 찾기 (이름, 폰)
+    @PostMapping("/findByNameAndPhone")
+    private ResponseEntity<ResponseDto> findByNameAndPhone(@RequestBody JoinRequest joinRequest) {
+        if (joinRequest == null) {
+            makeResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, "이름과 휴대폰번호를 입력해 주세요", null);
+        }
+        UserDto result = this.userService.findByNameAndPhone(joinRequest.getName(), joinRequest.getPhone());
+        if (result != null) {
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "아이디를 찾기에 성공했습니다. 아래를 확인하세요", result.getLoginId());
+        }else{
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
+        }
     }
 }

@@ -11,14 +11,14 @@
 <body class="index-page">
 {{>layout/header}}
 <main class="main">
-    <section class="section">
-        <div class="container mx-auto py-4 px-2">
-
+    <section id="background" class="section">
+        <div class="container mx-auto py-16 px-2 max-w-full">
             <div class="container text-center mb-4 aos-init aos-animate" data-aos="fade-down" data-aos-delay="100">
                 <h1 class="text-4xl font-bold text-gray-700">자유 게시판</h1>
                 <p class="text-gray-500 mb-4">자유롭게 글을 남겨 보세요</p>
             </div>
-            <div class="board-container shadow-md rounded-lg p-3 ">
+            <div class="shadow-md rounded-lg p-3 overflow-x-auto">
+                <!-- 게시글 리스트 -->
                 <table class="min-w-full table-auto text-left">
                     <thead class="bg-pink-200">
                     <tr class="text-black uppercase text-sm tracking-wider" >
@@ -43,6 +43,7 @@
                     {{/boardList}}
                     </tbody>
                 </table>
+                <!-- 게시글 개수 및 글쓰기 버튼 -->
                 <div class="flex items-center justify-between mt-3">
                     <div class="text-gray-800 mt-3">
                         <span class="font-bold">{{searchBoardDto.total}}</span> 개의 게시글
@@ -75,6 +76,13 @@
         </div>
     </section>
 </main>
+{{>layout/footer}}
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
 {{>layout/scripts}}
 </body>
 <script>

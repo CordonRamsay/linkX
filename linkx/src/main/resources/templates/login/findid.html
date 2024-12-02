@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID 찾기</title>
+    <link href="/css/findid.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
+    </div>
+    <main>
+        <div class="find-box">
+            <h2>ID 찾기</h2>
+            <h3 class="find-title">이름과 이메일로 찾기 </h3>
+            <div class="input-group">
+                <label for="name">이름</label>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name" name="name" >
+                <label for="email">이메일</label>
+                <input type="email" placeholder="이메일을 입력해주세요." class="input-field" id="email" name="email" >
+                <button type="button" class="btn find-btn" onclick="$.findByNameAndEmail();">ID 찾기</button>
+            </div>
+
+            <div class="divider">
+                <span>또는</span>
+            </div>
+
+
+            <h3 class="find-title">이름과 휴대폰번호로 찾기 </h3>
+            <div class="input-group">
+                <label for="name">이름</label>
+                <input type="text" placeholder="이름을 입력해주세요." class="input-field" id="name2" name="name" >
+                <label for="phone">휴대폰번호</label>
+                <input type="text" placeholder="휴대폰 번호를 입력해주세요." class="input-field" id="phone" name="phone" >
+                <button type="button" class="btn find-btn" onclick="$.findByNameAndPhone();">ID 찾기</button>
+            </div>
+            <div class="info-box" id="info-box">
+                <span id="found-id"></span>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    // 이름과 이메일로 ID 찾기
+    $.findByNameAndEmail = function () {
+
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let request = {
+            name : name,
+            email : email
+        }
+        let findId = $("#found-id");
+        let url = '/api/v1/user/findByNameAndEmail';
+
+        if (name === '') {
+            let nameField = $("#name");
+            nameField.css("border", "2px solid red");
+            nameField.focus();
+            alert("이름을 입력하세요");
+            return;
+        }
+        if (email === '') {
+            let emailField = $("#email");
+            emailField.css("border", "2px solid red");
+            emailField.focus();
+            alert("이메일을 입력하세요");
+            return;
+        }
+        $.ajax({
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
+
+            success: function (data) {
+                if (data.code === 200) {
+                    // 나온 아이디(data.responseData)를 화면에 뿌려주는 로직
+                    alert("해당하는 ID를 찾았습니다")
+                    findId.text(data.responseData);
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
+    $.findByNameAndPhone = function () {
+        let name = $("#name2").val();
+        let phone = $("#phone").val();
+        let request = {
+            name : name,
+            phone : phone
+        }
+        let findId = $("#found-id");
+        let url = '/api/v1/user/findByNameAndPhone';
+
+        if (name === '') {
+            let nameField = $("#name2");
+            nameField.css("border", "2px solid red");
+            nameField.focus();
+            alert("이름을 입력하세요");
+            return;
+        }
+        if (phone === '') {
+            let phoneField = $("#phone");
+            phoneField.css("border", "2px solid red");
+            phoneField.focus();
+            alert("휴대폰 번호를 입력하세요");
+            return;
+        }
+        $.ajax({
+            url : url,
+            type : "POST",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
+
+            success: function (data) {
+                if (data.code === 200) {
+                    // 나온 아이디(data.responseData)를 화면에 뿌려주는 로직
+                    alert(data.message);
+                    findId.text(data.responseData);
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
+
+</script>
+
+</body>
+</html>

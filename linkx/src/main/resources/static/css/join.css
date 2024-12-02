@@ -1,12 +1,10 @@
+* {
+    box-sizing: border-box;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #ffcaed;
+    background-color: #ffffff;
 }
 label {
     display: block; /* 블록 요소로 설정하여 입력 필드 위에 위치 */
@@ -15,17 +13,23 @@ label {
     color: #333; /* 텍스트 색상 */
     margin-bottom: 5px; /* 입력 필드와 간격 */
 }
-
-.container {
+.header{
+    text-align: center;
+}
+.container{
+    padding: 50px;
+}
+.join-box {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     padding: 50px;
     background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
+    margin: 100px auto;
 }
 
-.container h1 {
+.join-box h1 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 20px;
