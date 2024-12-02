@@ -63,6 +63,7 @@ public class JoinRequest implements IUser {
     // 비밀번호 암호화 X
     public UserDto toUser() {
         return UserDto.builder()
+                .id(this.id)
                 .loginId(this.loginId)
                 .password(this.password)
                 .name(this.name)

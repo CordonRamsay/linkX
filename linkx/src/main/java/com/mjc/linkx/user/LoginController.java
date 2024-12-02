@@ -45,6 +45,16 @@ public class LoginController {
         return "login/findpw";
     }
 
+    // PW변경 페이지 이동
+    @GetMapping("/changePW")
+    public String changePW(Model model,HttpSession session) {
+        UserDto dto = (UserDto) session.getAttribute("userDto");
+        if (dto != null) {
+            model.addAttribute("user", dto);
+        }
+        return "login/changepw";
+    }
+
 //    // 로그인
 //    @PostMapping("/login")
 //    public String login(@Validated @ModelAttribute LoginRequest loginRequest, Model model,
@@ -87,7 +97,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, Model model) {
-
         HttpSession session = request.getSession(false);  // Session이 없으면 null return
         if (session != null) {
             session.invalidate();

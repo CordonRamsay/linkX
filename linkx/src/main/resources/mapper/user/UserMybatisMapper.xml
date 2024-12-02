@@ -161,6 +161,11 @@
              ,nickname
              ,role
         FROM user_tbl
-        WHERE login_id = #{loginId} AND name = #{name} AND email = #{email}
+        WHERE loginId = #{loginId} AND name = #{name} AND email = #{email}
     </select>
+    <update id="changePassword">
+        UPDATE user_tbl
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
 </mapper>

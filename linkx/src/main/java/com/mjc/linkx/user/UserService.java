@@ -131,6 +131,17 @@ public class UserService {
         return find;
     }
 
+    public Boolean changePassword(JoinRequest joinRequest) {
+        if (joinRequest == null) {
+            return false;
+        }else{
+            joinRequest.setPassword(encoder.encode(joinRequest.getPassword()));
+            UserDto user = joinRequest.toUser();
+            this.userMybatisMapper.changePassword(user);
+            return true;
+        }
+    }
+
     public UserDto getLoginUserByLoginId(String loginId) {
         if (loginId == null) {
             return null; // loginId가 없으면 null 반환

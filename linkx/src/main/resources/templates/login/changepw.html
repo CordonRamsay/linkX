@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 변경</title>
+    <link href="/css/changpw.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a class="logoBtn" href="/"><img class="logo" src="/img/linkxLogo.png"></a>
+    </div>
+    <main>
+        <div class="find-box">
+            <h2>비밀번호 변경</h2>
+            <div class="input-group">
+                <input type="hidden" id="id" name="id" value="{{user.id}}">
+                <label for="password">비밀번호</label>
+                <input type="password" placeholder="변경하실 비밀번호를 입력해주세요." class="input-field" id="password" name="password" >
+                <label for="passwordCheck">비밀번호 확인</label>
+                <input type="text" placeholder="비밀번호를 한 번 더 입력해주세요." class="input-field" id="passwordCheck" name="passwordCheck" >
+                <div id="passwordCheck-error" class="error-message"></div>
+                <button type="button" class="btn find-btn" onclick="$.changPassword();">비밀번호 변경</button>
+            </div>
+
+            <p class="login-text">로그인 하시겠습니까? <a href="/login/login"> 로그인</a></p>
+        </div>
+    </main>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        // 비밀번호 확인 입력 필드가 변경될 때마다 실행
+        $("#passwordCheck").on("input", function () {
+            const password = $("#password").val();
+            const passwordCheck = $("#passwordCheck").val();
+
+            if (password !== passwordCheck) {
+                $("#passwordCheck-error").text("비밀번호가 일치하지 않습니다.");
+                $("#passwordCheck").addClass("error-input");
+            } else {
+                $("#passwordCheck-error").text("");  // 메시지 지우기
+                $("#passwordCheck").removeClass("error-input");
+            }
+        });
+    });
+    $.changPassword = function () {
+        let password = $("#password").val();
+        let passwordCheck = $("#passwordCheck").val();
+        let id = $("#id").val();
+
+        let url = '/api/v1/user/changePassword';
+
+        if (password === '' || password.length < 6 || password.length > 20) {
+            let pwField = $("#password");
+            pwField.css("border", "2px solid red");
+            pwField.focus();
+            alert("비밀번호를 6 ~ 20자 내외로 입력하세요");
+            return;
+        }
+        if (passwordCheck === '') {
+            let pwCheckField = $("#passwordCheck");
+            pwCheckField.css("border", "2px solid red");
+            pwCheckField.focus();
+            alert("비밀번호를 한 번 더 입력하세요");
+            return;
+        }
+        if (password !== passwordCheck) {
+            alert("비밀번호를 확인하세요");
+            return;
+        }
+
+        let request = {
+            id : id,
+            password : password
+        }
+
+            $.ajax({
+            url : url,
+            type : "PATCH",
+            dataType : "JSON",
+            contentType : "application/json",
+            data : JSON.stringify(request),
+
+            success: function (data) {
+                if (data.code === 200) {
+                    alert(data.message);
+                    window.location.href = '/login/login';
+                }
+            },
+            error: function (jqXHR) {
+                // 서버 응답 데이터 JSON으로 파싱
+                let response = JSON.parse(jqXHR.responseText);
+                if (response.code === 500){
+                    alert(response.message);
+                }else{
+                    alert("해당 요청을 처리할 수 없습니다");
+                }
+            }
+        });
+    };
+</script>
+</html>
