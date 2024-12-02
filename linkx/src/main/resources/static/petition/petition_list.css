@@ -1,25 +1,47 @@
-/* Reset */
-body, h1, p, table {
-    margin: 0;
-    padding: 0;
+/* Main Layout with Flexbox */
+.main {
+    display: flex;
+    flex-direction: column; /* 상하 구조 */
+
 }
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f9f9f9;
-    color: #333;
+
+/* 상단 섹션 (1번 영역) */
+.top-section {
+    padding: 15px;
+    border-radius: 8px;
 }
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-right: 280px; /* Add padding to avoid overlap with sidebar */
+
+/* 하단 섹션 (2번 영역) */
+.bottom-section {
+    display: flex;
+    width: 100%; /* 하단 섹션의 너비를 100%로 설정 */
+}
+
+/* 3번: 리스트 출력 */
+.petition-list {
+    flex: 2;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 4번: 인기 청원 */
+.popular-petitions {
+    flex: 0 0 300px; /* 고정 너비 300px */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: calc(100vh - 150px); /* 스크롤 영역 제한 */
+    overflow-y: auto; /* 스크롤 가능 */
+    overflow-x: hidden;/* 가로 스크롤 없애기 */
+
 }
 
 /* Header */
 .peti-header {
     margin: 20px 0;
 }
+
 .peti-header h1 {
     font-size: 24px;
     font-weight: bold;
@@ -32,6 +54,7 @@ body {
     gap: 10px;
     margin-bottom: 20px;
 }
+
 .filter-btn {
     background: none;
     border: 1px solid #ddd;
@@ -40,47 +63,65 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
+
 .filter-btn.active {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
 }
-.search-box input {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 200px;
-}
+
+/* Add Button Style */
 .add-btn {
     background-color: #007bff;
     color: white;
-    padding: 5px 10px;
+    padding: 8px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.add-btn:hover {
+    background-color: #0056b3; /* 호버 시 어두운 파란색 */
+    transform: scale(1.05); /* 약간 확대되는 효과 */
+}
+
+.add-btn:active {
+    background-color: #004085; /* 클릭 시 더 어두운 파란색 */
+    transform: scale(0.98); /* 클릭 시 약간 축소되는 효과 */
+}
+.petition-info {
+    display: flex;
+    justify-content: space-between; /* 좌우 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
 /* Petition Info */
 .petition-info p {
     margin: 10px 0;
     font-size: 14px;
     color: #555;
 }
-
+.petition-info .add-btn {
+    margin-left: auto; /* 버튼을 오른쪽 끝으로 밀어내기 */
+}
 /* Table */
 .petition-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
+
 .petition-table thead {
     background-color: #f1f1f1;
 }
+
 .petition-table th, .petition-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
 }
+
 .petition-table th {
     font-weight: bold;
 }
@@ -92,6 +133,7 @@ body {
     gap: 5px;
     margin-top: 20px;
 }
+
 .pagination a {
     text-decoration: none;
     padding: 5px 10px;
@@ -99,28 +141,26 @@ body {
     color: #007bff;
     border-radius: 4px;
 }
+
 .pagination a.active {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
 }
+
 /* Fixed Box - Popular Petitions */
 .fixed-box {
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    width: 250px;
+    flex-shrink: 0; /* 고정 크기로 설정 */
+    width: 250px; /* 너비 고정 */
+    height: 250px;
     background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
     font-size: 14px;
-    z-index: 1000;
-
-    /* 화면에 겹치지 않도록 추가 여백 설정 */
-    max-height: calc(100vh - 120px);
     overflow-y: auto; /* 스크롤 가능 */
+    position: sticky; /* 스크롤할 때 화면 상단에 고정 */
+    top: 100px; /* 고정 위치 조정 */
 }
 
 /* "인기 청원" 제목 스타일 */
@@ -179,18 +219,6 @@ body {
     margin-top: 25px;
 }
 
-/*.search-box button {*/
-/*    background-color: #007bff;*/
-/*    color: white;*/
-/*    padding: 3px 8px;*/
-/*    border: none;*/
-/*    border-radius: 4px;*/
-/*    cursor: pointer;*/
-/*    font-size: 14px;*/
-/*    height: 30px;*/
-/*    margin-top: 22px;*/
-/*}*/
-
 /* Search Bar */
 .search-bar {
     display: flex;
@@ -211,3 +239,36 @@ body {
     border-radius: 4px;
     font-size: 14px;
 }
+
+/* Search Bar Select */
+.search-select {
+    padding: 5px 10px; /* 여백을 조금 더 넉넉하게 */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    color: #555;
+
+    cursor: pointer; /* 마우스 커서 스타일 */
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* 배경색과 테두리 색 변경 시 애니메이션 */
+}
+
+.search-select:hover {
+    border-color: #007bff; /* 호버 시 테두리 색상 변경 */
+    background-color: #f0f8ff; /* 호버 시 배경색 변경 */
+}
+
+.search-select:focus {
+    outline: none; /* 포커스 시 기본 테두리 제거 */
+    border-color: #0056b3; /* 포커스 시 테두리 색상 변경 */
+    background-color: #e6f7ff; /* 포커스 시 배경색 변경 */
+}
+.search-select::-ms-expand {
+    display: block; /* IE의 드롭다운 화살표 보이도록 설정 */
+}
+/* <thead> 내의 <tr> 배경색 변경 */
+.petition-table thead tr {
+    background-color: #fbcfe8;
+}
+
+

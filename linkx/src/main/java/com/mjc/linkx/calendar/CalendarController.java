@@ -50,6 +50,7 @@ public class CalendarController {
 
     //캘린더 일정 삭제
     @DeleteMapping("/calendarDelete")
+    @ResponseBody
     public String calendarDelete(@RequestParam String no) throws Exception{
         try{
             calendarService.calendarDelete(no);
