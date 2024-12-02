@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -16,7 +17,7 @@ public class PetiScheduledUpdate {
     // 자정마다 실행되도록 스케줄링 설정
     @Scheduled(cron = "0 0 0 * * *")
     public void updatePetitonStatuses() {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
         // 특정 형식에 맞게 포맷터를 설정합니다.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -33,9 +34,9 @@ public class PetiScheduledUpdate {
                 petition = currentPetition;
 
                 // 종료일이 문자열이므로 LocalDate로 변환합니다.
-                LocalDate endDt = LocalDate.parse(petition.getEndDt(), formatter);
+                LocalDateTime endDt = LocalDateTime.parse(petition.getEndDt(), formatter);
 
-                boolean newPlayingStatus = !endDt.isBefore(today) && !endDt.isEqual(today);
+                boolean newPlayingStatus = endDt.isAfter(today);
                 petitionService.updatePlaying(petition.getId(), newPlayingStatus); // DB에 반영
             }
         } catch (DateTimeParseException e) {

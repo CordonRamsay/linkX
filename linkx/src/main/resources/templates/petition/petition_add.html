@@ -30,7 +30,7 @@
     </div>
     <div class="form-group">
       <label for="petiContent">청원 내용</label>
-      <textarea id="petiContent" name="petiContent" placeholder="내용을 입력해주세요" rows="10"></textarea>
+      <textarea id="petiContent" name="petiContent" placeholder="내용을 입력해주세요" rows="20"></textarea>
     </div>
     <div class="button-group">
       <button type="button" class="cancel" onclick="goBackList()" >취소</button>
@@ -64,6 +64,24 @@
     var field = $("input[name='petiField']:checked").val();
     var content = $("#petiContent").val().trim();
 
+    // 제목과 내용 길이 제한
+    let titleMinLength = 2;
+    let titleMaxLength = 100;
+    let contentMinLength = 2;
+    let contentMaxLength = 1000;
+
+    // 제목 길이 검증
+    if (title.length < titleMinLength || title.length > titleMaxLength) {
+      alert("제목은 " + titleMinLength + "자에서 " + titleMaxLength + "자 사이로 입력해 주세요.");
+      return;
+    }
+
+    // 내용 길이 검증
+    if (content.length < contentMinLength || content.length > contentMaxLength) {
+      alert("내용은 " + contentMinLength + "자에서 " + contentMaxLength + "자 사이로 입력해 주세요.");
+      return;
+    }
+
     if(title === "" || field === "" || content === ""){
       alert("모든 필드를 채워주세요");
       return;
@@ -90,6 +108,8 @@
       location.href='/petition/petition_list?petiField='
     }
   }
+
+
 
 </script>
 
