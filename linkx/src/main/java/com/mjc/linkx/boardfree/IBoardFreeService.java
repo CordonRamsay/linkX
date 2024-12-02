@@ -17,6 +17,7 @@ public interface IBoardFreeService {
 
     List<BoardFreeDto> findAllByNameContains(SearchBoardDto dto);
     List<BoardFreeDto> findRecently();
+    List<BoardFreeDto> findViewTop();
 
     Integer countAllByNameContains(SearchBoardDto dto);
 

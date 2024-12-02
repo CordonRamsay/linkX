@@ -80,51 +80,33 @@
     <!-- 인기 게시글 -->
     <div class="popular-posts">
       <h2 class="section-title">인기 게시글</h2>
-
       <!-- 인기 게시글 카드 -->
+
       <div class="post-cards">
+        {{#viewTop}}
         <div class="post-card">
-          <p><strong>오늘 길가다가 이거 뭐야...?</strong></p>
-          <p>진짜 이게 뭐야?? 진짜 이게 뭐야????</p>
+          <p><strong>{{title}}</strong></p>
+          <p>{{{content}}}</p>
           <p class="category">자유게시판</p>
           <div class="meta">
-            <span><i class="bi bi-chat"></i> 23</span>
-            <span><i class="bi bi-eye"></i> 123</span>
+            <span><i class="bi bi-chat"></i> {{countComment}}</span>
+            <span><i class="bi bi-eye"></i> {{viewQty}}</span>
           </div>
         </div>
-        <div class="post-card">
-          <p><strong>오늘 내 행거가 무너졌어</strong></p>
-          <p>내 목숨은 어쩌구 다 가져가도 저게 꼭 필요해...</p>
-          <p class="category">자유게시판</p>
-          <div class="meta">
-            <span><i class="bi bi-chat"></i> 23</span>
-            <span><i class="bi bi-eye"></i> 97</span>
-          </div>
-        </div>
-        <div class="post-card">
-          <p><strong>이거 역대급 생각해?</strong></p>
-          <p>마른걸레를 꼭 짜야할까...? 진짜 진지하게</p>
-          <p class="category">자유게시판</p>
-          <div class="meta">
-            <span><i class="bi bi-chat"></i> 23</span>
-            <span><i class="bi bi-eye"></i> 89</span>
-          </div>
-        </div>
+        {{/viewTop}}
       </div>
+    </div>
+
 
       <!-- 게시판 목록 -->
       <div class="board-lists">
         <div class="board-list">
           <p>자유게시판</p>
-          {{#boardFree}}
+          {{#recently}}
           <ul>
-            <li>{{content}}<span>{{createDt}}</span></li>
-<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
-<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
-<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
-<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
+            <li>{{{content}}}<span>{{createDt}}</span></li>
           </ul>
-          {{/boardFree}}
+          {{/recently}}
         </div>
         <div class="board-list">
           <p>학과게시판</p>

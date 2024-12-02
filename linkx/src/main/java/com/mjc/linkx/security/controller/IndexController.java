@@ -40,8 +40,10 @@ public class IndexController {
             model.addAttribute("major",user.getMajorName());
         }
 
-        List<BoardFreeDto> recentBoardFree = this.boardFreeService.findRecently();
-        model.addAttribute("boardFree", recentBoardFree);
+        List<BoardFreeDto> recently = this.boardFreeService.findRecently();
+        List<BoardFreeDto> viewTop = this.boardFreeService.findViewTop();
+        model.addAttribute("recently", recently);
+        model.addAttribute("viewTop", viewTop);
 
         return "index";
     }

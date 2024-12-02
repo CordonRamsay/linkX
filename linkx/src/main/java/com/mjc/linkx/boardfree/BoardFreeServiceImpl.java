@@ -87,6 +87,13 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     }
 
     @Override
+    public List<BoardFreeDto> findViewTop() {
+        List<BoardFreeDto> list = this.boardMyBatisMapper.findViewTop();
+
+        return list;
+    }
+
+    @Override
     public Integer countAllByNameContains(SearchBoardDto dto) {
         if (dto == null) {
             return null;
