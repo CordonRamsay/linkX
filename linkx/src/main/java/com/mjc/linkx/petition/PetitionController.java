@@ -153,9 +153,16 @@ public class PetitionController implements IResponseController {
 
     // 청원 게시글 상세보기 화면 return / 해당 글의 객체 전달
     @GetMapping("/petition_view")
-    public String petitionView(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId){
+    public String petitionView(@RequestParam Long id, Model model, HttpSession session){
         try{
-            IUser user = this.userService.getLoginUserById(userId);
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+                model.addAttribute("major", loginUser.getMajorName());
+            } else {
+                throw new LoginAccessException("로그인이 필요합니다");
+            }
+
             IPetition find = this.petitionService.findById(id);
 
             //IPetition 타입의 find의 데이터를 petitionDto타입의 dto에 복사
@@ -172,9 +179,17 @@ public class PetitionController implements IResponseController {
     }
 
     @GetMapping("/petition_view_old")
-    public String petitionViewOld(@RequestParam Long id, Model model, @SessionAttribute(name = "userId") Long userId){
+    public String petitionViewOld(@RequestParam Long id, Model model, HttpSession session){
         try{
-            IUser user = this.userService.getLoginUserById(userId);
+            IUser loginUser = (IUser) session.getAttribute("LoginUser");
+
+            if (loginUser != null) {
+                model.addAttribute("nickname", loginUser.getNickname());
+                model.addAttribute("major", loginUser.getMajorName());
+            } else {
+                throw new LoginAccessException("로그인이 필요합니다");
+            }
+
             IPetition find = this.petitionService.findById(id);
 
             //IPetition 타입의 find의 데이터를 petitionDto타입의 dto에 복사
