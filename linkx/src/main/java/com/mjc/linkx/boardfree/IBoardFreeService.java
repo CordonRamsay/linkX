@@ -16,6 +16,8 @@ public interface IBoardFreeService {
     Boolean delete(Long id);
 
     List<BoardFreeDto> findAllByNameContains(SearchBoardDto dto);
+    List<BoardFreeDto> findRecently();
+    List<BoardFreeDto> findViewTop();
 
     Integer countAllByNameContains(SearchBoardDto dto);
 
