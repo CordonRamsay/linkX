@@ -104,3 +104,8 @@ body {
     font-size: 20px;
     color: #dc98c6;
 }
+.login-text a{
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
