@@ -11,4 +11,5 @@ public interface ISpotMyBatisMapper {
     void insertReview(SpotReviewDto reviewDto);
     void deleteReviewById(Long reviewId);
     SpotReviewDto getReviewById(Long reviewId);
+    SpotDto getSpotById(Long spotId);
 }
