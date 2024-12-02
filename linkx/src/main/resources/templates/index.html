@@ -116,13 +116,15 @@
       <div class="board-lists">
         <div class="board-list">
           <p>자유게시판</p>
+          {{#boardFree}}
           <ul>
-            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>
-            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>
-            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>
-            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>
-            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>
+            <li>{{content}}<span>{{createDt}}</span></li>
+<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
+<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
+<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
+<!--            <li>자유로운 글을 씁니다 <span>2024.11.07</span></li>-->
           </ul>
+          {{/boardFree}}
         </div>
         <div class="board-list">
           <p>학과게시판</p>

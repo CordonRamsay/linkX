@@ -169,7 +169,7 @@ public class UserRestController implements IResponseController {
         UserDto result = this.userService.findByLoginIdAndNameAndEmail(joinRequest.getLoginId(),joinRequest.getName(), joinRequest.getEmail());
         if (result != null) {
             session.setAttribute("userDto", result);
-            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "회원정보 찾기 성공", result);
+            return makeResponseEntity(HttpStatus.OK.value(), HttpStatus.OK, "비밀번호 변경 페이지로 이동합니다.", result);
         }else{
             return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, "내용과 일치하는 회원정보가 없습니다.", null);
         }

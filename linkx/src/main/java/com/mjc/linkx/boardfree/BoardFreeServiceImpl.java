@@ -79,6 +79,14 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
     }
 
     @Override
+    public List<BoardFreeDto> findRecently() {
+
+        List<BoardFreeDto> list = this.boardMyBatisMapper.findRecently();
+
+        return list;
+    }
+
+    @Override
     public Integer countAllByNameContains(SearchBoardDto dto) {
         if (dto == null) {
             return null;

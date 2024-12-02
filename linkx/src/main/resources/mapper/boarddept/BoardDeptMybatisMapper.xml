@@ -76,6 +76,30 @@
 
     </select>
 
+    <!-- 가장 최근 글 5개 가져오기 -->
+    <select id="findRecently" resultType="BoardFreeDto">
+        SELECT bt.id
+             , bt.title
+             , (SELECT count(*)
+                FROM comment_tbl
+                WHERE boardType = 'dept'
+                  AND boardId = bt.id
+                  AND deleteYn = false) AS countComment
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ut.nickname AS createName
+             , bt.updateDt
+             , bt.deleteYn
+        FROM board_dept_tbl bt
+                 LEFT JOIN user_tbl ut ON bt.createId = ut.id
+        WHERE bt.deleteYn = false
+        ORDER BY bt.createDt DESC
+            LIMIT 5
+    </select>
+
     <!-- 게시글 카운트 -->
     <select id="countAllByNameContains" parameterType="SearchBoardDto" resultType="Integer">
         SELECT COUNT(*)

@@ -19,6 +19,8 @@ public interface IBoardFreeMyBatisMapper {
 
     List<BoardFreeDto> findAllByNameContains(SearchBoardDto dto); //검색어포함 게시글 모두 찾기
 
+    List<BoardFreeDto> findRecently(); // 상위 5개글 찾아오기
+
     Integer countAllByNameContains(SearchBoardDto dto); //검색어포함 게시글 개수 구하기
 
     void addViewQty(Long id);  // 조회수 증가
