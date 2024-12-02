@@ -94,4 +94,15 @@ public class SpotRestController {
         }
     }
 
+    @GetMapping("/spot/{spotId}")
+    public ResponseEntity<SpotDto> getSpotById(@PathVariable Long spotId) {
+        SpotDto spot = spotService.getSpotById(spotId);
+        return ResponseEntity.ok(spot);
+    }
+
+    @GetMapping("/image")
+    public ResponseEntity<String> getImageUrl(@RequestParam String title) {
+        String imageUrl = spotService.searchImage(title);
+        return ResponseEntity.ok(imageUrl);
+    }
 }
