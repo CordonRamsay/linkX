@@ -105,4 +105,10 @@ public class SpotRestController {
         String imageUrl = spotService.searchImage(title);
         return ResponseEntity.ok(imageUrl);
     }
+
+    @GetMapping("/top-spots")
+    public ResponseEntity<List<SpotDto>> getTopSpots() {
+        List<SpotDto> topSpots = spotService.getTopSpots(); // 서비스 계층에서 처리
+        return ResponseEntity.ok(topSpots);
+    }
 }
