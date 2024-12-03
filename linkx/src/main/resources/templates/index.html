@@ -108,18 +108,23 @@
   <div class="container">
     <!-- 메인 배너 -->
     <div class="main-banner">
-      <img src="https://via.placeholder.com/600x300" alt="메인 배너" class="banner-image">
-      <div class="calendar"> <iframe src="calendarList" width="100%" height="400px" frameborder="0"></iframe> </div>
+      <div class="calendar">
+        <iframe src="calendarList" style="width: 100%; height: 100%; border: none;"></iframe>
+      </div>
     </div>
+
 
     <!-- 마감임박 청원 -->
     <div class="petition-section">
-      <h2 class="section-title">마감임박 청원</h2>
+      <h2 class="section-title">진행중인 청원</h2>
       <div class="petition-cards">
+        {{#hotAgreedPetitions}}
         <div class="card">
-          <p><strong>청원 제목 1</strong></p>
-          <p>청원 내용 요약...</p>
-          <p><strong>D-20</strong></p>
+          <a href="/petition/petition_view?id={{id}}">
+            <p><strong>제목:{{petiTitle}}</strong></p>
+            <p>내용:{{petiContent}}</p>
+            <p><strong>D-{{daysLeft}}</strong></p>
+          </a>
         </div>
         {{/hotAgreedPetitions}}
       </div>
