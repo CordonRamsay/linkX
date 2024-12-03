@@ -27,6 +27,10 @@ public class BoardFreeDto extends BoardBaseDto implements IBoardFree {
     private String content;
     // 댓글 수
     private String countComment;
+    // 학과 코드
+    private Long majorId;
+    // 학과명
+    private String majorName;
 
     public String getBoardType() {
         return "free";

@@ -38,7 +38,6 @@ body {
 .section-title {
     font-size: 24px;
     font-weight: bold;
-    margin: 40px 0 20px;
 }
 
 .petition-section, .hot-reviews, .popular-posts {
@@ -51,6 +50,7 @@ body {
     overflow-x: auto;
     padding: 0 10px;
 }
+
 .calendar {
     margin: 0; /* 여백 제거 */
     padding: 0; /* 내부 여백 제거 */
@@ -61,6 +61,10 @@ body {
     max-width: none; /* 최대 너비 제한 해제 */
     background-color: transparent; /* 배경 제거 */
     box-shadow: none; /* 그림자 제거 */
+}
+
+.review-cards img{
+    cursor: pointer;
 }
 
 .card {
@@ -107,7 +111,7 @@ body {
 }
 
 .post-card .category {
-    color: #F76394;
+    color: #007bff;
     font-weight: bold;
 }
 
@@ -135,6 +139,7 @@ body {
 .board-list p {
     font-weight: bold;
     margin-bottom: 10px;
+    color: #007bff;
 }
 
 .board-list ul {
@@ -148,15 +153,46 @@ body {
     font-size: 14px;
 }
 
-.board-list li span {
+.board-list li .createDt {
     float: right;
     color: gray;
 }
+.majorName{
+    color: #a8a2a2;
+}
+.title{
+    font-size: 20px;
+}
+.title, .content{
+    cursor : pointer;
+}
+.title:hover, .content:hover{
+    color: #ea59b8;
+}
+.review-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
 
-.footer {
-    background: #333;
-    color: darkgray;
+.review-cards .card {
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
+    background: #fff;
+}
+
+.review-cards .card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.review-cards .card p {
+    margin: 10px 0;
+    font-size: 14px;
 }
