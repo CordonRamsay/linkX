@@ -187,4 +187,9 @@ public class SpotServiceImpl implements SpotService {
         return spotMapper.getSpotById(spotId);
     }
 
+    @Override
+    public List<SpotDto> getTopSpots() {
+        return spotMapper.getTopSpots();
+    }
+
 }

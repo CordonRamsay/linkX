@@ -191,29 +191,87 @@ body {
 }
 
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff); /* 은은한 그라데이션 배경 */
+    padding: 25px;
+    border-radius: 15px;
     width: 400px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 깊은 음영 추가 */
     position: relative;
+    animation: fadeIn 0.3s ease-out; /* 등장 애니메이션 */
+    overflow: hidden;
 }
 
 .modal-content h2 {
     margin-top: 0;
-    font-size: 18px;
+    margin-bottom: 20px;
+    font-size: 20px;
     color: #333;
+    text-align: center;
+    border-bottom: 2px solid #f76394; /* 하단 경계선 강조 */
+    padding-bottom: 10px;
+}
+
+.modal-content label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    border-color: #ff3366; /* 포커스 시 강조 색상 */
+    box-shadow: 0 0 5px rgba(255, 51, 102, 0.3);
+    background-color: #fff;
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 20px;
+    font-weight: bold;
+    color: #555;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     cursor: pointer;
+    transition: color 0.3s ease;
 }
+
+.modal-close:hover {
+    color: #ff3366; /* 닫기 버튼 호버 색상 */
+    transform: scale(1.2); /* 살짝 확대 */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .pagination-btn {
     padding: 5px 10px;
     border: 1px solid #ddd;
@@ -273,4 +331,42 @@ body {
 #search-button img {
     width: 20px;
     height: 20px;
+}
+
+.modal-content .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* 버튼 간의 간격 */
+    margin-top: 15px;
+}
+
+.modal-content .button-group button {
+    flex: 1; /* 버튼 크기를 동일하게 맞춤 */
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+}
+
+.modal-content .button-group button:first-child {
+    background-color: #e74c3c; /* 취소 버튼 색상 */
+    color: white;
+}
+
+.modal-content .button-group button:first-child:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px); /* 호버 시 살짝 올라감 */
+}
+
+.modal-content .button-group button:last-child {
+    background-color: #2D88FF; /* 작성 버튼 색상 */
+    color: white;
+}
+
+.modal-content .button-group button:last-child:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* 호버 시 살짝 올라감 */
 }

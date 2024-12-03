@@ -100,5 +100,26 @@
         DELETE FROM spot_review_tbl WHERE id = #{reviewId}
     </delete>
 
+    <select id="getTopSpots" resultType="SpotDto">
+        SELECT
+            s.id,
+            s.title,
+            s.roadAddr,
+            s.mapX,
+            s.mapY,
+            IFNULL(AVG(r.reviewStar), 0) AS avgRating, -- 평균 평점 계산 (리뷰 없을 시 0)
+            COUNT(r.id) AS reviewCount            -- 리뷰 개수 계산
+        FROM
+            spot_tbl s
+                LEFT JOIN
+            spot_review_tbl r
+            ON
+                s.id = r.spotId
+        GROUP BY
+            s.id, s.title, s.roadAddr, s.mapX, s.mapY
+        ORDER BY
+            reviewCount DESC, avgRating DESC
+            LIMIT 3
+    </select>
 
 </mapper>
