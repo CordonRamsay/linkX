@@ -45,17 +45,17 @@ public class IndexController {
             model.addAttribute("nickname", user.getNickname());
             model.addAttribute("major",user.getMajorName());
         }
-        // 자유게시판 상위글5개 / 인기글 3개
+        // 자유게시판 상위글5개
         List<BoardFreeDto> recentlyFree = this.boardFreeService.findRecently();
-        List<BoardFreeDto> viewTopFree = this.boardFreeService.findViewTop();
         model.addAttribute("recentlyFree", recentlyFree);
-        model.addAttribute("viewTopFree", viewTopFree);
 
-        // 학과게시판 상위글5개 / 인기글 3개
+        // 학과게시판 상위글5개
         List<BoardDeptDto> recentlyDept = this.boardDeptService.findRecently();
-        List<BoardDeptDto> viewTopDept = this.boardDeptService.findViewTop();
         model.addAttribute("recentlyDept", recentlyDept);
-        model.addAttribute("viewTopDept", viewTopDept);
+
+        // 인기글 3개
+        List<BoardFreeDto> viewTop = this.boardFreeService.findViewTop();
+        model.addAttribute("viewTop", viewTop);
 
         //청원 인기 글 가져오기,동의자 수 상위 5개 청원 가져오기
         List<PetitionDto> hotAgreedPetitions = this.petitionService.findHotAgreedPetitions();

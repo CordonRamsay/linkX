@@ -8,7 +8,6 @@ import com.mjc.linkx.common.IResponseController;
 import com.mjc.linkx.common.dto.CUInfoDto;
 import com.mjc.linkx.common.exception.LoginAccessException;
 import com.mjc.linkx.user.IUser;
-import com.mjc.linkx.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

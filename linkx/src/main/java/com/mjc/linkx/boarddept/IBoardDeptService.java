@@ -22,7 +22,6 @@ public interface IBoardDeptService {
     List<BoardDeptDto> findAllByNameContains(SearchBoardDto dto);
 
     List<BoardDeptDto> findRecently(); // 상위 5개글 찾아오기
-    List<BoardDeptDto> findViewTop(); // 상위 5개글 찾아오기
 
     Integer countAllByNameContains(SearchBoardDto dto);
 

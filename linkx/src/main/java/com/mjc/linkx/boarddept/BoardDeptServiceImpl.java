@@ -101,22 +101,7 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
         return list;
     }
 
-    @Override
-    public List<BoardDeptDto> findViewTop() {
-        List<BoardDeptDto> list = this.boardMyBatisMapper.findViewTop();
 
-        // HTML 태그 제거
-        for (BoardDeptDto dto : list) {
-            String plainText = Jsoup.parse(dto.getContent()).text(); // HTML 파싱 후 텍스트 추출
-            // 내용이 10자를 넘으면 '...' 추가
-            if (plainText.length() > 10) {
-                plainText = plainText.substring(0, 10) + "...";
-            }
-
-            dto.setContent(plainText); // 텍스트를 다시 설정
-        }
-        return list;
-    }
 
     @Override
     public Integer countAllByNameContains(SearchBoardDto dto) {
