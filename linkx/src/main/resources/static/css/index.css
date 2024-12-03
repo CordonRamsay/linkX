@@ -196,3 +196,12 @@ body {
     margin: 10px 0;
     font-size: 14px;
 }
+.petiField {
+    color: blue; /* 글자 색상 파란색 */
+    font-size: 20px; /* 글자 크기 */
+    font-weight: bold; /* 글자 굵기 굵게 */
+}
+
+.petiTitle {
+    font-weight: bold; /* 글자 굵기만 굵게 */
+}

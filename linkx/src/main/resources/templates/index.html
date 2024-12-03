@@ -34,8 +34,8 @@
         {{#hotAgreedPetitions}}
         <div class="card">
           <a href="/petition/petition_view?id={{id}}">
-            <p><strong>제목:{{petiTitle}}</strong></p>
-            <p>내용:{{petiContent}}</p>
+            <p><span class="petiField">({{petiField}})</span></p>
+            <p class="petiTitle">{{petiTitle}}</p>
             <p><strong>D-{{daysLeft}}</strong></p>
           </a>
         </div>

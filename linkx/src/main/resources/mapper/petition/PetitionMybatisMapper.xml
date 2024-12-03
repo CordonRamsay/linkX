@@ -199,7 +199,8 @@
                 ELSE petiContent
                 END AS petiContent,
             -- D-day 계산을 위한 daysLeft 값을 가져오기 위해 사용자 정의 함수 사용
-            endDt
+            endDt,
+            petiField
         FROM petition_tbl
         WHERE playing = true
         ORDER BY agreeQty DESC
