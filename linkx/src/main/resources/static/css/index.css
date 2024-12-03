@@ -98,7 +98,7 @@ body {
 }
 
 .post-card .category {
-    color: #F76394;
+    color: #007bff;
     font-weight: bold;
 }
 
@@ -126,7 +126,7 @@ body {
 .board-list p {
     font-weight: bold;
     margin-bottom: 10px;
-    color: #f76394;
+    color: #007bff;
 }
 
 .board-list ul {
