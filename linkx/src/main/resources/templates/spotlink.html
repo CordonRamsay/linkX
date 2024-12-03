@@ -57,6 +57,26 @@
       zIndex: 100
     });
 
+    naver.maps.Event.once(map, "init", function () {
+      // 사용자 정의 컨트롤 버튼 HTML
+      const locationBtnHtml =
+              '<a href="#" class="btn_center_map" style="display: inline-block; background-color: #F76394; color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">센터로 이동</a>';
+
+      // 사용자 정의 컨트롤 객체 생성
+      const customControl = new naver.maps.CustomControl(locationBtnHtml, {
+        position: naver.maps.Position.RIGHT_BOTTOM, // 버튼 위치: 오른쪽 하단
+      });
+
+      // 지도에 사용자 정의 컨트롤 추가
+      customControl.setMap(map);
+
+      // 버튼 클릭 이벤트 등록
+      naver.maps.Event.addDOMListener(customControl.getElement(), "click", function (e) {
+        e.preventDefault(); // 기본 동작(페이지 이동) 막기
+        map.setCenter(mjcLocation); // 지도의 중심을 mjcLocation으로 설정
+        map.setZoom(17); // 줌 레벨 초기화
+      });
+    });
 
     let currentCategory = 'all';
     let markers = []; // 현재 맵에 표시된 모든 마커를 저장하는 배열
@@ -85,6 +105,7 @@
         success: function (spots) {
           originalSpots = spots; // 전체 데이터를 저장
           displaySpots(spots);
+
         },
         error: function (xhr) {
           console.error('Error fetching spot list:', xhr.responseText);
@@ -165,7 +186,6 @@
           <div style="padding:5px; font-size:14px;">
             <strong>${spot.title}</strong>
             <p>⭐ <b>${avgRating}</b></p>
-            <p>💬 <b>${reviewCount}</b></p>
           </div>
         `;
                   infoWindow.setContent(contentString);
@@ -207,7 +227,6 @@
           <div style="padding:5px; font-size:14px;">
             <strong>${spot.title}</strong>
             <p>⭐ <b>${avgRating}</b></p>
-            <p>💬 <b>${reviewCount}</b></p>
           </div>
         `;
                   if (currentInfoWindow && currentInfoWindow.getContent() === contentString && currentInfoWindow.getMap()) {
@@ -237,7 +256,7 @@
       });
       displaySpots(filteredSpots); // 필터링된 데이터 표시
     }
-    
+
     // 검색 버튼 클릭 이벤트
     $('#search-button').on('click', function () {
       const keyword = $('#search-input').val().trim(); // 검색어 입력값
@@ -270,6 +289,7 @@
     });
     // 초기 로드
     loadSpots();
+
   });
 
   // 리뷰 로드 함수

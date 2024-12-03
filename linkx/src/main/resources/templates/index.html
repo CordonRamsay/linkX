@@ -10,6 +10,96 @@
   <link href="/css/button.css" rel="stylesheet">
   <link href="/css/index.css" rel="stylesheet">
   {{>layout/links}}
+  <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+  <style>
+    .review-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .review-cards .card {
+      width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      background: #fff;
+    }
+
+    .review-cards .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .review-cards .card p {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+
+  </style>
+  <script>
+    $(document).ready(function () {
+      // 상위 3개 리뷰 장소를 가져와 렌더링
+      $.ajax({
+        url: "/spotlink/data/top-spots", // API 엔드포인트
+        type: "GET",
+        dataType: "json",
+        success: function (spots) {
+          const reviewCardsContainer = $("#top-spots");
+          reviewCardsContainer.empty(); // 기존 내용을 비움
+
+          // 장소 데이터를 기반으로 카드 생성
+          spots.forEach(spot => {
+            const cardHTML = $(`
+  <div class="card" data-spot-id="${spot.id}">
+    <img class="thumbnail-image" src="/img/default.png" alt="${spot.title}">
+    <p><strong>${spot.title}</strong></p>
+    <p>${spot.roadAddr}</p>
+    <p>⭐️ ${spot.avgRating.toFixed(1)} (${spot.reviewCount} 리뷰)</p>
+  </div>
+`);
+            const plainTitle = spot.title.replace(/<[^>]*>/g, ''); // HTML 태그 제거
+            const encodedTitle = encodeURIComponent(plainTitle);
+            $.ajax({
+              url: `/spotlink/data/image?title=${encodedTitle}`, // 정제된 title 사용
+              type: 'GET',
+              success: function (imageUrl) {
+                // 성공적으로 이미지 반환 시 업데이트
+                if (imageUrl) {
+                  cardHTML.find('.thumbnail-image').attr('src', imageUrl);
+                }
+              },
+              error: function () {
+                console.error(`이미지를 가져오는 중 오류 발생: ${plainTitle}`);
+              }
+            });
+            cardHTML.on('click', function () {
+              // const spotId = $(this).data('spot-id');
+              // if (!spotId) {
+              //   alert('유효하지 않은 아이템입니다.');
+              //   return;
+              // }
+              // // 세션 스토리지에 spotId 저장
+              // sessionStorage.setItem('selectedSpotId', spotId);
+
+              // 페이지 이동
+              window.location.href = '/spotlink';
+            });
+
+            reviewCardsContainer.append(cardHTML); // 동적으로 카드 추가
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("장소 정보를 가져오는 중 오류 발생:", error);
+        }
+      });
+    });
+  </script>
 </head>
 
 <body class="index-page">
@@ -22,16 +112,14 @@
       <div class="calendar"> <iframe src="calendarList" width="100%" height="400px" frameborder="0"></iframe> </div>
     </div>
 
+    <!-- 마감임박 청원 -->
     <div class="petition-section">
-      <h2 class="section-title">진행중인 청원</h2>
+      <h2 class="section-title">마감임박 청원</h2>
       <div class="petition-cards">
-        {{#hotAgreedPetitions}}
         <div class="card">
-          <a href="/petition/petition_view?id={{id}}">
-            <p><strong>제목:{{petiTitle}}</strong></p>
-            <p>내용:{{petiContent}}</p>
-            <p><strong>D-{{daysLeft}}</strong></p>
-          </a>
+          <p><strong>청원 제목 1</strong></p>
+          <p>청원 내용 요약...</p>
+          <p><strong>D-20</strong></p>
         </div>
         {{/hotAgreedPetitions}}
       </div>
@@ -118,6 +206,5 @@
 <div id="preloader"></div>
 {{>layout/scripts}}
 </body>
-
 
 </html>

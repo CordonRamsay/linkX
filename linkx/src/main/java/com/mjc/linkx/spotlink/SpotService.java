@@ -13,4 +13,5 @@ public interface SpotService {
     void addReview(SpotReviewDto reviewDto);
     void deleteReview(Long reviewId, Long userId) throws Exception;
     SpotDto getSpotById(Long spotId);
+    List<SpotDto> getTopSpots();
 }
