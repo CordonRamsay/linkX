@@ -1,78 +1,88 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>청원 게시물</title>
-  <link rel="stylesheet" href="/petition/petition_view.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  {{>layout/links}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청원 게시물</title>
+    <link rel="stylesheet" href="/petition/petition_view.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{>layout/links}}
 </head>
 <body>
 {{>layout/header}}
 <main class="main">
-<div class="container">
-  <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
+    <section id="background" class="section">
+        <div class="peti-container">
+            <input type="hidden" id="id" name="id" value="{{PetitionDto.id}}">
 
 
-  <div class="countdown-circle">D-{{PetitionDto.daysLeft}}</div>
-  <h1>청원 상세보기</h1>
-  <div class="post">
-    <p class="category">{{PetitionDto.petiField}}</p>
-    <h2>{{PetitionDto.petiTitle}}</h2>
-    <p class="date">{{PetitionDto.createDt}} | {{PetitionDto.maskedUserNickName}} </p>
-    <p class="content">
-      {{PetitionDto.petiContent}}
-    </p>
-    <p class="vote-period">동의기간 {{PetitionDto.createDt}} ~ {{PetitionDto.endDt}}</p>
-    <p class="vote-count">동의수: <span id="agreeQty">{{PetitionDto.agreeQty}}</span></p>
-    <div class="button-group">
-      <button type="button" class="list" onclick="goBackList()">목록</button>
-      <button type="button" class="agree" onclick="$.petiAgree({{PetitionDto.id}});">동의</button>
-    </div>
-  </div>
-</div>
+            <div class="countdown-circle">D-{{PetitionDto.daysLeft}}</div>
+            <h1>청원 상세보기</h1>
+            <div class="post">
+                <p class="category">{{PetitionDto.petiField}}</p>
+                <h2>{{PetitionDto.petiTitle}}</h2>
+                <p class="date">{{PetitionDto.createDt}} | {{PetitionDto.maskedUserNickName}} </p>
+                <p class="content">
+                    {{PetitionDto.petiContent}}
+                </p>
+                <p class="vote-period">동의기간 {{PetitionDto.createDt}} ~ {{PetitionDto.endDt}}</p>
+                <p class="vote-count">동의수: <span id="agreeQty">{{PetitionDto.agreeQty}}</span></p>
+                <div class="button-group">
+                    <button type="button" class="list" onclick="goBackList()">목록</button>
+                    <button type="button" class="agree" onclick="$.petiAgree({{PetitionDto.id}});">동의</button>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
+{{>layout/footer}}
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+{{>layout/scripts}}
 </body>
 
 <script>
-  function goBackList(){
-    location.href='/petition/petition_list?petiField='
-  }
+    function goBackList() {
+        location.href = '/petition/petition_list?petiField='
+    }
 
 
+    $.petiAgree = function (id) {
+        let url = "/api/v1/petition/sig/" + id;
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            // data : ResponseEntity.body
+            // status : JQuery 상태 문자열 성공시 success
+            // xhr : HTTP 상태코드, 응답 헤더 포함
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            if (status === "success") {
+                $("#agreeQty").text(data.responseData.agreeQty);
 
-  $.petiAgree = function (id) {
-    let url = "/api/v1/petition/sig/"+id;
-    $.ajax({
-      type : "POST",
-      url : url,
-      dataType : "json",
-      contentType: "application/json; charset=UTF-8",
-    }).done(function (data, status, xhr) {
-      // data : ResponseEntity.body
-      // status : JQuery 상태 문자열 성공시 success
-      // xhr : HTTP 상태코드, 응답 헤더 포함
-      console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-      if (status === "success") {
-        $("#agreeQty").text(data.responseData.agreeQty);
+                let message = data.message;
+                if (message === "동의") {
+                    alert("이미 동의한 청원입니다");
 
-        let message = data.message;
-        if (message === "동의") {
-          alert("이미 동의한 청원입니다");
+                } else {
+                    alert("청원에 동의했습니다");
 
-        } else {
-          alert("청원에 동의했습니다");
-
-        }
-        // 그냥 임시로 새로고침 처리
-        //window.location.reload();
-      }
-    }).fail(function (jqXHR, status, errorThrown) {
-      console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-      alert("실패 했습니다. " + jqXHR.responseJSON.message);
-    });
-  };
+                }
+                // 그냥 임시로 새로고침 처리
+                //window.location.reload();
+            }
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("실패 했습니다. " + jqXHR.responseJSON.message);
+        });
+    };
 
 
 </script>

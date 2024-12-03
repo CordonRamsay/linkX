@@ -1,114 +1,126 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>청원하기</title>
-  <link rel="stylesheet" href="/petition/petition_add.css">
-  <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청원하기</title>
+    <link rel="stylesheet" href="/petition/petition_add.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    {{>layout/links}}
 </head>
 <body>
-<div class="container">
-  <h1>청원하기</h1>
-  <form class="form-group" id="petition" action="/petition/petition_insert" method="post">
-    <div class="form-group">
-      <label for="petiField">청원 분야</label>
-      <div class="radio-group" id="petiField">
-        <label><input type="radio" name="petiField" value="유지보수" checked> 유지보수</label>
-        <label><input type="radio" name="petiField" value="교내행사"> 교내행사</label>
-        <label><input type="radio" name="petiField" value="강의"> 강의</label>
-        <label><input type="radio" name="petiField" value="홈페이지"> 홈페이지</label>
-        <label><input type="radio" name="petiField" value="학식"> 학식</label>
-        <label><input type="radio" name="petiField" value="기숙사"> 기숙사</label>
-        <label><input type="radio" name="petiField" value="학생회"> 학생회</label>
-        <label><input type="radio" name="petiField" value="기타"> 기타</label>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="petiTitle">청원 제목</label>
-      <input type="text" id="petiTitle" name="petiTitle" placeholder="제목을 입력해주세요">
-    </div>
-    <div class="form-group">
-      <label for="petiContent">청원 내용</label>
-      <textarea id="petiContent" name="petiContent" placeholder="내용을 입력해주세요" rows="20"></textarea>
-    </div>
-    <div class="button-group">
-      <button type="button" class="cancel" onclick="goBackList()" >취소</button>
-      <button type="button" class="submit" onclick="$.openModal()">완료</button>
-    </div>
-  </form>
-</div>
+{{>layout/header}}
+<main class="main">
+    <section id="background" class="section">
+        <div class="peti-container">
+            <h1>청원하기</h1>
+            <form class="form-group" id="petition" action="/petition/petition_insert" method="post">
+                <div class="form-group">
+                    <label for="petiField">청원 분야</label>
+                    <div class="radio-group" id="petiField">
+                        <label><input type="radio" name="petiField" value="유지보수" checked> 유지보수</label>
+                        <label><input type="radio" name="petiField" value="교내행사"> 교내행사</label>
+                        <label><input type="radio" name="petiField" value="강의"> 강의</label>
+                        <label><input type="radio" name="petiField" value="홈페이지"> 홈페이지</label>
+                        <label><input type="radio" name="petiField" value="학식"> 학식</label>
+                        <label><input type="radio" name="petiField" value="기숙사"> 기숙사</label>
+                        <label><input type="radio" name="petiField" value="학생회"> 학생회</label>
+                        <label><input type="radio" name="petiField" value="기타"> 기타</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="petiTitle">청원 제목</label>
+                    <input type="text" id="petiTitle" name="petiTitle" placeholder="제목을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="petiContent">청원 내용</label>
+                    <textarea id="petiContent" name="petiContent" placeholder="내용을 입력해주세요" rows="20"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="cancel" onclick="goBackList()">취소</button>
+                    <button type="button" class="submit" onclick="$.openModal()">완료</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+{{>layout/footer}}
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+{{>layout/scripts}}
 
 <!-- Modal -->
 <div id="modal" class="modal">
-  <div class="modal-content">
-    <p>※ 청원등록 이후에는 게시글을 <span style="color: red;">삭제</span>할 수 없습니다.</p>
-    <p>※ <span style="color: red;">청원</span>을 등록하시겠습니까?</p>
-    <div class="modal-buttons">
-      <button onclick="$.insertPeti()">Yes</button>
-      <button onclick="$.canclePeti()">No</button>
+    <div class="modal-content">
+        <p>※ 청원등록 이후에는 게시글을 <span style="color: red;">삭제</span>할 수 없습니다.</p>
+        <p>※ <span style="color: red;">청원</span>을 등록하시겠습니까?</p>
+        <div class="modal-buttons">
+            <button onclick="$.insertPeti()">Yes</button>
+            <button onclick="$.canclePeti()">No</button>
+        </div>
     </div>
-  </div>
 </div>
 
 </body>
 
 <script>
-  $(document).ready(function(){
-    $("#modal").css("display","none");
-  });
+    $(document).ready(function () {
+        $("#modal").css("display", "none");
+    });
 
-  $.openModal = function() {
+    $.openModal = function () {
 
-    var title = $("#petiTitle").val().trim();
-    var field = $("input[name='petiField']:checked").val();
-    var content = $("#petiContent").val().trim();
+        var title = $("#petiTitle").val().trim();
+        var field = $("input[name='petiField']:checked").val();
+        var content = $("#petiContent").val().trim();
 
-    // 제목과 내용 길이 제한
-    let titleMinLength = 2;
-    let titleMaxLength = 100;
-    let contentMinLength = 2;
-    let contentMaxLength = 1000;
+        // 제목과 내용 길이 제한
+        let titleMinLength = 2;
+        let titleMaxLength = 100;
+        let contentMinLength = 2;
+        let contentMaxLength = 1000;
 
-    // 제목 길이 검증
-    if (title.length < titleMinLength || title.length > titleMaxLength) {
-      alert("제목은 " + titleMinLength + "자에서 " + titleMaxLength + "자 사이로 입력해 주세요.");
-      return;
+        // 제목 길이 검증
+        if (title.length < titleMinLength || title.length > titleMaxLength) {
+            alert("제목은 " + titleMinLength + "자에서 " + titleMaxLength + "자 사이로 입력해 주세요.");
+            return;
+        }
+
+        // 내용 길이 검증
+        if (content.length < contentMinLength || content.length > contentMaxLength) {
+            alert("내용은 " + contentMinLength + "자에서 " + contentMaxLength + "자 사이로 입력해 주세요.");
+            return;
+        }
+
+        if (title === "" || field === "" || content === "") {
+            alert("모든 필드를 채워주세요");
+            return;
+        }
+
+        $("#modal").css("display", "block");
     }
 
-    // 내용 길이 검증
-    if (content.length < contentMinLength || content.length > contentMaxLength) {
-      alert("내용은 " + contentMinLength + "자에서 " + contentMaxLength + "자 사이로 입력해 주세요.");
-      return;
+    $.insertPeti = function () {
+
+        $("#petition").submit();
+        alert("청원이 등록되었습니다.");
     }
 
-    if(title === "" || field === "" || content === ""){
-      alert("모든 필드를 채워주세요");
-      return;
+    $.canclePeti = function () {
+        $("#modal").css("display", "none");
     }
 
-    $("#modal").css("display", "block");
-  }
-
-  $.insertPeti = function(){
-
-    $("#petition").submit();
-    alert("청원이 등록되었습니다.");
-  }
-
-  $.canclePeti = function(){
-    $("#modal").css("display", "none");
-  }
-
-  function goBackList(){
-    if(document.referrer){
-      window.history.back();
+    function goBackList() {
+        if (document.referrer) {
+            window.history.back();
+        } else {
+            location.href = '/petition/petition_list?petiField='
+        }
     }
-    else{
-      location.href='/petition/petition_list?petiField='
-    }
-  }
-
 
 
 </script>

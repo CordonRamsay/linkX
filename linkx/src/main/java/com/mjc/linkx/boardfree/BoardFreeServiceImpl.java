@@ -89,8 +89,8 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         for (BoardFreeDto dto : list) {
             String plainText = Jsoup.parse(dto.getContent()).text(); // HTML 파싱 후 텍스트 추출
             // 내용이 10자를 넘으면 '...' 추가
-            if (plainText.length() > 10) {
-                plainText = plainText.substring(0, 10) + "...";
+            if (plainText.length() > 15) {
+                plainText = plainText.substring(0, 15) + "...";
             }
 
             dto.setContent(plainText); // 텍스트를 다시 설정
@@ -106,8 +106,8 @@ public class BoardFreeServiceImpl implements IBoardFreeService{
         for (BoardFreeDto dto : list) {
             String plainText = Jsoup.parse(dto.getContent()).text(); // HTML 파싱 후 텍스트 추출
             // 내용이 10자를 넘으면 '...' 추가
-            if (plainText.length() > 10) {
-                plainText = plainText.substring(0, 10) + "...";
+            if (plainText.length() > 15) {
+                plainText = plainText.substring(0, 15) + "...";
             }
 
             dto.setContent(plainText); // 텍스트를 다시 설정
