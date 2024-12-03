@@ -1,6 +1,8 @@
 package com.mjc.linkx.security.controller;
 
 
+import com.mjc.linkx.boarddept.BoardDeptDto;
+import com.mjc.linkx.boarddept.IBoardDeptService;
 import com.mjc.linkx.boardfree.BoardFreeDto;
 import com.mjc.linkx.boardfree.IBoardFreeService;
 import com.mjc.linkx.petition.IPetitionService;
@@ -25,6 +27,7 @@ public class IndexController {
 
     private final UserService userService;
     private final IBoardFreeService boardFreeService;
+    private final IBoardDeptService boardDeptService;
     private final IPetitionService petitionService;
 
     @GetMapping("")
@@ -42,12 +45,17 @@ public class IndexController {
             model.addAttribute("nickname", user.getNickname());
             model.addAttribute("major",user.getMajorName());
         }
+        // 자유게시판 상위글5개 / 인기글 3개
+        List<BoardFreeDto> recentlyFree = this.boardFreeService.findRecently();
+        List<BoardFreeDto> viewTopFree = this.boardFreeService.findViewTop();
+        model.addAttribute("recentlyFree", recentlyFree);
+        model.addAttribute("viewTopFree", viewTopFree);
 
-        List<BoardFreeDto> recently = this.boardFreeService.findRecently();
-        List<BoardFreeDto> viewTop = this.boardFreeService.findViewTop();
-        model.addAttribute("recently", recently);
-        model.addAttribute("viewTop", viewTop);
-
+        // 학과게시판 상위글5개 / 인기글 3개
+        List<BoardDeptDto> recentlyDept = this.boardDeptService.findRecently();
+        List<BoardDeptDto> viewTopDept = this.boardDeptService.findViewTop();
+        model.addAttribute("recentlyDept", recentlyDept);
+        model.addAttribute("viewTopDept", viewTopDept);
 
         //청원 인기 글 가져오기,동의자 수 상위 5개 청원 가져오기
         List<PetitionDto> hotAgreedPetitions = this.petitionService.findHotAgreedPetitions();

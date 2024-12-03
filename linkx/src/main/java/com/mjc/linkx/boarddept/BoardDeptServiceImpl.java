@@ -2,10 +2,12 @@ package com.mjc.linkx.boarddept;
 
 
 import com.mjc.linkx.boardcommon.SearchBoardDto;
+import com.mjc.linkx.boardfree.BoardFreeDto;
 import com.mjc.linkx.boardlike.BoardLikeDto;
 import com.mjc.linkx.boardlike.IBoardLikeMyBatisMapper;
 import com.mjc.linkx.user.IUser;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,6 +80,41 @@ public class BoardDeptServiceImpl implements IBoardDeptService {
 
         List<BoardDeptDto> list = this.boardMyBatisMapper.findAllByNameContains(dto);
 
+        return list;
+    }
+
+    @Override
+    public List<BoardDeptDto> findRecently() {
+
+        List<BoardDeptDto> list = this.boardMyBatisMapper.findRecently();
+
+        // HTML 태그 제거
+        for (BoardDeptDto dto : list) {
+            String plainText = Jsoup.parse(dto.getContent()).text(); // HTML 파싱 후 텍스트 추출
+            // 내용이 10자를 넘으면 '...' 추가
+            if (plainText.length() > 10) {
+                plainText = plainText.substring(0, 10) + "...";
+            }
+
+            dto.setContent(plainText); // 텍스트를 다시 설정
+        }
+        return list;
+    }
+
+    @Override
+    public List<BoardDeptDto> findViewTop() {
+        List<BoardDeptDto> list = this.boardMyBatisMapper.findViewTop();
+
+        // HTML 태그 제거
+        for (BoardDeptDto dto : list) {
+            String plainText = Jsoup.parse(dto.getContent()).text(); // HTML 파싱 후 텍스트 추출
+            // 내용이 10자를 넘으면 '...' 추가
+            if (plainText.length() > 10) {
+                plainText = plainText.substring(0, 10) + "...";
+            }
+
+            dto.setContent(plainText); // 텍스트를 다시 설정
+        }
         return list;
     }
 
