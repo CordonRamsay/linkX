@@ -10,10 +10,10 @@ body {
     padding: 0;
 }
 
-.container {
+.peti-container {
 
     width: 80%; /* 너비를 80%로 늘려서 화면을 더 채우도록 설정 */
-    margin: 20px auto; /* 위아래 마진을 20px로 줄여서 더 꽉 찬 느낌을 줍니다 */
+    margin: 80px auto; /* 위아래 마진을 20px로 줄여서 더 꽉 찬 느낌을 줍니다 */
     background-color: #fff;
     padding: 40px; /* 패딩을 40px로 늘려서 콘텐츠가 더 넓게 보이도록 합니다 */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -89,4 +89,9 @@ button.agree {
     font-size: 14px;
     color: #00bfff;
     margin-bottom: 10px; /* 아래쪽 마진을 늘려서 더 여백을 줍니다 */
+}
+#background{
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
 }

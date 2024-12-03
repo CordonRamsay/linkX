@@ -76,8 +76,8 @@
 
     </select>
 
-    <!-- 가장 최근 글 5개 가져오기 -->
-    <select id="findRecently" resultType="BoardFreeDto">
+    <!-- 가장 최근 글 5개 가져오기 (모든학과 포함)-->
+    <select id="findRecently" resultType="BoardDeptDto">
         SELECT bt.id
              , bt.title
              , (SELECT count(*)
@@ -93,12 +93,17 @@
              , ut.nickname AS createName
              , bt.updateDt
              , bt.deleteYn
+             , (select majorName
+                from major_tbl
+                where id = bt.majorId) as majorName
         FROM board_dept_tbl bt
                  LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
         ORDER BY bt.createDt DESC
             LIMIT 5
     </select>
+
+
 
     <!-- 게시글 카운트 -->
     <select id="countAllByNameContains" parameterType="SearchBoardDto" resultType="Integer">

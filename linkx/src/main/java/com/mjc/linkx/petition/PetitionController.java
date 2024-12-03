@@ -121,6 +121,7 @@ public class PetitionController implements IResponseController {
             IUser loginUser = (IUser) session.getAttribute("LoginUser");
             if (loginUser != null) {
                 model.addAttribute("nickname", loginUser.getNickname());
+                model.addAttribute("major", loginUser.getMajorName());
             } else {
                 throw new LoginAccessException("로그인이 필요합니다");
             }
@@ -172,6 +173,8 @@ public class PetitionController implements IResponseController {
             //findById로 찾아온 PetitionDto 객체 뷰에 전달
             model.addAttribute("PetitionDto",viewDto);
             model.addAttribute("errorMessage","이미 동의 하셨습니다.");
+        }catch (LoginAccessException ex) {
+            return "redirect:/login/login";
         }catch(Exception ex){
             log.error(ex.toString());
         }
