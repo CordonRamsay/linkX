@@ -34,6 +34,21 @@
       </div>
     </div>
 
+        <!-- 마감임박 청원 -->
+        <div class="petition-section">
+          <h2 class="section-title">마감임박 청원</h2>
+          <div class="petition-cards">
+            {{#hotAgreedPetitions}}
+            <div class="card">
+              <p><strong>{{petiTitle}}</strong></p>
+              <p>{{petiContent}}</p>
+              <p><strong>D-{{daysLeft}}</strong></p>
+            </div>
+            {{/hotAgreedPetitions}}
+          </div>
+        </div>
+
+
     <!-- 인기 게시글 -->
     <div class="popular-posts">
       <h2 class="section-title">인기 게시글</h2>
@@ -63,7 +78,9 @@
           <p class="category">자유게시판</p>
           {{#recentlyFree}}
           <ul>
-            <li class="content" onclick="location.href='/boardFree/board_view/{{id}}'">{{{content}}}<span>{{createDt}}</span></li>
+            <li class="content" onclick="location.href='/boardFree/board_view/{{id}}'">{{{content}}}
+              <span class="createDt">{{createDt}}</span>
+            </li>
           </ul>
           {{/recentlyFree}}
         </div>
@@ -71,7 +88,9 @@
           <p class="category">학과게시판</p>
           {{#recentlyDept}}
           <ul>
-            <li class="content" onclick="location.href='/boardDept/board_view/{{id}}'">{{{content}}}<span>{{createDt}}</span></li>
+            <li class="content" onclick="location.href='/boardDept/board_view/{{id}}'">{{{content}}}<span class="majorName">&nbsp;[{{majorName}}]</span>
+              <span class="createDt">{{createDt}}</span>
+            </li>
           </ul>
           {{/recentlyDept}}
         </div>

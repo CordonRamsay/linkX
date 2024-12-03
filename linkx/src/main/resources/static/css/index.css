@@ -140,9 +140,12 @@ body {
     font-size: 14px;
 }
 
-.board-list li span {
+.board-list li .createDt {
     float: right;
     color: gray;
+}
+.majorName{
+    color: #a8a2a2;
 }
 .title{
     font-size: 20px;
@@ -151,7 +154,7 @@ body {
     cursor : pointer;
 }
 .title:hover, .content:hover{
-    color: #f76394;
+    color: #ea59b8;
 }
 .review-cards {
     display: flex;

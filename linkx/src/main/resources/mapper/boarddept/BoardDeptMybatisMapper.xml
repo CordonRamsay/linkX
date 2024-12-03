@@ -100,7 +100,7 @@
                  LEFT JOIN user_tbl ut ON bt.createId = ut.id
         WHERE bt.deleteYn = false
         ORDER BY bt.createDt DESC
-            LIMIT 5;
+            LIMIT 5
     </select>
 
 

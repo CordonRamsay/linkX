@@ -25,6 +25,8 @@ public class BoardDeptDto extends BoardBaseDto implements IBoardDept {
     private String content;
     // 학과 코드
     private Long majorId;
+    // 학과 코드
+    private String majorName;
     //  댓글 수
     private String countComment;
 
