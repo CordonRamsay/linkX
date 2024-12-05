@@ -76,10 +76,6 @@ body {
     min-width: 250px;
     text-align: center;
 }
-.petition-cards p,
-.petition-cards a {
-    color: black; 
-}
 
 .card img {
     max-width: 100%;
@@ -204,4 +200,83 @@ body {
 
 .petiTitle {
     font-weight: bold; /* 글자 굵기만 굵게 */
+}
+/* Petition Card Style */
+.petition-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 카드 간 간격 */
+    justify-content: center; /* 중앙 정렬 */
+}
+
+.pcard {
+    background: #ffffff; /* 흰색 배경 */
+    border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
+    border-radius: 12px; /* 둥근 모서리 */
+    padding: 20px;
+    width: calc((100% - 60px) / 3); /* 한 줄에 3개의 카드 */
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.pcard a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 기본 텍스트 색상 유지 */
+    width: 100%;
+}
+
+.petiField {
+    color: #007bff; /* 파란색 텍스트 */
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.petiTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.petiContent {
+    font-size: 16px;
+    color: #555555;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.pcard strong {
+    font-size: 14px;
+    color: #777777;
+    display: inline-block;
+}
+
+.pcard .pfooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.pcard .dday {
+    background: #007bff;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
 }

@@ -28,12 +28,7 @@
 {{>layout/header}}
 <main class="main">
   <div class="container">
-    <!-- 메인 배너 -->
-    <div class="main-banner">
-      <div class="calendar">
-        <iframe src="calendarList" style="width: 100%; height: 100%; border: none;"></iframe>
-      </div>
-    </div>
+
 
 
     <!-- 마감임박 청원 -->
@@ -41,13 +36,18 @@
       <h2 class="section-title">진행중인 청원<img src="/img/petition.png" alt="청원아이콘" width="35px" height="35px"></h2>
       <div class="petition-cards">
         {{#hotAgreedPetitions}}
-        <div class="card">
+        <div class="pcard">
           <a href="/petition/petition_view?id={{id}}">
-            <p><span class="petiField">[{{petiField}}]</span></p>
+            <p class="petiField">[{{petiField}}]</p>
             <p class="petiTitle">{{petiTitle}}</p>
-            <p><strong>D-{{daysLeft}}</strong></p>
+            <p class="petiContent">{{petiContent}}</p>
+            <div class="pfooter">
+              <p><strong>동의기간 {{createDt}}~{{endDt}}</strong></p>
+              <div class="dday">D-{{daysLeft}}</div>
+            </div>
           </a>
         </div>
+        {{/hotAgreedPetitions}}
       </div>
     </div>
 
@@ -76,7 +76,7 @@
           <p>{{{content}}}</p>
           <p class="category"><span id="boardType"></span></p>
           <div class="meta">
-            <span><i class="bi bi-chat"></i> {{countComment}}</span>
+<!--            <span><i class="bi bi-chat"></i> {{countComment}}</span>-->
             <span><i class="bi bi-eye"></i> {{viewQty}}</span>
           </div>
         </div>

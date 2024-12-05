@@ -177,9 +177,9 @@ public class BoardDeptController implements IResponseController {
         }
         // 저장해놓은 majorId 값으로 해당 글 삭제후 원래 위치하고있었던 학과 게시판으로 이동
         if(majorId != null) {
-            return "redirect:board_list?page=1&searchName=&majorId=" + majorId;
+            return "redirect:/boardDept/board_list?page=1&searchName=&majorId=" + majorId;
         }else{
-            return "redirect:board_list?page=1&searchName=";
+            return "redirect:/boardDept/board_list?page=1&searchName=";
         }
     }
 }
