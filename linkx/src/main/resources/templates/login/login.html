@@ -58,15 +58,15 @@
         }
 
         let loginRequest = {
-            loginId : loginId,
-            password : password
+            "loginId" : loginId,
+            "password" : password
         };
 
         $.ajax({
             url : "/api/v1/user/login",
             type : "POST",
             dataType: "JSON",
-            contentType: "application/json; charset=utf-8",
+            contentType:"application/json",
             data : JSON.stringify(loginRequest),
 
             success: function (data) {
